@@ -1,0 +1,168 @@
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fCRc4AMP6lbBP.woff2); 
+}
+
+body {
+  padding: 0px;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  color: currentColor;
+}
+
+div.container {
+  margin: auto;
+  max-width: min(100%, 1000px);
+}
+
+div.borderblock {
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  border: solid grey 1px;
+}
+
+div.block {
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+div.blockend {
+  clear: left;
+}
+
+div.float-container {
+  margin: auto;
+}
+
+/* On desktop screen use side by side editing */
+@media only screen and (width >= 1000px) {
+  div.float-container {
+    margin: 0 auto;
+  }
+  
+  div.float-child-abc {
+    width: max(600px, 50%);
+    float: left;
+    padding: 0px;
+    padding-right: 10px;
+  }
+  
+  div.float-child-tab {
+    max-width: 1000px;
+    overflow: hidden;
+    padding: 0px;
+  }
+}
+
+div.overlay-container {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  
+   
+   width:100%;
+   height: 100%;
+   text-align:center;
+   
+  align-items: center;
+  justify-content: center;
+}
+
+div.overlay {
+   background-color: #fff;
+   width:            400px;
+   height:           250px;
+   margin: 50px 50px 50px 50px;
+}
+
+select {
+  padding: 10px;
+  margin: -5px -20px -5px -5px;
+}
+
+textarea {
+  width: 100%;
+  border: 2px solid currentColor;
+  height: 300px;
+  padding: 10px;
+}
+
+#warnings {
+  color: #dd0000;
+  padding: 5px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #ffffff;
+    background: #121212;
+  }
+  
+  .visible-background svg {
+    background: #404040;
+  }
+  
+  a:link {
+    color: red;
+  }
+  
+  a:visited {
+    color: brown;
+  }
+}
+
+.highLite {
+  min-height:300px;
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 1.2;
+  
+  border: 1px solid #888;
+  position: relative;
+}
+
+.highLite_colors,
+.highLite_editable {
+  min-height:300px;
+  padding: 16px;
+}
+
+/* THE UNDERLAYING ONE WITH COLORS */
+.highLite_colors {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; 
+  user-select: none;
+}
+
+/* THE OVERLAYING CONTENTEDITABLE WITH TRANSPARENT TEXT */
+.highLite_editable {
+  position: relative;
+  color: transparent; /* Make text invisible */
+  caret-color: black; /* But keep caret visible */
+}
+
+.hl_angled{ color: turquoise; }
+.hl_curly{ color: fuchsia; }

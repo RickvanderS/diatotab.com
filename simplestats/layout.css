@@ -1,0 +1,216 @@
+/*below: the general layout*/
+
+body {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+    color: #000000;
+	font-weight: 100%; 
+	font-family: Helvetica, Verdana, sans-serif;
+	font-size: 12px;
+  	font-variant: normal;
+  	font-style: normal;
+	letter-spacing: 0px;
+	line-height: 1em;
+    background: #ffffff;
+}
+
+a:link, a:visited {
+    text-decoration: underline;
+}
+a:hover, a:active {
+}
+
+a img {
+    border: none;
+    background: none;
+}
+
+table {
+    border-collapse: collapse;
+}
+td {
+    vertical-align: center;
+}
+
+em {
+    font-style: italic;
+    font-weight: bold;
+}
+em.error {
+    color: #ff0000;
+}
+
+.spBlue {
+    color: #3fafff;
+}
+
+
+/*below: the stats div layout*/
+
+table#statsT {
+    
+}
+table#statsT td {
+    vertical-align: top;
+}
+
+#stats {
+    margin: 20px 20px 25px 25px;
+}
+#stats b {
+    font-weight: bold;
+    line-height: 18px;
+}
+#stats i {
+    margin-left: 5px;
+    font-style: italic;
+    font-size: 9px;
+    line-height: 12px;
+}
+#statsHeader {
+    margin: 0;
+    padding: 28px 28px 0px 28px;
+    width: 360px;
+    color: #555555;
+    background-image: url('./layout/stats_bkgd_header.png');
+	background-repeat: no-repeat;
+	background-color: transparent;
+}
+#statsHeader table#year {
+    margin: 0;
+    border-collapse: collapse;
+    width: 360px;
+}
+#statsHeader table#year td {
+    padding: 0px 0px 18px 0px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 22px;
+    /*font-weight: bold;*/
+    letter-spacing: .1em;
+    border: none;
+}
+#statsHeader table#months {
+    margin: 0;
+    height: 114px;
+    border-collapse: collapse;
+}
+#statsHeader table#months td {
+    padding: 0;
+    border: solid 1px #999999;
+    border-bottom: none;
+    vertical-align: bottom;
+    background: transparent;
+}
+#statsHeader .tabOff {
+    cursor: pointer;
+}
+#statsHeader .tabOn {
+    
+}
+#statsBody {
+    margin: 0;
+    padding: 28px 28px 0px 28px;
+    padding-top: 0px;
+    width: 361px;
+    color: #ffffff;
+    background-image: url('./layout/stats_bkgd_body.png');
+	background-repeat: repeat-y;
+	background-color: transparent;
+}
+#monthTotal {
+    margin: 0;
+    padding: 20px 15px 20px 25px;
+    width: 321px;
+    font-size: 13.5px;
+    background-color: #3fafff;
+    border-bottom: dotted 1px #ffffff;
+}
+#monthDetail {
+    margin: 0;
+    padding: 20px 10px 0px 15px;
+    width: 336px;
+    max-height: 130px;
+    overflow: auto;
+    font-size: 12px;
+    background-color: #3fafff;
+    border-bottom: dotted 1px #ffffff;
+}
+#monthDetail table {
+    margin: 0;
+    border-collapse: collapse;
+}
+#monthDetail td {
+    vertical-align: top;
+}
+#monthDetail td.day {
+    padding: 10px 25px 30px 25px;
+    text-align: center;
+    color: #3fafff;
+    font-size: 16px;
+    background: url('./layout/stats_day.png') center top no-repeat;
+}
+#monthDetail td.dayContent {
+    padding: 10px 15px 25px 0px;
+}
+#monthReferences {
+    margin: 0;
+    padding: 20px 15px 10px 25px;
+    width: 321px;
+    background-color: #3fafff;
+    border-bottom: dotted 1px #ffffff;
+}
+#monthReferences p {
+    margin-left: 5px;
+    font-size: 9px;
+    font-style: italic;
+}
+#monthReferences a {
+    color: #ffffff;
+    text-decoration: none;
+}
+#monthGoogleQueries {
+    margin: 0;
+    padding: 20px 15px 10px 25px;
+    width: 321px;
+    background-color: #3fafff;
+}
+#monthGoogleQueries p {
+    margin-left: 5px;
+    font-size: 9px;
+}
+#monthGoogleQueries a {
+    color: #ffffff;
+    text-decoration: none;
+}
+#statsFooter {
+    margin: 0;
+    padding: 6px 30px 0px 0px;
+    width: 386px;
+    height: 22px;
+    text-align: right;
+    background-image: url('./layout/stats_bkgd_footer.png');
+	background-repeat: no-repeat;
+	background-position: bottom;
+	background-color: transparent;
+}
+
+
+/*below: the copyright notice layout*/
+
+#statsCopyrightNotice {
+    margin: 30px 25px 25px 0px;
+    padding-left: 10px;
+    width: 150px;
+    color: #cccccc;
+    font-size: 10px;
+    line-height: 1.5em;
+    background-color: transparent;
+}
+#statsCopyrightNotice img {
+    margin-left: -10px;
+}
+#statsCopyrightNotice a {
+    color: #cccccc;
+}
