@@ -46,6 +46,12 @@ div.float-container {
   margin: auto;
 }
 
+@media only screen and (width >= 800px) {
+  div.intro {
+    display: flex;
+  }
+}
+
 /* On desktop screen use side by side editing */
 @media only screen and (width >= 1000px) {
   div.float-container {

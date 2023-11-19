@@ -15,7 +15,7 @@
 <body>
 	<div class="container">
 		<h1>Dia To Tab</h1>
-		<div style="display: flex">
+		<div class="intro">
 			<div>
 				Tablature generation tool for <a href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature is created based on instrument selection.
 				<br><br>
