@@ -96,8 +96,8 @@ K: C<br>
 		<div class="blockend"></div>
 	</div>
 	
-	<div class="container">
-		The application runs client side using <a href='https://www.abcjs.net'>abcjs</a>, no data is send to the server. Send <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> for questions and bug reports.
+	<div class="footer">
+		The application runs client side using a fork of <a href='https://www.abcjs.net'>abcjs</a> (<a href='https://github.com/RickvanderS/abcjs-melodeon-tab'>Github repository</a>), no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports.
 	</div>
 	
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
