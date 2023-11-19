@@ -354,6 +354,96 @@ function setPrintLink() {
 	Print.href = "print.html?params=" + encodeURI(JSON.stringify(abcjsParams)) + "&abc=" + encodeURIComponent(Abc);
 }
 
+let aAbcUndo = new Array();
+
+function UpdateUndoFocus() {
+	let ABC_Editor = document.getElementById("abc_editable");
+	
+	//Get end of selection, focus must be restore to this position
+	let focusNode   = null;
+	let focusOffset = 0;
+	{
+		let sel = window.getSelection();
+		for (var i = 0; i < sel.rangeCount; ++i) {
+			let range = sel.getRangeAt(i);
+			if (range.endContainer == event.target) {
+				focusNode   = range.endContainer.childNodes[range.endOffset];
+				focusOffset = 0;
+				break;
+			}
+			else if (range.endContainer.parentNode == event.target) {
+				focusNode   = range.endContainer;
+				focusOffset = range.endOffset;
+				break;
+			}
+		}
+	}
+	
+	//Update in last undo item
+	if (focusNode) {
+		for (let i = 0; i < ABC_Editor.childNodes.length; ++i) {
+			if (ABC_Editor.childNodes[i] == focusNode) {
+				aAbcUndo[aAbcUndo.length - 1].focusNodeIndex = i;
+				aAbcUndo[aAbcUndo.length - 1].focusOffset    = focusOffset;
+				Ok = true;
+				break;
+			}
+		}
+	}
+}
+
+function NewUndo() {
+	//New empty undo item
+	let UndoItem = {
+		ABC           : "",
+		focusNodeIndex:  0,
+		focusOffset   :  0
+	};
+	aAbcUndo.push(UndoItem);
+	
+	//Set maximum undo size
+	if (aAbcUndo.length > 100)
+		aAbcUndo.splice(0, 1);
+	
+	//Update the last undo item content
+	let ABC_Editor = document.getElementById("abc_editable");
+	aAbcUndo[aAbcUndo.length - 1].ABC = ABC_Editor.innerText;
+	
+	//Update cursor position
+	UpdateUndoFocus();
+}
+
+function Undo() {
+	//Need item not equal to current state
+	if (aAbcUndo.length < 2)
+		return;
+	
+	//Revert to previous state
+	let ABC_Editor = document.getElementById("abc_editable");
+	
+	//Restore the remembered value
+	ABC_Editor.innerText = aAbcUndo[aAbcUndo.length - 2].ABC;
+	
+	//Restore the cursor position
+	var sel = window.getSelection();
+	sel.removeAllRanges();
+	var range = document.createRange();
+	range.setStart(ABC_Editor.childNodes[aAbcUndo[aAbcUndo.length - 2].focusNodeIndex], aAbcUndo[aAbcUndo.length - 2].focusOffset);
+	range.setEnd  (ABC_Editor.childNodes[aAbcUndo[aAbcUndo.length - 2].focusNodeIndex], aAbcUndo[aAbcUndo.length - 2].focusOffset);
+	sel.addRange(range);
+	
+	
+	
+	//TODO: Cursor position
+	
+	//Remove last item
+	aAbcUndo.splice(aAbcUndo.length - 1, 1);
+	aAbcUndo.splice(aAbcUndo.length - 1, 1);
+	
+	//Update last item to current state
+	AbcInput();
+}
+
 function AbcKeyDown() {
 	//Selection might have been changed
 	AbcSelect();
@@ -361,6 +451,11 @@ function AbcKeyDown() {
 	//Enter must create <br>, not a <div>
 	if (event.key === 'Enter') {
 		document.execCommand('insertLineBreak')
+		event.preventDefault()
+	}
+	//Ctrl+z pressed
+	else if (event.keyCode == 90 && event.ctrlKey) {
+		Undo();
 		event.preventDefault()
 	}
 }
@@ -401,7 +496,7 @@ function AbcPaste(event) {
 			StartNode   = sel.focusNode.childNodes[sel.focusOffset];
 			StartOffset = 0;
 		}
-		else if (sel.focusNode.parentNode == event.target) {
+		else if (sel.focusNode && sel.focusNode.parentNode == event.target) {
 			StartNode   = sel.focusNode;
 			StartOffset = sel.focusOffset;
 		}
@@ -525,6 +620,8 @@ function HtmlEscape(instring) {
 }
 
 function AbcInput() {
+	NewUndo();
+	
 	//Get the ABC input editor
 	let ABC_Editor = document.getElementById("abc_editable");
 	
@@ -675,6 +772,8 @@ function AbcInput() {
 }
 
 function AbcSelect() {
+	UpdateUndoFocus();
+	
 	//Get the selection
 	let StartContainer = null;
 	let StartIndex     = 0;
