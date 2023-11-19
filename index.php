@@ -15,9 +15,14 @@
 <body>
 	<div class="container">
 		<h1>Dia To Tab</h1>
-		Tablature generation tool for <a href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes can be entered in ABC notation, many examples are available on <a href=https://folktunefinder.com>folktunefinder.com</a> and <a href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a href=https://abcnotation.com>abcnotation.com</a>. You can choose the required instrument and tuning, one and two row melodeons with 3th button starts and harmonicas are supported. If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
-		<br>
-		
+		<div style="display: flex">
+			<div>
+				Tablature generation tool for <a href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature is created based on instrument selection.
+				<br><br>
+				Many ABC tunes are available on <a href=https://folktunefinder.com>folktunefinder.com</a> and <a href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a href=https://abcnotation.com>abcnotation.com</a>. You can choose the required instrument and tuning, one and two row melodeons with 3th button starts and harmonicas are supported. If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
+			</div>
+			<img style="margin-left:25px; width:300px; height:121px;" src="logo.png">
+		</div>
 		<h2> Two row melodeons </h2>
 		There are some special layout options for two row melodeons. Buttons 1 and 1' can either be used for low notes or for accidentals. The push and pull notes of these buttons can be flipped. Same holds for 5', to configure the layout to use 'Dutch reversal'.
 		<br><br>

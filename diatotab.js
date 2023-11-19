@@ -351,7 +351,7 @@ function setPrintLink() {
 	
 	//Encode in print link
 	let Print = document.getElementById("print");
-	Print.href = "print.html?params=" + encodeURI(JSON.stringify(abcjsParams)) + "&abc=" + encodeURI(Abc);
+	Print.href = "print.html?params=" + encodeURI(JSON.stringify(abcjsParams)) + "&abc=" + encodeURIComponent(Abc);
 }
 
 function AbcKeyDown() {
