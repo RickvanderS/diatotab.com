@@ -745,7 +745,7 @@ function AbcInput() {
 					ABChtml += HtmlChar;
 				}
 				//Detect begin of something not a note
-				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[^/1-9a-gxyzA-GXZ_^=~.vu]/)) {
+				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[^',/1-9a-gxyzA-GXZ_^=~.vu]/)) {
 					//End previous note color
 					if (inNote) {
 						ABChtml += "</span>";
