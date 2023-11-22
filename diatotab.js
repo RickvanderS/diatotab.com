@@ -648,8 +648,22 @@ function AbcInput() {
 		//Empty line
 		if (!Line || Line.length == 0 || !Line.trim()) {
 		}
-		//Info line
-		else if (Line.trim()[0].match(/[A-Za-z+]/) && Line.trim()[1] == ":") {
+		//Aligned lyrics line
+		else if (Line.trim().substr(0, 2) == "w:") {
+			let Sep = Line.indexOf(":");
+			ABChtml += HtmlEscape(Line.substr(0, Sep+1)) + "<span style='color:Teal'>";
+			
+			//Detect characters with special meaning in lyrics
+			for (let j = Sep+1; j < Line.length; ++j) {
+				if (Line[j].match(/[-_*~\\|]/))
+					ABChtml += "</span>" + Line[j] + "<span style='color:Teal'>";
+				else
+					ABChtml += Line[j];
+			}
+			ABChtml += "</span>";
+		}
+		//Information field line
+		else if (Line.trim().substr(0, 2).match(/[A-Za-z+]:/)) {
 			let Sep = Line.indexOf(":");
 			ABChtml += HtmlEscape(Line.substr(0, Sep+1)) + "<span style='color:Teal'>" + HtmlEscape(Line.substr(Sep+1)) + "</span>";
 		}
