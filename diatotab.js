@@ -718,8 +718,8 @@ function AbcInput() {
 					InComment = true;
 					ABChtml += HtmlChar + "<span  style='color:Teal'>";
 				}
-				//Detect note begin
-				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[a-gA-GxXzZ_^=~.vu]/)) {
+				//Detect begin of new note
+				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[a-gxyzA-GXZ_^=~.vu]/)) {
 					//If note not already started from accidental
 					if (!inAcc) {
 						//End previous note color
@@ -744,8 +744,8 @@ function AbcInput() {
 					
 					ABChtml += HtmlChar;
 				}
-				//Detect note end
-				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[\]\[:|\-{}() ]/)) {
+				//Detect begin of something not a note
+				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[^/1-9a-gxyzA-GXZ_^=~.vu]/)) {
 					//End previous note color
 					if (inNote) {
 						ABChtml += "</span>";
