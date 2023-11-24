@@ -24,6 +24,7 @@ div.container {
 
 div.footer {
   margin: auto;
+  padding-top: 10px;
   max-width: min(100%, 1000px);
   text-align: center;
   font-size: 12px;
