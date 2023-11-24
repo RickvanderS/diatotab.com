@@ -318,6 +318,10 @@ function CreatePrint() {
 	if (document.title[document.title.length - 1] == "\"")
 		document.title = document.title.substring(0, document.title.length - 1);
 	
+	//Change style so page breaks are in between the bars
+	let RenderDiv = document.getElementById("paper");
+	RenderDiv.style = "display: block";
+	
 	//Show print preview dialog
 	window.print();
 }
