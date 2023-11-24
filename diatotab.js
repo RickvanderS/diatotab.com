@@ -738,7 +738,7 @@ function AbcInput() {
 					ABChtml += HtmlChar + "<span  style='color:Teal'>";
 				}
 				//Detect begin of multi-note
-				else if (!InComment && !InRemark && !InChord && !InDec && !inNoteMulti && Line[j] == "[") {
+				else if (!InComment && !InRemark && !InChord && !InDec && !inNoteMulti && Line[j] == "[" && Line.substr(j, 2) != "[|") {
 					//End previous note color
 					if (inNote)
 						ABChtml += "</span>";
@@ -755,7 +755,7 @@ function AbcInput() {
 					inNoteMulti = true;
 				}
 				//Detect begin of new note
-				else if (!InComment && !InRemark && !InChord && !InDec && !inNoteMulti && Line[j].match(/[[a-gxyzA-GXZ_^=~.vu]/)) {
+				else if (!InComment && !InRemark && !InChord && !InDec && !inNoteMulti && Line[j].match(/[a-gxyzA-GXZ_^=~.vu]/)) {
 					//If note not already started from accidental
 					if (!inAcc) {
 						//End previous note color
