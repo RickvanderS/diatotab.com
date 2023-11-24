@@ -191,7 +191,7 @@ function GetAbcjsParamsFromControls() {
 		//No margins, scale to container
 		responsive   : "resize",
 		paddingtop   : 0,
-		paddingbottom: 30,
+		paddingbottom: 0,
 		paddingleft  : 0,
 		paddingright : 0,
 	};
@@ -349,9 +349,13 @@ function setPrintLink() {
 	let abcjsParams = GetAbcjsParamsFromControls();
 	let Abc         = document.getElementById("abc").value;
 	
+	//Set special print options
+	abcjsParams.selectionColor = "#000000";
+	abcjsParams.oneSvgPerLine = true;
+	
 	//Encode in print link
 	let Print = document.getElementById("print");
-	Print.href = "print.html?params=" + encodeURI(JSON.stringify(abcjsParams)) + "&abc=" + encodeURIComponent(Abc);
+	Print.href = "print.html?params=" + encodeURIComponent(JSON.stringify(abcjsParams)) + "&abc=" + encodeURIComponent(Abc);
 }
 
 let aAbcUndo = new Array();
@@ -669,18 +673,19 @@ function AbcInput() {
 		}
 		//Music line
 		else {
-			let InRemark  = false;
-			let InComment = false;
-			let InChord   = false;
-			let InDec     = false;
-			let NoteColor = false;
-			let inAcc     = false;
-			let inNote    = false;
+			let InRemark    = false;
+			let InComment   = false;
+			let InChord     = false;
+			let InDec       = false;
+			let NoteColor   = false;
+			let inNoteMulti = false;
+			let inNote      = false;
+			let inAcc       = false;
 			for (let j = 0; j < Line.length; ++j) {
 				let HtmlChar = HtmlEscape(Line[j]);
 				
 				//Detect chord begin/end
-				if (!InComment && !InRemark && !InDec && Line[j] == "\"") {
+				if (!InComment && !InRemark && !InDec && !inNoteMulti && Line[j] == "\"") {
 					//End previous note color
 					if (inNote) {
 						inNote = false;
@@ -732,8 +737,25 @@ function AbcInput() {
 					InComment = true;
 					ABChtml += HtmlChar + "<span  style='color:Teal'>";
 				}
+				//Detect begin of multi-note
+				else if (!InComment && !InRemark && !InChord && !InDec && !inNoteMulti && Line[j] == "[") {
+					//End previous note color
+					if (inNote)
+						ABChtml += "</span>";
+					
+					//Set color for the new note
+					if (NoteColor)
+						ABChtml += "<span style='color:green'>";
+					else
+						ABChtml += "<span style='color:purple'>";
+					NoteColor = !NoteColor;
+					
+					ABChtml += HtmlChar;
+
+					inNoteMulti = true;
+				}
 				//Detect begin of new note
-				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[a-gxyzA-GXZ_^=~.vu]/)) {
+				else if (!InComment && !InRemark && !InChord && !InDec && !inNoteMulti && Line[j].match(/[[a-gxyzA-GXZ_^=~.vu]/)) {
 					//If note not already started from accidental
 					if (!inAcc) {
 						//End previous note color
@@ -760,18 +782,26 @@ function AbcInput() {
 				}
 				//Detect begin of something not a note
 				else if (!InComment && !InRemark && !InChord && !InDec && Line[j].match(/[^',/1-9a-gxyzA-GXZ_^=~.vu]/)) {
-					//End previous note color
-					if (inNote) {
-						ABChtml += "</span>";
+					//Ignore end of multi-note
+					if (inNoteMulti && Line[j] == "]") {
+						inNoteMulti = false;
+						inNote      = true;
 					}
-					inNote = false;
+					else {
+						//End previous note color
+						if (inNote || inNoteMulti) {
+							ABChtml += "</span>";
+						}
+						inNote      = false;
+						inNoteMulti = false;
+					}
 					
 					ABChtml += HtmlChar;
 				}
 				else
 					ABChtml += HtmlChar;
 			}
-			if (InComment || InRemark || InChord || inNote)
+			if (InComment || InRemark || InChord || inNoteMulti || inNote)
 				ABChtml += "</span>";
 		}
 		ABChtml += "<br>";
