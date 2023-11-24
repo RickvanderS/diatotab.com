@@ -270,7 +270,6 @@ var Editor = null;
 function CreateEditor(NoUpdate) {
 	if (!NoUpdate)
 		AbcInput();
-		
 	
 	//Stop playback
 	if (Editor)
@@ -302,6 +301,78 @@ function CreateEditor(NoUpdate) {
 	
 	//Create the editor
 	Editor = new ABCJS.Editor("abc", Params);
+}
+
+let StoreAllowed = false;
+let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a");
+
+function InitPage() {
+	//localStorage.clear();
+	
+	AddInstruments();
+	ExampleLoad(1);
+	Load();
+	CreateEditor();
+	StoreAllowed = true;
+	Store();
+	setTimeout(clearLink, 500);
+}
+
+function Load() {
+	//For all stored controls
+	for (let i = 0; i < aStoreElements.length; ++i) {
+		let ID = aStoreElements[i];
+		
+		//Get value from storage
+		let Value = window.localStorage.getItem(ID);
+		
+		console.log(ID);
+		console.log(Value);
+		
+		//If no ABC, load default example instead
+		if (Value !== null) {
+			//Set value in the control
+			let Control = document.getElementById(ID);
+			if (typeof Control.checked !== 'undefined')
+				Control.checked = (Value === "true");
+			else if (typeof Control.value !== 'undefined')
+				Control.value = Value;
+			else
+				Control.innerText = Value;
+			
+			//Call special handlers
+			if (ID == "abc_editable")
+				AbcInput();
+			else if (ID == "instrument")
+				AddTunings();
+		}
+	}
+}
+
+function Store() {
+	if (!StoreAllowed)
+		return;
+	
+	console.log("Store");
+	//For all controls to store
+	for (let i = 0; i < aStoreElements.length; ++i) {
+		let ID = aStoreElements[i];
+		
+		//Get value from the control
+		let Control = document.getElementById(ID);
+		let Value;
+		if (typeof Control.checked !== 'undefined')
+			Value = Control.checked;
+		else if (typeof Control.value !== 'undefined')
+			Value = Control.value;
+		else
+			Value = Control.innerText;
+		
+		//Store on client
+		localStorage.setItem(ID, Value);
+		console.log(ID);
+		console.log(Value);
+	}
 }
 
 function CreatePrint() {
@@ -419,6 +490,9 @@ function NewUndo() {
 	
 	//Update cursor position
 	UpdateUndoFocus();
+	
+	//Store state
+	Store();
 }
 
 function Undo() {

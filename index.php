@@ -115,10 +115,7 @@ K: C<br>
 	</div>
 	<script>
 		window.onload = function() {
-			AddInstruments();
-			CreateEditor();
-			ExampleLoad(1);
-			setTimeout(clearLink, 500);
+			InitPage();
 		}
 	</script>
 </body>
