@@ -17,9 +17,9 @@
 		<h1>Dia To Tab</h1>
 		<div class="intro">
 			<div>
-				Tablature generation tool for <a href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature is created based on instrument selection.
+				Tablature generation tool for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature is created based on instrument selection.
 				<br><br>
-				Many ABC tunes are available on <a href=https://folktunefinder.com>folktunefinder.com</a> and <a href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a href=https://abcnotation.com>abcnotation.com</a>. You can choose the required instrument and tuning, one and two row melodeons with 3th button starts and harmonicas are supported. If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
+				Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>. You can choose the required instrument and tuning, one and two row melodeons with 3th button starts and harmonicas are supported. If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
 			</div>
 			<img style="margin-left:25px; width:300px; height:121px;" src="logo.png">
 		</div>
@@ -87,7 +87,7 @@ K: C<br>
 			<input type="number" id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
 			<button onclick="TransposeAbc()">Transpose ABC</button><br><br>
 			<div id="audio"></div>
-			<a href="print.html" target="_blank" id="print" onmouseover="setPrintLink()" onmousedown="setPrintLink()" onclick="setPrintLink()">Show printer friendly version</a><br>
+			<a target="_blank" href="print.html" id="print" onmouseover="setPrintLink()" onmousedown="setPrintLink()" onclick="setPrintLink()">Show printer friendly version</a><br>
 		</div>
 		<div class="float-child-tab">
 			<h2>Tablature Output</h2>
@@ -97,7 +97,7 @@ K: C<br>
 	</div>
 	
 	<div class="footer">
-		The application runs client side using a fork of <a href='https://www.abcjs.net'>abcjs</a> (<a href='https://github.com/RickvanderS/abcjs-melodeon-tab'>Github repository</a>), no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports.
+		The application runs client side using a fork of <a target="_blank" href='https://www.abcjs.net'>abcjs</a> (<a target="_blank" href='https://github.com/RickvanderS/abcjs-melodeon-tab'>Github repository</a>), no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports.
 	</div>
 	
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
