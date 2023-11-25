@@ -278,9 +278,9 @@ function CreateEditor(NoUpdate) {
 	//Get parameters from the input controls
 	let abcjsParams = GetAbcjsParamsFromControls();
 	
-	abcjsParams.clickListener =  clickListener;
-	
 	//Set special config for editor
+	abcjsParams.paddingbottom = 30;
+	abcjsParams.clickListener = clickListener;
 	let Params = {
 		canvas_id: "paper",
 		warnings_id: "warnings",
