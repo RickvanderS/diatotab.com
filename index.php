@@ -83,11 +83,16 @@ K: C<br>
 			<textarea id="abc" style="display:none;" spellcheck="false">
 			</textarea>
 			<div id="warnings"></div>
-			<label for="transpose">Transpose</label>
-			<input type="number" id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
-			<button onclick="TransposeAbc()">Transpose ABC</button><br><br>
+			<div style="float:left;padding-bottom:10px;">
+				<label for="transpose">Transpose</label>
+				<input type="number" id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
+				<button  onclick="TransposeAbc()">Transpose ABC</button>
+			</div>
+			<div style="float:right;">
+				<button onclick="Print()">Print</button>
+			</div>
+			<div class="blockend"></div>
 			<div id="audio"></div>
-			<a target="_blank" href="print.html" id="print" onmouseover="setPrintLink()" onmousedown="setPrintLink()" onclick="setPrintLink()">Show printer friendly version</a><br>
 		</div>
 		<div class="float-child-tab">
 			<h2>Tablature Output</h2>
@@ -95,7 +100,6 @@ K: C<br>
 		</div>
 		<div class="blockend"></div>
 	</div>
-	
 	<div class="footer">
 		The application runs client side using a fork of <a target="_blank" href='https://www.abcjs.net'>abcjs</a> (<a target="_blank" href='https://github.com/RickvanderS/abcjs-melodeon-tab'>Github repository</a>), no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports.
 	</div>
@@ -113,6 +117,8 @@ K: C<br>
 			<b><a href="" onclick="return ExampleClose()">Close</a></b><br>
 		</div>
 	</div>
+	<div id="print_paper" class="print_paper"></div>
+	
 	<script>
 		window.onload = function() {
 			InitPage();

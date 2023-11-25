@@ -180,3 +180,18 @@ textarea {
 
 .hl_angled{ color: turquoise; }
 .hl_curly{ color: fuchsia; }
+
+.print_paper { 
+  display:none;
+}
+@media print {
+  .container,
+  .float-container,
+  .footer,
+  .overlay-container {
+    display:none;
+  }
+  .print_paper { 
+    display:block;
+  }
+}

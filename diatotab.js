@@ -188,12 +188,12 @@ function GetAbcjsParamsFromControls() {
 		//Get ABC transpose half steps
 		visualTranspose: document.getElementById("transpose").value.toString(),
 		
-		//No margins, scale to container
+		//Scale width, no margins
 		responsive   : "resize",
 		paddingtop   : 0,
 		paddingbottom: 0,
 		paddingleft  : 0,
-		paddingright : 0,
+		paddingright : 0
 	};
 	
 	//Choose instrument/tuning
@@ -326,9 +326,6 @@ function Load() {
 		//Get value from storage
 		let Value = window.localStorage.getItem(ID);
 		
-		console.log(ID);
-		console.log(Value);
-		
 		//If no ABC, load default example instead
 		if (Value !== null) {
 			//Set value in the control
@@ -353,7 +350,6 @@ function Store() {
 	if (!StoreAllowed)
 		return;
 	
-	console.log("Store");
 	//For all controls to store
 	for (let i = 0; i < aStoreElements.length; ++i) {
 		let ID = aStoreElements[i];
@@ -370,31 +366,7 @@ function Store() {
 		
 		//Store on client
 		localStorage.setItem(ID, Value);
-		console.log(ID);
-		console.log(Value);
 	}
-}
-
-function CreatePrint() {
-	//Get configuration and ABC from URL
-	let UrlParams   = new URL(document.location).searchParams;
-	let abcjsParams = JSON.parse(decodeURI(UrlParams.get("params")));
-	let Abc         = decodeURI(UrlParams.get("abc"));
-	
-	//Render the print
-	ABCJS.renderAbc("paper", Abc, abcjsParams);
-	
-	//Update document title
-	document.title = document.title.replace("Sheet Music for \"", "Diatotab ");
-	if (document.title[document.title.length - 1] == "\"")
-		document.title = document.title.substring(0, document.title.length - 1);
-	
-	//Change style so page breaks are in between the bars
-	let RenderDiv = document.getElementById("paper");
-	RenderDiv.style = "display: block";
-	
-	//Show print preview dialog
-	window.print();
 }
 
 var LinkOk = false;
@@ -419,7 +391,11 @@ function clearLink() {
 	Link.href = "#";
 }
 
-function setPrintLink() {
+function Print() {
+	window.print();
+}
+
+window.addEventListener("beforeprint", (event) => {
 	//Get instrument parameters and the ABC input
 	let abcjsParams = GetAbcjsParamsFromControls();
 	let Abc         = document.getElementById("abc").value;
@@ -428,10 +404,23 @@ function setPrintLink() {
 	abcjsParams.selectionColor = "#000000";
 	abcjsParams.oneSvgPerLine = true;
 	
-	//Encode in print link
-	let Print = document.getElementById("print");
-	Print.href = "print.html?params=" + encodeURIComponent(JSON.stringify(abcjsParams)) + "&abc=" + encodeURIComponent(Abc);
-}
+	//Render the print on screen
+	let ScrollX = window.pageXOffset;
+	let ScrollY = window.pageYOffset;
+	ABCJS.renderAbc("paper", Abc, abcjsParams);
+	let RenderDiv = document.getElementById("paper");
+	
+	console.log(RenderDiv);
+	
+	
+	//Copy in to the print div
+	let PrintDiv = document.getElementById("print_paper");
+	PrintDiv.innerHTML = RenderDiv.innerHTML;
+	
+	//Restore normal rendering
+	CreateEditor(true);
+	window.scrollTo(ScrollX, ScrollY);
+});
 
 let aAbcUndo = new Array();
 
@@ -891,6 +880,19 @@ function AbcInput() {
 	ABC = ABC.replace("\xa0", " ");
 	Output.value = ABC;
 	CreateEditor(true);
+	
+	//Update page title
+	let RenderDiv = document.getElementById("paper");
+	if (RenderDiv.children.length) {
+		let Title = RenderDiv.children[0].ariaLabel;
+		let Expected = "Sheet Music for \"";
+		if (Title.search(Expected) >= 0) {
+			Title = Title.replace(Expected, "Diatotab ");
+			if (Title[Title.length - 1] == "\"")
+				Title = Title.substring(0, Title.length - 1);
+			document.title = Title;
+		}
+	}
 }
 
 function AbcSelect() {
