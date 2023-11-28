@@ -38,13 +38,13 @@
 		<b>.</b> means row 1 or outer row, write <b>"F."a</b> to play it with 11 in pull.<br>
 		<b>:</b> means row 2 or inner row, write <b>"F:"a</b> to play it with 9' in pull.<br>
 		
-		<h2>Instrument / Tuning</h2>
+		<h2>Instrument / Tuning / Options</h2>
 		<div class="borderblock">
-			<select id="instrument" size="5" onchange="AddTunings()">
+			<select class="list" id="instrument" size="5" onchange="AddTunings()">
 			</select>
 		</div>
 		<div id="tuningdiv" class="borderblock">
-			<select id="tuning" size="5" onchange="CreateEditor()">
+			<select class="list" id="tuning" size="5" onchange="CreateEditor()">
 			</select>
 		</div>
 		<div class="block">
@@ -56,6 +56,12 @@
 			<label for="inv1a" id="inv1a_lab"> Button 1' push/pull reverse</label><br>
 			<input type="checkbox" id="inv5a" onchange="CreateEditor()" checked>
 			<label for="inv5a" id="inv5a_lab"> Button 5' push/pull reverse</label><br>
+			<label for="tabmode" id="tabmode_lab">Tablature mode:</label>
+			<select name="tabmode" id="tabmode" onchange="CreateEditor()">
+				<option value="0">Normal</option>
+				<option value="1">Show all remaining possibilities</option>
+				<option value="2">Show all possibilities</option>
+			</select>
 		</div>
 		<div class="blockend"></div>
 	</div>
@@ -95,7 +101,7 @@ K: C<br>
 			<div id="audio"></div>
 		</div>
 		<div class="float-child-tab">
-			<h2>Tablature Output</h2>
+			<h2>Tablature</h2>
 			<div id="paper" class="paper"></div>
 		</div>
 		<div class="blockend"></div>

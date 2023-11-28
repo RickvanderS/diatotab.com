@@ -127,15 +127,17 @@ function AddTunings() {
 			break;
 	}
 	
-	showElement("tuningdiv", show_tuning);
-	showElement("chin"     , show_options);
-	showElement("chin_lab" , show_options);
-	showElement("inv1"     , show_options);
-	showElement("inv1_lab" , show_options);
-	showElement("inv1a"    , show_options);
-	showElement("inv1a_lab", show_options);
-	showElement("inv5a"    , show_options);
-	showElement("inv5a_lab", show_options);
+	showElement("tuningdiv"  , show_tuning);
+	showElement("chin"       , show_options);
+	showElement("chin_lab"   , show_options);
+	showElement("inv1"       , show_options);
+	showElement("inv1_lab"   , show_options);
+	showElement("inv1a"      , show_options);
+	showElement("inv1a_lab"  , show_options);
+	showElement("inv5a"      , show_options);
+	showElement("inv5a_lab"  , show_options);
+	showElement("tabmode"    , show_options);
+	showElement("tabmode_lab", show_options);
 	
 	CreateEditor();
 }
@@ -247,11 +249,24 @@ function GetAbcjsParamsFromControls() {
 			else if (Instrument == "M_2_21+5c")
 				TuningArray[2] = "castagnari";
 			
+			//Tablature options
+			let showall              = false;
+			let showall_ignorechords = false;
+			if (document.getElementById("tabmode").value == "1") {
+				showall = true;
+			}
+			else if (document.getElementById("tabmode").value == "2") {
+				showall              = true;
+				showall_ignorechords = true;
+			}
+			
 			abcjsParams.tablature = [{
 				instrument: 'melodeon',
 				label: '',
 				tuning: TuningArray,
 				chinacc: chinacc,
+				showall: showall,
+				showall_ignorechords: showall_ignorechords,
 			}];
 			break;
 		case "H_10":
@@ -312,12 +327,14 @@ function CreateEditor(NoUpdate) {
 	Editor = new ABCJS.Editor("abc", Params);
 }
 
+let OriginalTitle = "";
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a");
+let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode");
 
 function InitPage() {
 	//localStorage.clear();
 	
+	OriginalTitle = document.title;
 	AddInstruments();
 	ExampleLoad(1);
 	Load();
@@ -900,6 +917,9 @@ function AbcInput() {
 			if (Title[Title.length - 1] == "\"")
 				Title = Title.substring(0, Title.length - 1);
 			document.title = Title;
+		}
+		else {
+			document.title = OriginalTitle;
 		}
 	}
 }
