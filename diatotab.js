@@ -15,38 +15,44 @@ function showElement(id, show) {
 function AddInstruments() {
 	let Instruments = document.getElementById("instrument");
 	removeOptions(Instruments);
+	let Instrument;
 	
-	var Instrument = document.createElement("option");
+	Instrument = document.createElement("option");
 	Instrument.text  = "1 row, 10 button, Diatonic Accordion / Melodeon";
 	Instrument.value = "M_1_10";
 	Instruments.add(Instrument);
 	
-	var Instrument = document.createElement("option");
+	Instrument = document.createElement("option");
 	Instrument.text     = "2 row, 21 button, Diatonic Accordion / Melodeon";
 	Instrument.value    = "M_2_21";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
 	
-/*	var Instrument = document.createElement("option");
+/*	Instrument = document.createElement("option");
 	Instrument.text  = "2.5 row, 21+5 button Saltarelle, Diatonic Accordion / Melodeon";
 	Instrument.value = "M_2_21+5s";
 	Instruments.add(Instrument);
 	
-	var Instrument = document.createElement("option");
+	Instrument = document.createElement("option");
 	Instrument.text  = "2.5 row, 21+5 button Castagnari, Diatonic Accordion / Melodeon";
 	Instrument.value = "M_2_21+5c";
 	Instruments.add(Instrument);*/
 	
-	var Instrument = document.createElement("option");
+	Instrument = document.createElement("option");
 	Instrument.text  = "10 hole, Diatonic Harmonica / French Harp";
 	Instrument.value = "H_10";
 	Instruments.add(Instrument);
 	
-/*	var Instrument = document.createElement("option");
+/*	Instrument = document.createElement("option");
 	Instrument.text  = "TEST Guitar";
 	Instrument.value = "G_TEST";
 	Instruments.add(Instrument);
 */
+
+	Instrument = document.createElement("option");
+	Instrument.text  = "No tablature, notes only";
+	Instrument.value = "NONE";
+	Instruments.add(Instrument);
 	
 	AddTunings();
 }
@@ -55,6 +61,7 @@ function AddTunings() {
 	let Tunings = document.getElementById("tuning");
 	removeOptions(Tunings);
 	
+	let show_tuning  = true;
 	let show_options = false;
 	let Instrument = document.getElementById("instrument").value;
 	switch (Instrument) {
@@ -112,13 +119,15 @@ function AddTunings() {
 			Tunings.add(Tuning);
 			break;
 		default:
+			show_tuning = false;
 			var Tuning = document.createElement("option");
-			Tuning.text     = "TEST";
+			Tuning.text     = "\xa0";
 			Tuning.selected = 'selected';
 			Tunings.add(Tuning);
 			break;
 	}
 	
+	showElement("tuningdiv", show_tuning);
 	showElement("chin"     , show_options);
 	showElement("chin_lab" , show_options);
 	showElement("inv1"     , show_options);

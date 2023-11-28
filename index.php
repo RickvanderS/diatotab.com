@@ -43,7 +43,7 @@
 			<select id="instrument" size="5" onchange="AddTunings()">
 			</select>
 		</div>
-		<div class="borderblock">
+		<div id="tuningdiv" class="borderblock">
 			<select id="tuning" size="5" onchange="CreateEditor()">
 			</select>
 		</div>
