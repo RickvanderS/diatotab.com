@@ -127,17 +127,19 @@ function AddTunings() {
 			break;
 	}
 	
-	showElement("tuningdiv"  , show_tuning);
-	showElement("chin"       , show_options);
-	showElement("chin_lab"   , show_options);
-	showElement("inv1"       , show_options);
-	showElement("inv1_lab"   , show_options);
-	showElement("inv1a"      , show_options);
-	showElement("inv1a_lab"  , show_options);
-	showElement("inv5a"      , show_options);
-	showElement("inv5a_lab"  , show_options);
-	showElement("tabmode"    , show_options);
-	showElement("tabmode_lab", show_options);
+	showElement("tuningdiv"     , show_tuning);
+	showElement("chin"          , show_options);
+	showElement("chin_lab"      , show_options);
+	showElement("inv1"          , show_options);
+	showElement("inv1_lab"      , show_options);
+	showElement("inv1a"         , show_options);
+	showElement("inv1a_lab"     , show_options);
+	showElement("inv5a"         , show_options);
+	showElement("inv5a_lab"     , show_options);
+	showElement("tabmode"       , show_options);
+	showElement("tabmode_lab"   , show_options);
+	showElement("innerstyle"    , show_options);
+	showElement("innerstyle_lab", show_options);
 	
 	CreateEditor();
 }
@@ -259,6 +261,9 @@ function GetAbcjsParamsFromControls() {
 				showall              = true;
 				showall_ignorechords = true;
 			}
+			let Row2Marker = null;
+			if (document.getElementById("innerstyle").checked)
+				Row2Marker = "*";
 			
 			abcjsParams.tablature = [{
 				instrument: 'melodeon',
@@ -267,6 +272,7 @@ function GetAbcjsParamsFromControls() {
 				chinacc: chinacc,
 				showall: showall,
 				showall_ignorechords: showall_ignorechords,
+				Row2Marker: Row2Marker,
 			}];
 			break;
 		case "H_10":
@@ -329,7 +335,7 @@ function CreateEditor(NoUpdate) {
 
 let OriginalTitle = "";
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode");
+let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle");
 
 function InitPage() {
 	//localStorage.clear();
@@ -435,9 +441,6 @@ window.addEventListener("beforeprint", (event) => {
 	let ScrollY = window.pageYOffset;
 	ABCJS.renderAbc("paper", Abc, abcjsParams);
 	let RenderDiv = document.getElementById("paper");
-	
-	console.log(RenderDiv);
-	
 	
 	//Copy in to the print div
 	let PrintDiv = document.getElementById("print_paper");

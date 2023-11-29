@@ -49,19 +49,24 @@
 		</div>
 		<div class="block">
 			<input type="checkbox" id="chin"  onchange="CreateEditor()" checked>
-			<label for="chin" id="chin_lab"> Top accidentals (1/1')</label><br>
+			<label for="chin" id="chin_lab">Top accidentals (1/1')</label><br>
 			<input type="checkbox" id="inv1"  onchange="CreateEditor()">
-			<label for="inv1" id="inv1_lab"> Button 1 push/pull reverse</label><br>
-			<input type="checkbox" id="inv1a" onchange="CreateEditor()" checked>
-			<label for="inv1a" id="inv1a_lab"> Button 1' push/pull reverse</label><br>
-			<input type="checkbox" id="inv5a" onchange="CreateEditor()" checked>
-			<label for="inv5a" id="inv5a_lab"> Button 5' push/pull reverse</label><br>
-			<label for="tabmode" id="tabmode_lab">Tablature mode:</label>
+			<label for="inv1" id="inv1_lab">Button 1 push/pull reverse</label><br>
+			<input type="checkbox" id="inv1a" onchange="CreateEditor()">
+			<label for="inv1a" id="inv1a_lab">Button 1' push/pull reverse</label><br>
+			<input type="checkbox" id="inv5a" onchange="CreateEditor()">
+			<label for="inv5a" id="inv5a_lab">Button 5' push/pull reverse</label><br>
+			
+		</div>
+		<div class="block">
+			<label for="tabmode" id="tabmode_lab">Tablature algorithm</label>
 			<select name="tabmode" id="tabmode" onchange="CreateEditor()">
 				<option value="0">Normal</option>
 				<option value="1">Show all remaining possibilities</option>
 				<option value="2">Show all possibilities</option>
-			</select>
+			</select><br>
+			<input type="checkbox" id="innerstyle"  onchange="CreateEditor()">
+			<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for inner row</label>
 		</div>
 		<div class="blockend"></div>
 	</div>
