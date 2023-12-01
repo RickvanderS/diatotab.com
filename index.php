@@ -21,7 +21,7 @@
 				<br><br>
 				Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>. You can choose the required instrument and tuning, one and two row melodeons with 3th button starts and harmonicas are supported. If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
 			</div>
-			<img style="margin-left:25px; width:300px; height:121px;" src="logo.png">
+			<img style="margin-left:25px; width:300px; height:127px;" src="logo.png">
 		</div>
 		<h2> Two row melodeons </h2>
 		There are some special layout options for two row melodeons. Buttons 1 and 1' can either be used for low notes or for accidentals. The push and pull notes of these buttons can be flipped. Same holds for 5', to configure the layout to use 'Dutch reversal'.
