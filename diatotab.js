@@ -1079,32 +1079,48 @@ function ExampleLoad(Index) {
 			if (Instruments.value.substr(0, 3) == "M_1") {
 				//Add G row
 				aLines.push('K: G');
+				aLines.push('P: Treble');
 				aLines.push('"B>"B,,|"D<"D,| "D>"D,|"F#<"F,| "G>"G,|"A<"A,| "B>"B,|"C<"C| "D>"D|"E<"E| "F#<"F|"G>"G| "A<"A|"B>"B| "C<"c|"D>"d| "E<"e|"F#<"f| "G>"g|"B>"b|');
+				
+				aLines.push('K: style=x');
+				aLines.push('P:Bass');
+				aLines.push('|"G>."G"G>."G|"D."F"D."F|"C>:"G"C>:"G|"C<:"F"C<:"F|');
+				aLines.push('%%stretchlast');
+				aLines.push('%%staffsep 80');
 			}
 			else if (Instruments.value.substr(0, 3) == "M_2") {
 				//Add C row
 				aLines.push('K: C');
-				aLines.push('|');
+				aLines.push('P: Treble Inner Row');
+				aLines.push('|'); //4
 				
 				//Add G row
 				aLines.push('K: G');
-				aLines.push('|');
+				aLines.push('P: Treble Outer Row');
+				aLines.push('|'); //7
 				
 				//Set button 1 and 1'
 				if (document.getElementById("chin").checked) {
-					aLines[3] += '"G#:"^G|"Bb:"_B|';  //C row button 1
-					aLines[5] += '"C#."^C|"Eb."_E|'; //G row button 1
+					aLines[4] += '"G#:"^G|"Bb:"_B|';  //C row button 1
+					aLines[7] += '"C#."^C|"Eb."_E|'; //G row button 1
 				}
 				else {
-					aLines[3] += '"E:"E,|"G:"G,|';  //C row button 1
-					aLines[5] += '"B."B,,|"D."D,|'; //G row button 1
+					aLines[4] += '"E:"E,|"G:"G,|';  //C row button 1
+					aLines[7] += '"B."B,,|"D."D,|'; //G row button 1
 				}
 				
 				//C row        2'               3'             4'             5'            6'            7'             8'
-				aLines[3] += ' "G>:"G,|"B<:"B,| "C>:"C|"D<:"D| "E>:"E|"F<:"F| "G:"G|"A>:"A| "B:"B|"C>:"c| "D<:"d|"E>:"e| "F<:"f|"G>:"g| "A<:"a|"B<:"b| "C>:"c\'|"E>:"e\'|';
+				aLines[4] += ' "G>:"G,|"B<:"B,| "C>:"C|"D<:"D| "E>:"E|"F<:"F| "G:"G|"A>:"A| "B:"B|"C>:"c| "D<:"d|"E>:"e| "F<:"f|"G>:"g| "A<:"a|"B<:"b| "C>:"c\'|"E>:"e\'|';
 				
 				//G row        2                 3                4               5               6               7              8
-				aLines[5] += ' "D>."D,|"F#<."F,| "G>."G,|"A<."A,| "B>."B,|"C<."C| "D>." D|"E<."E| "F#>."F|"G>."G| "A<."A|"B>."B| "C<."c|"D>."d| "E<."e|"F#<."f| "G>."g|"A<."a| "B>."b|"D>."d\'|';
+				aLines[7] += ' "D>."D,|"F#<."F,| "G>."G,|"A<."A,| "B>."B,|"C<."C| "D>." D|"E<."E| "F#>."F|"G>."G| "A<."A|"B>."B| "C<."c|"D>."d| "E<."e|"F#<."f| "G>."g|"A<."a| "B>."b|"D>."d\'|';
+				
+				aLines.push('K: style=x');
+				aLines.push('P:Bass Outer Row');
+				aLines.push('|"G>."G"G>."G|"D."F"D."F|"C:"c"C:"c|"G<:"B"G<:"B|');
+				aLines.push('P:Bass Inner Row');
+				aLines.push('|"E."G"E."G|"A."F"Am."F|"F>:"c"F>:"c|"F<:"B"F<:"B|');
+				aLines.push('%%stretchlast');
 			}
 			else if (Instruments.value.substr(0, 1) == "H") {
 				//Add C row
@@ -1235,9 +1251,47 @@ function ExampleLoad(Index) {
 	
 	//Transpose the ABC text
 	if (TransposeSteps != 0) {
-		var renderObj = ABCJS.renderAbc("*", ABC.innerText);
-		var newAbc = ABCJS.strTranspose(ABC.innerText, renderObj, TransposeSteps);
+		let renderObj = ABCJS.renderAbc("*", ABC.innerText);
+		let newAbc = ABCJS.strTranspose(ABC.innerText, renderObj, TransposeSteps);
 		ABC.innerText = newAbc;
+	}
+	
+	//Do special conversions for instrument layout
+	if (Index == 0) {
+		//Find the beginning of the base bars
+		let Pos = ABC.innerText.search(' style=x');
+		
+		//Detect chords by searching for "
+		//Keep ground bass caps and convert chords to lower case
+		let Count = 0;
+		let PrevPos = -1;
+		for (; Pos < ABC.innerText.length; ++Pos) {
+			if (ABC.innerText[Pos] == '"') {
+				Count++;
+				if (Count % 2 == 0) {
+					//Get the chord
+					let Chord = ABC.innerText.substr(PrevPos+1, Pos-PrevPos-1);
+					
+					//Replace A# by Bb (special hack for C/F)
+					if (Chord.substr(0, 2) == "A#")
+						Chord = "Bb" + Chord.substr(2);
+					
+					//For chords only (not ground basses)
+					if (Count % 4 == 0) {
+						//Make lower case to indicate chord, not ground bass
+						Chord = Chord.toLowerCase();
+					
+						//Set character for flats and sharps (not automatically done by ABCjs for lower case)
+						if (Chord.length > 1)
+							Chord = Chord[0] + Chord.substr(1).replace("b", "♭").replace("#", "♯");
+					}
+					
+					//Set updated chord
+					ABC.innerText = ABC.innerText.substr(0, PrevPos+1) + Chord + ABC.innerText.substr(Pos);
+				}
+				PrevPos = Pos;
+			}
+		}
 	}
 	
 	//Refresh and close overlay

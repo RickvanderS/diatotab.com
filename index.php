@@ -74,7 +74,8 @@
 	<div class="float-container">
 		<div class="float-child-abc">
 			<h2>ABC Editor</h2>
-			<button onclick="ExampleShow()">Load ABC example</button><br>
+			<button onclick="ExampleLoad(0)">Load ABC Instrument Layout</button>
+			<button onclick="ExampleShow()">Load ABC Tune Example</button><br>
 			<div class="highLite">
 				<div class="highLite_colors"   id="abc_colors"></div>
 				<div class="highLite_editable" id="abc_editable" contenteditable="true" spellcheck="false" onkeydown="AbcKeyDown()" onpaste="AbcPaste(event)" oninput="AbcInput()" onmousemove="AbcSelect()">
@@ -117,8 +118,6 @@ K: C<br>
 	
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
 		<div class="overlay" onclick="event.stopPropagation()">
-			<br>
-			<a href="" onclick="return ExampleLoad(0)">Instrument Layout</a><br>
 			<br>
 			<a href="" onclick="return ExampleLoad(1)">Andro (trad. Bretange)</a><br>
 			<a href="" onclick="return ExampleLoad(2)">Kerfank 1870/Den Andro</a><br>
