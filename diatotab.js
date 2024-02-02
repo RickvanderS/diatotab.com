@@ -18,6 +18,11 @@ function AddInstruments() {
 	let Instrument;
 	
 	Instrument = document.createElement("option");
+	Instrument.text  = "1 row, 7 button, Diatonic Accordion / Melodeon";
+	Instrument.value = "M_1_7";
+	Instruments.add(Instrument);
+	
+	Instrument = document.createElement("option");
 	Instrument.text  = "1 row, 10 button, Diatonic Accordion / Melodeon";
 	Instrument.value = "M_1_10";
 	Instruments.add(Instrument);
@@ -65,6 +70,7 @@ function AddTunings() {
 	let show_options = false;
 	let Instrument = document.getElementById("instrument").value;
 	switch (Instrument) {
+		case "M_1_7":
 		case "M_1_10":
 			var Tuning = document.createElement("option");
 			Tuning.text = "Bb";
@@ -213,6 +219,13 @@ function GetAbcjsParamsFromControls() {
 	let Instrument = document.getElementById("instrument").value;
 	let Tuning     = document.getElementById("tuning").value;
 	switch (Instrument) {
+		case "M_1_7":
+			abcjsParams.tablature = [{
+				instrument: 'melodeon',
+				label: '',
+				tuning: [Tuning + "7"],
+			}];
+			break;
 		case "M_1_10":
 			abcjsParams.tablature = [{
 				instrument: 'melodeon',
@@ -1075,14 +1088,27 @@ function ExampleLoad(Index) {
 			
 			//Instrument specific ABC
 			if (Instruments.value.substr(0, 3) == "M_1") {
+				let Mini = false;
+				if (Instruments.value == "M_1_7")
+					Mini = true;
+				
 				//Add G row
 				aLines.push('K: G');
 				aLines.push('P: Treble');
-				aLines.push('"B>"B,,|"D<"D,| "D>"D,|"F#<"F,| "G>"G,|"A<"A,| "B>"B,|"C<"C| "D>"D|"E<"E| "F#<"F|"G>"G| "A<"A|"B>"B| "C<"c|"D>"d| "E<"e|"F#<"f| "G>"g|"B>"b|');
+				let Line = '';
+				if (!Mini)
+					Line += '"B>"B,,|"D<"D,| "D>"D,|"F#<"F,| ';
+				Line += ' "G>"G,|"A<"A,| "B>"B,|"C<"C| "D>"D|"E<"E| "F#<"F|"G>"G| "A<"A|"B>"B| "C<"c|"D>"d| "E<"e|"F#<"f| ';
+				if (!Mini)
+					Line += '"G>"g|"B>"b|';
+				aLines.push(Line);
 				
 				aLines.push('K: style=x');
 				aLines.push('P:Bass');
-				aLines.push('|"G>."G"G>."G|"D."F"D."F|"C>:"G"C>:"G|"C<:"F"C<:"F|');
+				Line = '|"G>."G"G>."G|"D."F"D."F|';
+				if (!Mini)
+					Line += ' "C>:"G"C>:"G|"C<:"F"C<:"F|';
+				aLines.push(Line);
 				aLines.push('%%stretchlast');
 				aLines.push('%%staffsep 80');
 			}
