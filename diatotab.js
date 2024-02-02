@@ -916,9 +916,7 @@ function AbcInput() {
 		let Title = RenderDiv.children[0].ariaLabel;
 		let Expected = "Sheet Music for \"";
 		if (Title.search(Expected) >= 0) {
-			Title = Title.replace(Expected, "Diatotab ");
-			if (Title[Title.length - 1] == "\"")
-				Title = Title.substring(0, Title.length - 1);
+			Title = Title.substring(Expected.length, Title.length-1) + " - Diatotab";
 			document.title = Title;
 		}
 		else {
