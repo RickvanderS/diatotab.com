@@ -344,6 +344,7 @@ function CreateEditor(NoUpdate) {
 	
 	//Create the editor
 	Editor = new ABCJS.Editor("abc", Params);
+	CalcAbcScroll();
 }
 
 let OriginalTitle = "";
@@ -361,6 +362,51 @@ function InitPage() {
 	StoreAllowed = true;
 	Store();
 	setTimeout(clearLink, 500);
+	
+	window.addEventListener("scroll", CalcAbcScroll);
+	window.addEventListener("resize", CalcAbcScroll);
+}
+
+function CalcAbcScroll() {
+	let AbcTopDiv    = document.getElementById("abctop");
+	let AbcHeaderDiv = document.getElementById("abcheader");
+	let AbcScrollDiv = document.getElementById("abcscroll");
+	let AbcFooterDiv = document.getElementById("abcfooter");
+	let TabTopDiv    = document.getElementById("tabtop");
+	let TabHeader    = document.getElementById("tabheader");
+	let PageFooter   = document.getElementById("footer");
+	
+	//Use normal page rendering when abc/tab are not side by side
+	if (AbcTopDiv.offsetLeft >= TabTopDiv.offsetLeft) {
+		AbcTopDiv.style.paddingTop = "";
+		AbcScrollDiv.style.height  = "";
+		return;
+	}
+	
+	//No padding if scroll position is above the abc/tab view
+	if (AbcTopDiv.offsetTop > window.scrollY)
+		AbcTopDiv.style.paddingTop = "";
+	else
+		AbcTopDiv.style.paddingTop = window.scrollY - AbcTopDiv.offsetTop + "px";
+
+	//Size height to size of tab or size of view port whichever is smaller
+	let HeaderMarginTop = TabHeader.offsetTop - TabTopDiv.offsetTop;
+	let RequiredHeight = 0;
+	if (HeaderMarginTop + TabTopDiv.scrollHeight < window.innerHeight)
+		RequiredHeight = TabTopDiv.scrollHeight;
+	else
+		RequiredHeight = window.innerHeight;
+	
+	//Calculate and set the size off the scrollable div
+	let ScrollHeight = RequiredHeight - AbcHeaderDiv.scrollHeight - AbcFooterDiv.scrollHeight - HeaderMarginTop - PageFooter.scrollHeight;
+	if (ScrollHeight >= 300) {
+		AbcScrollDiv.style.height = ScrollHeight + "px";
+	}
+	else {
+		//Use normal page rendering if editor would become to small (many warnings in ABC)
+		AbcTopDiv.style.paddingTop = "";
+		AbcScrollDiv.style.height  = "";
+	}
 }
 
 function Load() {
@@ -1342,3 +1388,4 @@ function TransposeAbc() {
 	//Refresh
 	CreateEditor();
 }
+

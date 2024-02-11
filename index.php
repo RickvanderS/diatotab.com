@@ -72,13 +72,16 @@
 	</div>
 		
 	<div class="float-container">
-		<div class="float-child-abc">
-			<h2>ABC Editor</h2>
-			<button onclick="ExampleLoad(0)">Load ABC Instrument Layout</button>
-			<button onclick="ExampleShow()">Load ABC Tune Example</button><br>
-			<div class="highLite">
-				<div class="highLite_colors"   id="abc_colors"></div>
-				<div class="highLite_editable" id="abc_editable" contenteditable="true" spellcheck="false" onkeydown="AbcKeyDown()" onpaste="AbcPaste(event)" oninput="AbcInput()" onmousemove="AbcSelect()">
+		<div id="abctop" class="float-child-abc">
+			<div id="abcheader" style="box-sizing:border-box;">
+				<h2>ABC Editor</h2>
+				<button onclick="ExampleLoad(0)">Load ABC Instrument Layout</button>
+				<button onclick="ExampleShow()">Load ABC Tune Example</button><br>
+			</div>
+			<div id="abcscroll" class="abcscroll">
+				<div class="highLite">
+					<div class="highLite_colors"   id="abc_colors"></div>
+					<div class="highLite_editable" id="abc_editable" contenteditable="true" spellcheck="false" onkeydown="AbcKeyDown()" onpaste="AbcPaste(event)" oninput="AbcInput()" onmousemove="AbcSelect()">
 T: Andro<br>
 C: Trad. (Bretagne)<br>
 R: Andro<br>
@@ -90,29 +93,32 @@ K: C<br>
 "Am"e e/2f/2 e3/2 d/2  |cB AA |"G>"ddBG |"F&lt;"A/2B/2 c/2B/2 "Am"A2:|<br>
 |:"C"eg"Am"A2|"C"eg"G>"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2d/2 "Em>"e2|<br>
 "C"eg"Am"A2|"C"eg"G>"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2B/2 "Am"A2:|<br>
+					</div>
 				</div>
+				<textarea id="abc" style="display:none;height:100%" spellcheck="false">
+				</textarea>
 			</div>
-			<textarea id="abc" style="display:none;" spellcheck="false">
-			</textarea>
-			<div id="warnings"></div>
-			<div style="float:left;padding-bottom:10px;">
-				<label for="transpose">Transpose</label>
-				<input type="number" id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
-				<button  onclick="TransposeAbc()">Transpose ABC</button>
+			<div id="abcfooter" style="box-sizing:border-box;">
+				<div id="warnings"></div>
+				<div style="float:left;padding-bottom:10px;">
+					<label for="transpose">Transpose</label>
+					<input type="number" id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
+					<button  onclick="TransposeAbc()">Transpose ABC</button>
+				</div>
+				<div style="float:right;">
+					<button onclick="Print()">Print</button>
+				</div>
+				<div class="blockend"></div>
+				<div id="audio"></div>
 			</div>
-			<div style="float:right;">
-				<button onclick="Print()">Print</button>
-			</div>
-			<div class="blockend"></div>
-			<div id="audio"></div>
 		</div>
-		<div class="float-child-tab">
-			<h2>Tablature</h2>
+		<div id="tabtop" class="float-child-tab">
+			<h2  id="tabheader">Tablature</h2>
 			<div id="paper" class="paper"></div>
 		</div>
 		<div class="blockend"></div>
 	</div>
-	<div class="footer">
+	<div id="footer" class="footer">
 		The application runs client side using a fork of <a target="_blank" href='https://www.abcjs.net'>abcjs</a> (<a target="_blank" href='https://github.com/RickvanderS/abcjs-melodeon-tab'>Github repository</a>), no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports.
 	</div>
 	

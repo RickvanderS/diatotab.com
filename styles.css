@@ -145,19 +145,27 @@ textarea {
   }
 }
 
+div.abcscroll {
+  border: 1px solid #888;
+  overflow-y: auto;
+}
+
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+
 .highLite {
+  height:100%;
   min-height:300px;
   font-family: monospace;
   font-size: 12px;
   line-height: 1.2;
-  
-  border: 1px solid #888;
   position: relative;
 }
 
 .highLite_colors,
 .highLite_editable {
-  min-height:300px;
+  height:100%;
   padding: 16px;
 }
 
