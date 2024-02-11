@@ -1,0 +1,5 @@
+- Open/save ABC button
+- Paste problems, desync between syntax and editor
+- Better syntax highlighting around |[
+- Better syntax highlighting for %% meta comment
+- PDF filename in firefox when using print button
