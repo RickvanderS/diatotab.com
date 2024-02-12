@@ -66,7 +66,9 @@
 				<option value="2">Show all possibilities</option>
 			</select><br>
 			<input type="checkbox" id="innerstyle"  onchange="CreateEditor()">
-			<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for inner row</label>
+			<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for inner row</label><br>
+			<input type="checkbox" id="changenotehead"  onchange="CreateEditor()" checked>
+			<label for="changenotehead" id="changenotehead_lab">Use diamand note heads for inner row notes</label>
 		</div>
 		<div class="blockend"></div>
 	</div>

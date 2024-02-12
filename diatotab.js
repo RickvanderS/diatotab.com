@@ -133,19 +133,21 @@ function AddTunings() {
 			break;
 	}
 	
-	showElement("tuningdiv"     , show_tuning);
-	showElement("chin"          , show_options);
-	showElement("chin_lab"      , show_options);
-	showElement("inv1"          , show_options);
-	showElement("inv1_lab"      , show_options);
-	showElement("inv1a"         , show_options);
-	showElement("inv1a_lab"     , show_options);
-	showElement("inv5a"         , show_options);
-	showElement("inv5a_lab"     , show_options);
-	showElement("tabmode"       , show_options);
-	showElement("tabmode_lab"   , show_options);
-	showElement("innerstyle"    , show_options);
-	showElement("innerstyle_lab", show_options);
+	showElement("tuningdiv"         , show_tuning);
+	showElement("chin"              , show_options);
+	showElement("chin_lab"          , show_options);
+	showElement("inv1"              , show_options);
+	showElement("inv1_lab"          , show_options);
+	showElement("inv1a"             , show_options);
+	showElement("inv1a_lab"         , show_options);
+	showElement("inv5a"             , show_options);
+	showElement("inv5a_lab"         , show_options);
+	showElement("tabmode"           , show_options);
+	showElement("tabmode_lab"       , show_options);
+	showElement("innerstyle"        , show_options);
+	showElement("innerstyle_lab"    , show_options);
+	showElement("changenotehead"    , show_options);
+	showElement("changenotehead_lab", show_options);
 	
 	CreateEditor();
 }
@@ -277,6 +279,7 @@ function GetAbcjsParamsFromControls() {
 			let Row2Marker = null;
 			if (document.getElementById("innerstyle").checked)
 				Row2Marker = "*";
+			let changenoteheads = document.getElementById("changenotehead").checked;
 			
 			abcjsParams.tablature = [{
 				instrument: 'melodeon',
@@ -286,6 +289,7 @@ function GetAbcjsParamsFromControls() {
 				showall: showall,
 				showall_ignorechords: showall_ignorechords,
 				Row2Marker: Row2Marker,
+				changenoteheads: changenoteheads,
 			}];
 			break;
 		case "H_10":
@@ -349,7 +353,7 @@ function CreateEditor(NoUpdate) {
 
 let OriginalTitle = "";
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle");
+let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead");
 
 function InitPage() {
 	//localStorage.clear();
