@@ -1175,12 +1175,12 @@ function ExampleLoad(Index) {
 				
 				//Set button 1 and 1'
 				if (document.getElementById("chin").checked) {
-					aLines[4] += '"G#:"^G|"Bb:"_B|';  //C row button 1
+					aLines[4] += '"Bb:"_B|"G#:"^G|'; //C row button 1
 					aLines[7] += '"C#."^C|"Eb."_E|'; //G row button 1
 				}
 				else {
-					aLines[4] += '"E:"E,|"G:"G,|';  //C row button 1
-					aLines[7] += '"B."B,,|"D."D,|'; //G row button 1
+					aLines[4] += '"E:"E,|"G<:"G,|';  //C row button 1
+					aLines[7] += '"B."B,,|"D<."D,|'; //G row button 1
 				}
 				
 				//C row        2'               3'             4'             5'            6'            7'             8'
@@ -1332,19 +1332,40 @@ function ExampleLoad(Index) {
 	
 	//Do special conversions for instrument layout
 	if (Index == 0) {
-		//Find the beginning of the base bars
-		let Pos = ABC.innerText.search(' style=x');
+		//Split into treble and bass string
+		let SplitPos = ABC.innerText.search(' style=x');
+		let Treble   = ABC.innerText.substr(0, SplitPos);
+		let Bass     = ABC.innerText.substr(SplitPos);
+		
+		//Treble note preferences, want Bes and Es, all others -is
+		Treble = Treble.replaceAll('"_D', '"^C');
+		Treble = Treble.replaceAll('"^D', '"_E');
+		Treble = Treble.replaceAll('"_G', '"^F');
+		Treble = Treble.replaceAll('"_A', '"^G');
+		Treble = Treble.replaceAll('"^A', '"_B');
+		Treble = Treble.replaceAll('"_d', '"^c');
+		Treble = Treble.replaceAll('"^d', '"_e');
+		Treble = Treble.replaceAll('"_g', '"^f');
+		Treble = Treble.replaceAll('"_a', '"^g');
+		Treble = Treble.replaceAll('"^a', '"_b');
+		
+		//Treble note written in chord preferences, want Bes and Es, all others -is
+		Treble = Treble.replaceAll('"Db', '"C#');
+		Treble = Treble.replaceAll('"D#', '"Eb');
+		Treble = Treble.replaceAll('"Gb', '"F#');
+		Treble = Treble.replaceAll('"Ab', '"G#');
+		Treble = Treble.replaceAll('"A#', '"Bb');
 		
 		//Detect chords by searching for "
 		//Keep ground bass caps and convert chords to lower case
 		let Count = 0;
 		let PrevPos = -1;
-		for (; Pos < ABC.innerText.length; ++Pos) {
-			if (ABC.innerText[Pos] == '"') {
+		for (Pos = 0; Pos < Bass.length; ++Pos) {
+			if (Bass[Pos] == '"') {
 				Count++;
 				if (Count % 2 == 0) {
 					//Get the chord
-					let Chord = ABC.innerText.substr(PrevPos+1, Pos-PrevPos-1);
+					let Chord = Bass.substr(PrevPos+1, Pos-PrevPos-1);
 					
 					//Replace A# by Bb (special hack for C/F)
 					if (Chord.substr(0, 2) == "A#")
@@ -1361,11 +1382,14 @@ function ExampleLoad(Index) {
 					}
 					
 					//Set updated chord
-					ABC.innerText = ABC.innerText.substr(0, PrevPos+1) + Chord + ABC.innerText.substr(Pos);
+					Bass = Bass.substr(0, PrevPos+1) + Chord + Bass.substr(Pos);
 				}
 				PrevPos = Pos;
 			}
 		}
+		
+		//Recombine to one string
+		ABC.innerText = Treble + Bass;
 	}
 	
 	//Refresh and close overlay
