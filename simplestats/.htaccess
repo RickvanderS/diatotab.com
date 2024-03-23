@@ -1,6 +1,0 @@
-AuthGroupFile /dev/null
-AuthType Basic
-AuthUserFile /home/diatotab/domains/diatotab.com/.htpasswd/public_html/simplestats/.htpasswd
-AuthName "Password Required"
-require valid-user
-ErrorDocument 401 "Unauthorized Access"
