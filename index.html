@@ -76,8 +76,7 @@
 		<div id="abctop" class="float-child-abc">
 			<div id="abcheader" style="box-sizing:border-box;">
 				<h2>ABC Editor</h2>
-				<button onclick="ExampleLoad(0)">Load ABC Instrument Layout</button>
-				<button onclick="ExampleShow()">Load ABC Tune Example</button><br>
+				<button onclick="ExampleShow()">Load ABC Example</button><br>
 			</div>
 			<div id="abcscroll" class="abcscroll">
 				<div class="highLite">
@@ -94,6 +93,46 @@ K: C<br>
 "Am"e e/2f/2 e3/2 d/2  |cB AA |"G>"ddBG |"F&lt;"A/2B/2 c/2B/2 "Am"A2:|<br>
 |:"C"eg"Am"A2|"C"eg"G>"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2d/2 "Em>"e2|<br>
 "C"eg"Am"A2|"C"eg"G>"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2B/2 "Am"A2:|<br>
+<br>
+T: Kerfank 1870/Den Andro<br>
+S: Gonnagles Balfolksessieboekje 1<br>
+C: Trad. (Bretagne)<br>
+R: Andro<br>
+Q: 1/4=160<br>
+M: 4/4<br>
+L: 1/4<br>
+K: C<br>
+|:"Am"Aeed/e/|"F<"fed/c/ B/c/|"G>"dB"C"ed/c/|B/c/ A/B/"Em"cB|<br>
+|"Am"Aeed/e/|"F<"fed/c/ B/c/|"G>"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
+|:"Am"AA"G<"Bc/B/|"F<"AA"Em"BB/c/|"G>"dB"C"ed/c/|"F"B/c/ A/B/"Em"cB|<br>
+|"Am"AA"G<"Bc/B/|"F<"AA"Em"BB/c/|"G>"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
+<br>
+T: Mon Père Avait un Gars Lonla<br>
+S: Gonnagles Balfolksessieboekje 1<br>
+C: Trad.<br>
+R: Hanter dro<br>
+Q: 1/4=160<br>
+M: 6/4<br>
+L: 1/4<br>
+K: C<br>
+|:"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/Ad"G"cB|"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/"G"AG"Am"A2:|<br>
+|:"Am"AB/c/dBc/d/e|"G"cB/A/dcB2|"F"AB/c/dBc/d/e|"G"cB/A/"Em"Bc"Am"A2:|<br>
+<br>
+T: What Shall We Do With the Drunken Sailor?<br>
+C: Trad. (England)<br>
+M: 4/4<br>
+L: 1/8<br>
+Q: 1/4=160<br>
+K: C<br>
+"Am"E2EE E2EE|"Am"E2A,2C2E2|"G"D2DD D2DD|"G"D2G,2B,2D2|<br>
+w: What shall we do with the drunk-en sail-or, what shall we do with the drunk-en sail-or<br>
+"Am"E2EE E2EE|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|<br>
+w: What shall we do with the drunk-en sail-or, earl-y in the morn-ing?<br>
+"Am"E4 E3E|"Am"E2A,2C2E2|"G"D4 D3D|"G"D2G,2B,2D2|<br>
+w: Way-hay, and up she ris-es, way-hay, and up she ris-es<br>
+"Am"E4 E3E|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|<br>
+w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
+<br>
 					</div>
 				</div>
 				<textarea id="abc" style="display:none;height:100%" spellcheck="false">
@@ -126,10 +165,13 @@ K: C<br>
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
 		<div class="overlay" onclick="event.stopPropagation()">
 			<br>
-			<a href="" onclick="return ExampleLoad(1)">Andro (trad. Bretange)</a><br>
-			<a href="" onclick="return ExampleLoad(2)">Kerfank 1870/Den Andro</a><br>
-			<a href="" onclick="return ExampleLoad(3)">Mon Père Avait un Gars Lonla</a><br>
-			<a href="" onclick="return ExampleLoad(4)">What Shall We Do With the Drunken Sailor?</a><br>
+			<a href="" onclick="return ExampleLoad(0)">Instrument layout in diatonic scale order</a><br>
+			<a href="" onclick="return ExampleLoad(1)">Instrument layout in button order</a><br>
+			<br>
+			<a href="" onclick="return ExampleLoad(2)">Andro (trad. Bretange)</a><br>
+			<a href="" onclick="return ExampleLoad(3)">Kerfank 1870/Den Andro</a><br>
+			<a href="" onclick="return ExampleLoad(4)">Mon Père Avait un Gars Lonla</a><br>
+			<a href="" onclick="return ExampleLoad(5)">What Shall We Do With the Drunken Sailor?</a><br>
 			<br>
 			<b><a href="" onclick="return ExampleClose()">Close</a></b><br>
 		</div>

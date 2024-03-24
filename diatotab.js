@@ -357,6 +357,7 @@ function CreateEditor(NoUpdate) {
 }
 
 let OriginalTitle = "";
+let aExampleLines = new Array();
 let StoreAllowed = false;
 let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead");
 
@@ -364,6 +365,7 @@ function InitPage() {
 	//localStorage.clear();
 	
 	OriginalTitle = document.title;
+	aExampleLines = document.getElementById("abc_editable").textContent.split("\n");
 	AddInstruments();
 	ExampleLoad(1);
 	Load();
@@ -1136,7 +1138,8 @@ function ExampleLoad(Index) {
 	
 	//Lookup the example
 	switch (Index) {
-		case 0:
+		case 0: //Instrument layout in scale order
+		case 1: //Instrument layout in button order
 			//Set header
 			aLines.push('T: Layout ' + Instruments[Instruments.selectedIndex].text + ' ' + Tunings[Tunings.selectedIndex].text);
 			aLines.push('L: 1/4');
@@ -1147,15 +1150,64 @@ function ExampleLoad(Index) {
 				if (Instruments.value == "M_1_7")
 					Mini = true;
 				
-				//Add G row
+				//Define buttons on row (G)
+				let aRowPush = new Array;
+				let aRowPull = new Array;
+				aRowPush.push(""); //0
+				aRowPull.push("");
+				if (!Mini) {
+					aRowPush.push('"B>"B,,'); //1
+					aRowPull.push('"D<"D,');
+					aRowPush.push('"D>"D,');  //2
+					aRowPull.push('"F#<"F,');
+				}
+				aRowPush.push('"G>"G,'); //3
+				aRowPull.push('"A<"A,');
+				aRowPush.push('"B>"B,'); //4
+				aRowPull.push('"C<"C');
+				aRowPush.push('"D>"D');  //5
+				aRowPull.push('"E<"E');
+				aRowPush.push('"G>"G');  //6
+				aRowPull.push('"F#<"F');
+				aRowPush.push('"B>"B');  //7
+				aRowPull.push('"A<"A');
+				aRowPush.push('"D>"d');  //8
+				aRowPull.push('"C<"c');
+				if (!Mini) {
+					aRowPush.push('"G>"g'); //9
+					aRowPull.push('"E<"e');
+					aRowPush.push('"B>"b'); //10
+					aRowPull.push('"F#<"f');
+				}
+				else {
+					aRowPush.push('"F#<"f');
+					aRowPull.push('"E<"e');
+				}
+				
+				//Add G row to ABC
 				aLines.push('K: G');
 				aLines.push('P: Treble');
 				let Line = '';
-				if (!Mini)
-					Line += '"B>"B,,|"D<"D,| "D>"D,|"F#<"F,| ';
-				Line += ' "G>"G,|"A<"A,| "B>"B,|"C<"C| "D>"D|"E<"E| "F#<"F|"G>"G| "A<"A|"B>"B| "C<"c|"D>"d| "E<"e|"F#<"f| ';
-				if (!Mini)
-					Line += '"G>"g|"B>"b|';
+				if (Index == 0) { //Diatonic scale order
+					if (!Mini) {
+						Line += aRowPush[1]+"|" + aRowPull[1]+"|" + aRowPush[2]+"|" + aRowPull[2]+"|" + aRowPush[3]+"|" + aRowPull[3]+"|" + aRowPush[4]+"|" + aRowPull[4]+"|" + aRowPush[5]+"|" + aRowPull[5]+"|";
+						Line += aRowPull[6]+"|" + aRowPush[6]+"|" + aRowPull[7]+"|" + aRowPush[7]+"|" + aRowPull[8]+"|" + aRowPush[8]+"|";
+						Line += aRowPull[9]+"|" + aRowPull[10]+"|" + aRowPush[9]+"|" + aRowPush[10]+"|";
+					}
+					else {
+						Line += aRowPush[1]+"|" + aRowPull[1]+"|" + aRowPush[2]+"|" + aRowPull[2]+"|" + aRowPush[3]+"|" + aRowPull[3]+"|";
+						Line += aRowPull[4]+"|" + aRowPush[4]+"|" + aRowPull[5]+"|" + aRowPush[5]+"|" + aRowPull[6]+"|" + aRowPush[6]+"|" + aRowPull[7]+"|" + aRowPush[7]+"|";
+					}
+				}
+				else if (Index == 1) { //Button order, first push then pull
+					//Create ABC line in button order
+					for (let i = 0; i < aRowPush.length; ++i) {
+						if (aRowPush[i].length == 0)
+							continue;
+						Line += aRowPush[i]
+						Line += aRowPull[i] + "|";
+					}
+				}
 				aLines.push(Line);
 				
 				aLines.push('K: style=x');
@@ -1168,32 +1220,146 @@ function ExampleLoad(Index) {
 				aLines.push('%%staffsep 80');
 			}
 			else if (Instruments.value.substr(0, 3) == "M_2") {
-				//Add C row
+				//Define buttons on inside row (C)
+				let aRow2Push = new Array;
+				let aRow2Pull = new Array;
+				aRow2Push.push(""); //0'
+				aRow2Pull.push("");
+				if (document.getElementById("chin").checked) {
+					aRow2Push.push('"Bb>:"_B'); //1'
+					aRow2Pull.push('"G#<:"^G');
+				}
+				else {
+					aRow2Push.push('"E>:"E,'); //1'
+					aRow2Pull.push('"G<:"G,');
+				}
+				aRow2Push.push('"G>:"G,'); //2'
+				aRow2Pull.push('"B<:"B,');
+				aRow2Push.push('"C>:"C');  //3'
+				aRow2Pull.push('"D<:"D');
+				aRow2Push.push('"E>:"E');  //4'
+				aRow2Pull.push('"F<:"F');
+				aRow2Push.push('"G>:"G');  //5'
+				aRow2Pull.push('"A<:"A');
+				aRow2Push.push('"C>:"c');  //6'
+				aRow2Pull.push('"B<:"B');
+				aRow2Push.push('"E>:"e');  //7'
+				aRow2Pull.push('"D<:"d');
+				aRow2Push.push('"G>:"g');  //8'
+				aRow2Pull.push('"F<:"f');
+				aRow2Push.push('"C>:"c\'');//9'
+				aRow2Pull.push('"A<:"a');
+				aRow2Push.push('"E>:"e\'');//10'
+				aRow2Pull.push('"B<:"b');
+				
+				//Define buttons on outside row (G)
+				let aRow1Push = new Array;
+				let aRow1Pull = new Array;
+				aRow1Push.push(""); //0
+				aRow1Pull.push("");
+				if (document.getElementById("chin").checked) {
+					aRow1Push.push('"C#>."^C'); //1
+					aRow1Pull.push('"Eb<."_E');
+				}
+				else {
+					aRow1Push.push('"B>."B,,'); //1
+					aRow1Pull.push('"D<."D,');
+				}
+				aRow1Push.push('"D>."D,'); //2
+				aRow1Pull.push('"F#<."F,');
+				aRow1Push.push('"G>."G,'); //3
+				aRow1Pull.push('"A<."A,');
+				aRow1Push.push('"B>."B,'); //4
+				aRow1Pull.push('"C<."C');
+				aRow1Push.push('"D>."D'); //5
+				aRow1Pull.push('"E<."E');
+				aRow1Push.push('"G>."G'); //6
+				aRow1Pull.push('"F#<."F');
+				aRow1Push.push('"B>."B'); //7
+				aRow1Pull.push('"A<."A');
+				aRow1Push.push('"D>."d'); //8
+				aRow1Pull.push('"C<."c');
+				aRow1Push.push('"G>."g'); //9
+				aRow1Pull.push('"E<."e');
+				aRow1Push.push('"B>."b'); //10
+				aRow1Pull.push('"F#<."f');
+				aRow1Push.push('"D>."d\''); //11
+				aRow1Pull.push('"A<."a');
+				
+				//Reverse direction annotation where specified
+				if (document.getElementById("inv1a").checked) {
+					aRow2Push[1] = aRow2Push[1].replaceAll('>', '<');
+					aRow2Pull[1] = aRow2Pull[1].replaceAll('<', '>');
+				}
+				if (document.getElementById("inv5a").checked) {
+					aRow2Push[5] = aRow2Push[5].replaceAll('>', '<');
+					aRow2Pull[5] = aRow2Pull[5].replaceAll('<', '>');
+				}
+				if (document.getElementById("inv1").checked) {
+					aRow1Push[1] = aRow1Push[1].replaceAll('>', '<');
+					aRow1Pull[1] = aRow1Pull[1].replaceAll('<', '>');
+				}
+				
+				//Add C row to ABC
 				aLines.push('K: C');
 				aLines.push('P: Treble Inner Row');
 				aLines.push('|'); //4
 				
-				//Add G row
+				//Add G row to ABC
 				aLines.push('K: G');
 				aLines.push('P: Treble Outer Row');
 				aLines.push('|'); //7
 				
-				//Set button 1 and 1'
-				if (document.getElementById("chin").checked) {
-					aLines[4] += '"Bb:"_B|"G#:"^G|'; //C row button 1
-					aLines[7] += '"C#."^C|"Eb."_E|'; //G row button 1
+				if (Index == 0) { //Diatonic scale order
+					//Create ABC line for C row in scale order
+					if (document.getElementById("chin").checked)
+						aLines[4] += aRow2Pull[1]+"|" + aRow2Push[1]+"|";
+					else
+						aLines[4] += aRow2Push[1]+"|" + aRow2Pull[1]+"|";
+					aLines[4] += aRow2Push[2]+"|" + aRow2Pull[2]+"|" + aRow2Push[3]+"|" + aRow2Pull[3]+"|" + aRow2Push[4]+"|" + aRow2Pull[4]+"|" + aRow2Push[5]+"|" + aRow2Pull[5]+"|";
+					aLines[4] += aRow2Pull[6]+"|" + aRow2Push[6]+"|" + aRow2Pull[7]+"|" + aRow2Push[7]+"|" + aRow2Pull[8]+"|" + aRow2Push[8]+"|";
+					aLines[4] += aRow2Pull[9]+"|" + aRow2Pull[10]+"|" + aRow2Push[9]+"|" + aRow2Push[10]+"|";
+				
+					//Create ABC line for G row in scale order
+					aLines[7] += aRow1Push[1]+"|" + aRow1Pull[1]+"|";
+					aLines[7] += aRow1Push[2]+"|" + aRow1Pull[2]+"|" + aRow1Push[3]+"|" + aRow1Pull[3]+"|" + aRow1Push[4]+"|" + aRow1Pull[4]+"|" + aRow1Push[5]+"|" + aRow1Pull[5]+"|";
+					aLines[7] += aRow1Pull[6]+"|" + aRow1Push[6]+"|" + aRow1Pull[7]+"|" + aRow1Push[7]+"|" + aRow1Pull[8]+"|" + aRow1Push[8]+"|"
+					aLines[7] += aRow1Pull[9]+"|" + aRow1Pull[10]+"|" + aRow1Push[9]+"|" + aRow1Pull[11]+"|" + aRow1Push[10]+"|" + aRow1Push[11]+"|";
 				}
-				else {
-					aLines[4] += '"E:"E,|"G<:"G,|';  //C row button 1
-					aLines[7] += '"B."B,,|"D<."D,|'; //G row button 1
+				else if (Index == 1) { //Button order, first push then pull
+					//Reverse buttons where specified
+					if (document.getElementById("inv1a").checked) {
+						let Temp     = aRow2Push[1];
+						aRow2Push[1] = aRow2Pull[1];
+						aRow2Pull[1] = Temp;
+					}
+					if (document.getElementById("inv5a").checked) {
+						let Temp     = aRow2Push[5];
+						aRow2Push[5] = aRow2Pull[5];
+						aRow2Pull[5] = Temp;
+					}
+					if (document.getElementById("inv1").checked) {
+						let Temp     = aRow1Push[1];
+						aRow1Push[1] = aRow1Pull[1];
+						aRow1Pull[1] = Temp;
+					}
+					
+					//Create ABC lines in button order
+					for (let i = 0; i < aRow2Push.length; ++i) {
+						if (aRow2Push[i].length == 0)
+							continue;
+						aLines[4] += aRow2Push[i]
+						aLines[4] += aRow2Pull[i] + "|";
+					}
+					for (let i = 0; i < aRow1Push.length; ++i) {
+						if (aRow1Push[i].length == 0)
+							continue;
+						aLines[7] += aRow1Push[i]
+						aLines[7] += aRow1Pull[i] + "|";
+					}
 				}
 				
-				//C row        2'               3'             4'             5'            6'            7'             8'
-				aLines[4] += ' "G>:"G,|"B<:"B,| "C>:"C|"D<:"D| "E>:"E|"F<:"F| "G:"G|"A>:"A| "B:"B|"C>:"c| "D<:"d|"E>:"e| "F<:"f|"G>:"g| "A<:"a|"B<:"b| "C>:"c\'|"E>:"e\'|';
-				
-				//G row        2                 3                4               5               6               7              8
-				aLines[7] += ' "D>."D,|"F#<."F,| "G>."G,|"A<."A,| "B>."B,|"C<."C| "D>." D|"E<."E| "F#>."F|"G>."G| "A<."A|"B>."B| "C<."c|"D>."d| "E<."e|"F#<."f| "G>."g|"A<."a| "B>."b|"D>."d\'|';
-				
+				//Create ABC for bass rows
 				aLines.push('K: style=x');
 				aLines.push('P:Bass Outer Row');
 				aLines.push('|"G>."G"G>."G|"D."F"D."F|"C:"c"C:"c|"G<:"B"G<:"B|');
@@ -1210,63 +1376,24 @@ function ExampleLoad(Index) {
 				aLines.push('"G"g|"A"a|"Bb"_b| "B"b|"C"c\'| "D"d\'|"Eb"_e\'|"E"e\'| "F"f\'|"Gb"_g\'|"G"g\'| "A"a\'|"Bb"_b\'|"B"b\'|');
 			}
 			break;
-		case 1:
-			aLines.push('T: Andro');
-			aLines.push('C: Trad. (Bretagne)');
-			aLines.push('R: Andro');
-			aLines.push('Q: 1/4=160');
-			aLines.push('M: 4/4');
-			aLines.push('L: 1/4');
-			aLines.push('K: C');
-			aLines.push('|:"Am"e e/2f/2 e3/2 d/2|c B AA|"G>"ddBG |"F<"A/2B/2 c/2d/2 "Em"e2|');
-			aLines.push('"Am"e e/2f/2 e3/2 d/2  |cB AA |"G>"ddBG |"F<"A/2B/2 c/2B/2 "Am"A2:|');
-			aLines.push('|:"C"eg"Am"A2|"C"eg"G>"B2|ddB/2A/2G|"F<"A/2B/2 c/2d/2 "Em>"e2|');
-			aLines.push('"C"eg"Am"A2|"C"eg"G>"B2|ddB/2A/2G|"F<"A/2B/2 c/2B/2 "Am"A2:|');
-			break;
-		case 2:
-			aLines.push('T: Kerfank 1870/Den Andro');
-			aLines.push('S: Gonnagles Balfolksessieboekje 1');
-			aLines.push('C: Trad. (Bretagne)');
-			aLines.push('R: Andro');
-			aLines.push('Q: 1/4=160');
-			aLines.push('M: 4/4');
-			aLines.push('L: 1/4');
-			aLines.push('K: C');
-			aLines.push('|:"Am"Aeed/e/|"F<"fed/c/ B/c/|"G>"dB"C"ed/c/|B/c/ A/B/"Em"cB|');
-			aLines.push('|"Am"Aeed/e/|"F<"fed/c/ B/c/|"G>"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|');
-			aLines.push('|:"Am"AA"G<"Bc/B/|"F<"AA"Em"BB/c/|"G>"dB"C"ed/c/|"F"B/c/ A/B/"Em"cB|');
-			aLines.push('|"Am"AA"G<"Bc/B/|"F<"AA"Em"BB/c/|"G>"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|');
-			break;
-		case 3:
-			aLines.push('T: Mon Père Avait un Gars Lonla');
-			aLines.push('S: Gonnagles Balfolksessieboekje 1');
-			aLines.push('C: Trad.');
-			aLines.push('R: Hanter dro');
-			aLines.push('Q: 1/4=160');
-			aLines.push('M: 6/4');
-			aLines.push('L: 1/4');
-			aLines.push('K: C');
-			aLines.push('|:"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/Ad"G"cB|"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/"G"AG"Am"A2:|');
-			aLines.push('|:"Am"AB/c/dBc/d/e|"G"cB/A/dcB2|"F"AB/c/dBc/d/e|"G"cB/A/"Em"Bc"Am"A2:|');
-			break;
-		case 4:
-			aLines.push('T: What Shall We Do With the Drunken Sailor?');
-			aLines.push('C: Trad. (England)');
-			aLines.push('M: 4/4');
-			aLines.push('L: 1/8');
-			aLines.push('Q: 1/4=160');
-			aLines.push('K: C');
-			aLines.push('"Am"E2EE E2EE|"Am"E2A,2C2E2|"G"D2DD D2DD|"G"D2G,2B,2D2|');
-			aLines.push('w: What shall we do with the drunk-en sail-or, what shall we do with the drunk-en sail-or');
-			aLines.push('"Am"E2EE E2EE|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|');
-			aLines.push('w: What shall we do with the drunk-en sail-or, earl-y in the morn-ing?');
-			aLines.push('"Am"E4 E3E|"Am"E2A,2C2E2|"G"D4 D3D|"G"D2G,2B,2D2|');
-			aLines.push('w: Way-hay, and up she ris-es, way-hay, and up she ris-es');
-			aLines.push('"Am"E4 E3E|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|');
-			aLines.push('w: Way-hay, and up she ris-es, earl-y in the morn-ing.');
-			break;
 		default:
-			return;
+			let FindExampleIndex = Index - 2; 
+			
+			let ExampleIndex = -1;
+			for (let i = 0; i < aExampleLines.length; ++i) {
+				if (aExampleLines[i].substr(0, 3) == "T: ") {
+					ExampleIndex++;
+					if (ExampleIndex > FindExampleIndex)
+						break;
+				}
+				
+				if (ExampleIndex == FindExampleIndex)
+					aLines.push(aExampleLines[i]);
+			}
+			
+			if (ExampleIndex < FindExampleIndex)
+				return;
+			break;
 	}
 	
 	//Write it into the ABC box
@@ -1336,9 +1463,11 @@ function ExampleLoad(Index) {
 	}
 	
 	//Do special conversions for instrument layout
-	if (Index == 0) {
+	if (Index == 0 || Index == 1) {
 		//Split into treble and bass string
 		let SplitPos = ABC.innerText.search(' style=x');
+		if (SplitPos == -1)
+			SplitPos = 0;
 		let Treble   = ABC.innerText.substr(0, SplitPos);
 		let Bass     = ABC.innerText.substr(SplitPos);
 		
