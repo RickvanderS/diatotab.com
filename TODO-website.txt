@@ -1,4 +1,3 @@
-- Continue from abcjs expection throw (needs F5 to recover form error now)
 - Open/save ABC button
 - Paste problems, desync between syntax and editor
 - Better syntax highlighting around |[

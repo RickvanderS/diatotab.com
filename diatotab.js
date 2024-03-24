@@ -319,8 +319,13 @@ function CreateEditor(NoUpdate) {
 		AbcInput();
 	
 	//Stop playback
-	if (Editor)
-		Editor.synth.synthControl.pause();
+	if (Editor) {
+		try {
+			Editor.synth.synthControl.pause();
+		}
+		catch(err) {
+		}
+	}
 	
 	//Get parameters from the input controls
 	let abcjsParams = GetAbcjsParamsFromControls();
@@ -1337,7 +1342,7 @@ function ExampleLoad(Index) {
 		let Treble   = ABC.innerText.substr(0, SplitPos);
 		let Bass     = ABC.innerText.substr(SplitPos);
 		
-		//Treble note preferences, want Bes and Es, all others -is
+		//Treble note preferences (not in key), want Bes and Es, all others -is
 		Treble = Treble.replaceAll('"_D', '"^C');
 		Treble = Treble.replaceAll('"^D', '"_E');
 		Treble = Treble.replaceAll('"_G', '"^F');
@@ -1355,6 +1360,9 @@ function ExampleLoad(Index) {
 		Treble = Treble.replaceAll('"Gb', '"F#');
 		Treble = Treble.replaceAll('"Ab', '"G#');
 		Treble = Treble.replaceAll('"A#', '"Bb');
+		//Except for Bb/Eb, want As instead of gis
+		if (Tunings.value == "Bb/Eb")
+			Treble = Treble.replaceAll('"G#', '"Ab');
 		
 		//Detect chords by searching for "
 		//Keep ground bass caps and convert chords to lower case
