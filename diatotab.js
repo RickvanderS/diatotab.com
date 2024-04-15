@@ -32,23 +32,23 @@ function AddInstruments() {
 	Instrument.value    = "M_2_21";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
-	
+/*	
 	Instrument = document.createElement("option");
 	Instrument.text     = "2.5 row club, 33 button, Diatonic Accordion / Melodeon";
 	Instrument.value    = "M_3club_33";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
-	
-/*	Instrument = document.createElement("option");
+
+	Instrument = document.createElement("option");
 	Instrument.text  = "2.5 row, 21+5 button Saltarelle, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_2_21+5s";
+	Instrument.value = "M_3saltarelle";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
 	Instrument.text  = "2.5 row, 21+5 button Castagnari, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_2_21+5c";
-	Instruments.add(Instrument);*/
-	
+	Instrument.value = "M_3castagnari";
+	Instruments.add(Instrument);
+*/
 	Instrument = document.createElement("option");
 	Instrument.text  = "10 hole, Diatonic Harmonica / French Harp";
 	Instrument.value = "H_10";
@@ -101,8 +101,8 @@ function AddTunings() {
 			break;
 		case "M_2_21":
 		case "M_3club_33":
-		case "M_2_21+5s":
-		case "M_2_21+5c":
+		case "M_3castagnari":
+		case "M_3saltarelle":
 			show_options = true;
 			var Tuning = document.createElement("option");
 			Tuning.text     = "G/C";
@@ -244,8 +244,8 @@ function GetAbcjsParamsFromControls() {
 			break;
 		case "M_2_21":
 		case "M_3club_33":
-		case "M_2_21+5s":
-		case "M_2_21+5c":
+		case "M_3castagnari":
+		case "M_3saltarelle":
 			//Get chin accidentals
 			let chinacc = false;
 			if (document.getElementById("chin").checked)
@@ -271,9 +271,9 @@ function GetAbcjsParamsFromControls() {
 			//Set row3 system
 			if (Instrument == "M_3club_33")
 				TuningArray[2] = "33club";
-			else if (Instrument == "M_2_21+5s")
+			else if (Instrument == "M_3saltarelle")
 				TuningArray[2] = "saltarelle";
-			else if (Instrument == "M_2_21+5c")
+			else if (Instrument == "M_3castagnari")
 				TuningArray[2] = "castagnari";
 			
 			//Tablature options
@@ -1750,7 +1750,7 @@ function ExampleLoad(Index) {
 				break;
 		}
 	}
-	else if (Instruments.value.substr(0, 3) == "M_2" || Instruments.value == "M_3club_33") {
+	else if (Instruments.value.substr(0, 3) == "M_2" || Instruments.value == "M_3club_33" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3saltarelle") {
 		//From G/C to selected
 		switch (Tunings.value) {
 			case "G/C":
@@ -1796,8 +1796,8 @@ function ExampleLoad(Index) {
 				let aRawPull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row1;
 				
 				//Get bass buttons from ABCjs
-				let aRawChordRowPush = Editor.tunes[0].tablatures[0].instance.semantics.push_chords;
-				let aRawChordRowPull = Editor.tunes[0].tablatures[0].instance.semantics.pull_chords;
+				let aRawChordRowPush = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
+				let aRawChordRowPull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
 				
 				let RowKey = KeyTranspose("G", TransposeSteps);
 				aRowPush = ButtonArrayConvert(aRawPush, false);
@@ -1846,15 +1846,13 @@ function ExampleLoad(Index) {
 				let aRawPush = aRawRow2Push.concat(aRawRow1Push);
 				let aRawPull = aRawRow2Pull.concat(aRawRow1Pull);
 				
-				//TODO: Get bass buttons from ABCjs
-				let aRawChordPush = Editor.tunes[0].tablatures[0].instance.semantics.push_chords;
-				let aRawChordPull = Editor.tunes[0].tablatures[0].instance.semantics.pull_chords;
-				let aRawChordRow1Push = new Array(aRawChordPush[0], aRawChordPush[2]);
-				let aRawChordRow1Pull = new Array(aRawChordPull[0], aRawChordPull[2]);
-				let aRawChordRow2Push = new Array(aRawChordPush[1], aRawChordPush[3]);
-				let aRawChordRow2Pull = new Array(aRawChordPull[1] + 'm', aRawChordPull[3]);
-				aRawChordPush = aRawChordRow1Push.concat(aRawChordRow2Push);
-				aRawChordPull = aRawChordRow1Pull.concat(aRawChordRow2Pull);
+				//Get bass chords from ABCjs
+				let aRawChordRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
+				let aRawChordRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
+				let aRawChordRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
+				let aRawChordRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
+				let aRawChordPush = aRawChordRow1Push.concat(aRawChordRow2Push);
+				let aRawChordPull = aRawChordRow1Pull.concat(aRawChordRow2Pull);
 				
 				let Row2Key = KeyTranspose("C", TransposeSteps);
 				aRow2Push = ButtonArrayConvert(aRawRow2Push, AsInsteadOfGis);
@@ -1956,7 +1954,8 @@ function ExampleLoad(Index) {
 					
 				}
 			}
-			else if (Instruments.value == "M_3club_33") { //Three row melodeons with the third row containing accidentals
+			//Three row melodeons with the third row containing accidentals
+			else if (Instruments.value == "M_3club_33" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3saltarelle") {
 				let AsInsteadOfGis = Tunings.value == "Bb/Eb";
 				
 				//Get treble buttons from ABCjs
@@ -1969,13 +1968,13 @@ function ExampleLoad(Index) {
 				let aRawPush = aRawRow2Push.concat(aRawRow1Push);
 				let aRawPull = aRawRow2Pull.concat(aRawRow1Pull);
 				
-				//TODO: Get bass buttons from ABCjs
-				let aRawChordPush = Editor.tunes[0].tablatures[0].instance.semantics.push_chords;
-				let aRawChordPull = Editor.tunes[0].tablatures[0].instance.semantics.pull_chords;
-				let aRawChordRow1Push = new Array(aRawChordPush[0], aRawChordPush[2]);
-				let aRawChordRow1Pull = new Array(aRawChordPull[0], aRawChordPull[2]);
-				let aRawChordRow2Push = new Array(aRawChordPush[1], aRawChordPush[3]);
-				let aRawChordRow2Pull = new Array(aRawChordPull[1] + 'm', aRawChordPull[3]);
+				//Get bass chords from ABCjs
+				let aRawChordRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
+				let aRawChordRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
+				let aRawChordRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
+				let aRawChordRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
+				let aRawChordPush = aRawChordRow1Push.concat(aRawChordRow2Push);
+				let aRawChordPull = aRawChordRow1Pull.concat(aRawChordRow2Pull);
 				
 				aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
 				aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
