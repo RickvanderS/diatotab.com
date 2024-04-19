@@ -382,7 +382,7 @@ function GetAbcjsParamsFromControls() {
 var Editor = null;
 var g_AbcPrependLength = 0;
 
-function CreateEditor(NoUpdate) {
+function CreateEditor(NoUpdate, ClearSoundsCache) {
 	if (!NoUpdate)
 		AbcInput();
 	
@@ -430,7 +430,7 @@ function CreateEditor(NoUpdate) {
 			cursorControl: cursorControl,
 			options: {
 				displayLoop: true,
-				displayRestart: false,
+				displayRestart: true,
 				displayPlay: true,
 				displayProgress: true,
 				displayWarp: false,
@@ -440,6 +440,10 @@ function CreateEditor(NoUpdate) {
 			}
 		}
 	};
+	
+	//Remove old sound font
+	if (ClearSoundsCache)
+		ABCJS.synth.CreateSynth(true);
 	
 	//Create the editor
 	Editor = new ABCJS.Editor("abc", Params);
