@@ -159,6 +159,63 @@ function AddTunings() {
 	CreateEditor();
 }
 
+function AddReeds() {
+	let Reeds = document.getElementById("reeds");
+	removeOptions(Reeds);
+	let Reed;
+	
+	Reed = document.createElement("option");
+	Reed.text  = "1 M";
+	Reed.value = 130;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "2 MM+";
+	Reed.value = 131;
+	Reed.selected = 'selected';
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "2 MM-";
+	Reed.value = 132;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "3 LMM+";
+	Reed.value = 133;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "3 LMM-";
+	Reed.value = 134;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "3 MM-M+";
+	Reed.value = 135;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "4 LMM+H";
+	Reed.value = 136;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "4 LMM-H";
+	Reed.value = 137;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "4 LMM-M+";
+	Reed.value = 138;
+	Reeds.add(Reed);
+	
+	Reed = document.createElement("option");
+	Reed.text  = "Off (bass only)";
+	Reed.value = 129;
+	Reeds.add(Reed);
+}
+
 var CursorControl = function() {
 	this.onStart = function() {
 		var svg = document.querySelector("#paper svg");
@@ -323,6 +380,7 @@ function GetAbcjsParamsFromControls() {
 }
 
 var Editor = null;
+var g_AbcPrependLength = 0;
 
 function CreateEditor(NoUpdate) {
 	if (!NoUpdate)
@@ -340,6 +398,26 @@ function CreateEditor(NoUpdate) {
 	//Get parameters from the input controls
 	let abcjsParams = GetAbcjsParamsFromControls();
 	
+	//Get sound parameters from user controls
+	let MidiProgram = document.getElementById("reeds").value;   //Custom mido instrument number
+	g_Cents         = document.getElementById("cents").value;   //Tremolo in cents detuning
+	g_FadeIn        = document.getElementById("fade").value;    //Milliseconds fade in
+	let FadeOut     = g_FadeIn;                                 //Milliseconds fade out
+	let ChordVol    = document.getElementById("bassvol").value; //Volume of base/chords
+	
+	if (g_AbcPrependLength == 0) {
+		//Place some midi commands before the ABC
+		var Output = document.getElementById("abc");
+		let ABC = Output.value;
+		Output.value = "";
+		Output.value += "%%MIDI bassprog 139\n";
+		Output.value += "%%MIDI chordprog 139\n";
+		Output.value += "%%MIDI bassvol " + ChordVol +"\n";
+		Output.value += "%%MIDI chordvol " + ChordVol +"\n";
+		g_AbcPrependLength = Output.value.length;
+		Output.value += ABC;
+	}
+	
 	//Set special config for editor
 	abcjsParams.paddingbottom = 30;
 	abcjsParams.clickListener = clickListener;
@@ -351,12 +429,14 @@ function CreateEditor(NoUpdate) {
 			el: "#audio",
 			cursorControl: cursorControl,
 			options: {
-				displayLoop: false,
+				displayLoop: true,
 				displayRestart: false,
 				displayPlay: true,
 				displayProgress: true,
 				displayWarp: false,
-				midiTranspose: abcjsParams.visualTranspose
+				program: MidiProgram,
+				midiTranspose: abcjsParams.visualTranspose,
+				fadeLength : FadeOut
 			}
 		}
 	};
@@ -369,7 +449,7 @@ function CreateEditor(NoUpdate) {
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead");
+let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead", "reeds", "cents", "bassvol", "fade");
 
 function InitPage() {
 	//localStorage.clear();
@@ -377,6 +457,7 @@ function InitPage() {
 	OriginalTitle = document.title;
 	aExampleLines = document.getElementById("abc_editable").textContent.split("\n");
 	AddInstruments();
+	AddReeds();
 	ExampleLoad(2);
 	try {
 		Load();
@@ -446,7 +527,7 @@ function Load() {
 		if (Value !== null) {
 			//Set value in the control
 			let Control = document.getElementById(ID);
-			if (typeof Control.checked !== 'undefined')
+			if (typeof Control.checked !== 'undefined' && Control.type != "range")
 				Control.checked = (Value === "true");
 			else if (typeof Control.value !== 'undefined')
 				Control.value = Value;
@@ -473,7 +554,7 @@ function Store() {
 		//Get value from the control
 		let Control = document.getElementById(ID);
 		let Value;
-		if (typeof Control.checked !== 'undefined')
+		if (typeof Control.checked !== 'undefined' && Control.type != "range")
 			Value = Control.checked;
 		else if (typeof Control.value !== 'undefined')
 			Value = Control.value;
@@ -992,6 +1073,7 @@ function AbcInput() {
 	var Output = document.getElementById("abc");
 	ABC = ABC.replace("\xa0", " ");
 	Output.value = ABC;
+	g_AbcPrependLength = 0;
 	CreateEditor(true);
 	
 	//Update page title
@@ -1058,6 +1140,13 @@ function AbcSelect() {
 			End++;
 	}
 	
+	//Compensate length for some hidden prepended text
+	Start += g_AbcPrependLength;
+	End   += g_AbcPrependLength;
+	
+	if (Start == End)
+		End = End + 1;
+	
 	//Highlight the selection in the ABC render
 	if (Editor.tunes.length > 0 && Editor.tunes[0].engraver)
 		Editor.tunes[0].engraver.rangeHighlight(Start, End);
@@ -1113,6 +1202,14 @@ function setSelectionRange(el, start, end) {
 }
 
 function clickListener(abcelem, tuneNumber, classes, analysis, drag, mouseEvent) {
+	//Character positions as seen by abcjs
+	let startChar = abcelem.startChar;
+	let endChar   = abcelem.endChar;
+	
+	//Correct for length of prepended midi commands
+	startChar -= g_AbcPrependLength;
+	endChar   -= g_AbcPrependLength;
+	
 	//Get the editor without highlighting
 	let ABC_Editor = document.getElementById("abc_editable");
 	
@@ -1121,17 +1218,19 @@ function clickListener(abcelem, tuneNumber, classes, analysis, drag, mouseEvent)
 	let endCorrect   = 0;
 	for (let i = 0; i < ABC_Editor.innerText.length; ++i) {
 		if (ABC_Editor.innerText[i] == "\n") {
-			if (i <= abcelem.startChar)
+			if (i <= startChar)
 				startCorrect++;
-			if (i <= abcelem.endChar)
+			if (i <= endChar)
 				endCorrect++;
-			if (i > abcelem.startChar && i > abcelem.endChar)
+			if (i > startChar && i > endChar)
 				break;
 		}
 	}
+	startChar -= startCorrect;
+	endChar   -= endCorrect;
 	
 	//Select the clicked note
-	setSelectionRange(ABC_Editor, abcelem.startChar - startCorrect, abcelem.endChar - endCorrect);
+	setSelectionRange(ABC_Editor, startChar, endChar);
 }
 
 function ExampleShow() {
