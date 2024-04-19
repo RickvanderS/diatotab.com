@@ -1800,7 +1800,7 @@ function GenChord(ChordName, aButtonNotes) {
 		if (aBass.length > 1)
 			ABC += "]";
 		if (aBass.length == 0)
-			ABC += "z/";
+			ABC += "z";
 		
 		ChordName = ChordName.toLowerCase();
 		
@@ -1817,7 +1817,7 @@ function GenChord(ChordName, aButtonNotes) {
 		if (Added)
 			ABC += "]";
 		else
-			ABC += "z/";
+			ABC += "z";
 		
 		ABC += "|";
 	}
