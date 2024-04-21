@@ -1,6 +1,5 @@
 - Open/save ABC button
 - Help button with overlay text to explain playback controls
-- Download button for playback
 - Paste problems, desync between syntax and editor
 - Better syntax highlighting around |[
 - Better syntax highlighting for %% meta comment

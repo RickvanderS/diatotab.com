@@ -379,6 +379,19 @@ function GetAbcjsParamsFromControls() {
 	return abcjsParams;
 }
 
+function SetLoop(isLooping) {
+	Editor.synth.synthControl.isLooping = isLooping;
+	Editor.synth.synthControl.control.pushLoop(isLooping);
+	document.getElementById("repeat").value = isLooping;
+}
+
+function ToggleLoop() {
+	let isLooping = Editor.synth.synthControl.isLooping
+	isLooping = !isLooping;
+	SetLoop(isLooping);
+	Store();
+}
+
 var Editor = null;
 var g_AbcPrependLength = 0;
 
@@ -445,18 +458,38 @@ function CreateEditor(NoUpdate, ClearSoundsCache) {
 	if (ClearSoundsCache)
 		ABCJS.synth.CreateSynth(true);
 	
+	//Figure out the repeat state
+	let isLooping = false;
+	if (Editor)
+		isLooping = Editor.synth.synthControl.isLooping;
+	else
+		isLooping = document.getElementById("repeat").value == "true";
+	
 	//Create the editor
 	Editor = new ABCJS.Editor("abc", Params);
+	
+	//Restore repeat state and set handler
+	SetLoop(isLooping);
+	Editor.synth.synthControl.control.options.loopHandler = ToggleLoop;
+	
 	CalcAbcScroll();
+}
+
+function DownloadWav() {
+	Editor.synth.synthControl.runWhenReady(DownloadWav2, undefined);
+}
+
+function DownloadWav2() {
+	Editor.synth.synthControl.download(document.title + ".wav");
 }
 
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead", "reeds", "cents", "bassvol", "fade");
+let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
-	//localStorage.clear();
+	localStorage.clear();
 	
 	OriginalTitle = document.title;
 	aExampleLines = document.getElementById("abc_editable").textContent.split("\n");
@@ -531,7 +564,7 @@ function Load() {
 		if (Value !== null) {
 			//Set value in the control
 			let Control = document.getElementById(ID);
-			if (typeof Control.checked !== 'undefined' && Control.type != "range")
+			if (Control.type == "checkbox")
 				Control.checked = (Value === "true");
 			else if (typeof Control.value !== 'undefined')
 				Control.value = Value;
@@ -558,7 +591,7 @@ function Store() {
 		//Get value from the control
 		let Control = document.getElementById(ID);
 		let Value;
-		if (typeof Control.checked !== 'undefined' && Control.type != "range")
+		if (Control.type == "checkbox")
 			Value = Control.checked;
 		else if (typeof Control.value !== 'undefined')
 			Value = Control.value;

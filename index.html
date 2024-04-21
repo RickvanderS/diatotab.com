@@ -163,7 +163,11 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 						<tr><td>Fade in/out</td><td><input type="range" min="1" max="250" value="50"  class="slider" id="fade"    onchange="CreateEditor(false, true)"></td></tr>
 					</table>
 				</div>
+				<div class="blockright">
+					<button onclick="DownloadWav()">Download</button>
+				</div>
 				<div class="blockend"></div>
+				<input type="hidden" id="repeat" value="false">
 				<div id="audio"></div>
 			</div>
 		</div>
