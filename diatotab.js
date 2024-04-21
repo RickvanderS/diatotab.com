@@ -2040,7 +2040,7 @@ function ExampleLoad(Index) {
 				if (aPullCrossChord.length > Len)
 					Len = aPullCrossChord.length;
 				if (Len > 0) {
-					aLines.push('P:Cross Bass');
+					aLines.push('P:Bass Cross Row');
 					Line = "]";
 					for (let i = 0; i < Len; ++i) {
 						if (i < aPushCrossChord.length)
