@@ -489,7 +489,7 @@ let StoreAllowed = false;
 let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
-	localStorage.clear();
+	//localStorage.clear();
 	
 	OriginalTitle = document.title;
 	aExampleLines = document.getElementById("abc_editable").textContent.split("\n");
