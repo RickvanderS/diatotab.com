@@ -1,9 +1,5 @@
 - Open/save ABC button
-- Transpose control should have larger + and - button instead of the spin control buttons
-- Example tunes overlay size should scale with size of content
-- Mobile layout in portret mode is messed up near the abc editor
 - Help button with overlay text to explain playback controls
-- Playback controls should be in a div instead of a table
 - Download button for playback
 - Paste problems, desync between syntax and editor
 - Better syntax highlighting around |[

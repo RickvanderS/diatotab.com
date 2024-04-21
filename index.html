@@ -38,11 +38,11 @@
 		<b>:</b> means row 2 or inner row, write <b>"F:"a</b> to play it with 9' in pull.<br>
 		
 		<h2>Instrument / Tuning / Options</h2>
-		<div class="borderblock">
+		<div class="blockborder">
 			<select class="list" id="instrument" size="5" onchange="AddTunings()">
 			</select>
 		</div>
-		<div id="tuningdiv" class="borderblock">
+		<div id="tuningdiv" class="blockborder">
 			<select class="list" id="tuning" size="5" onchange="CreateEditor()">
 			</select>
 		</div>
@@ -76,10 +76,10 @@
 		<div id="abctop" class="float-child-abc">
 			<div id="abcheader" style="box-sizing:border-box;">
 				<h2>ABC Editor</h2>
-				<div style="float:left;padding-bottom:10px;">
+				<div class="block">
 					<button onclick="ExampleShow()">Load ABC Example</button><br>
 				</div>
-				<div style="float:right;">
+				<div class="blockright">
 					<label for="transpose">Transpose</label>
 					<input type="number" id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
 					<button  onclick="TransposeAbc()">Transpose ABC</button>
@@ -111,10 +111,10 @@ Q: 1/4=160<br>
 M: 4/4<br>
 L: 1/4<br>
 K: C<br>
-|:"Am"Aeed/e/|"F<"fed/c/ B/c/|"G>"dB"C"ed/c/|B/c/ A/B/"Em"cB|<br>
-|"Am"Aeed/e/|"F<"fed/c/ B/c/|"G>"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
-|:"Am"AA"G<"Bc/B/|"F<"AA"Em"BB/c/|"G>"dB"C"ed/c/|"F"B/c/ A/B/"Em"cB|<br>
-|"Am"AA"G<"Bc/B/|"F<"AA"Em"BB/c/|"G>"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
+|:"Am"Aeed/e/|"F&lt;"fed/c/ B/c/|"G&gt;"dB"C"ed/c/|B/c/ A/B/"Em"cB|<br>
+|"Am"Aeed/e/|"F&lt;"fed/c/ B/c/|"G&gt;"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
+|:"Am"AA"G&lt;"Bc/B/|"F&lt;"AA"Em"BB/c/|"G&gt;"dB"C"ed/c/|"F"B/c/ A/B/"Em"cB|<br>
+|"Am"AA"G&lt;"Bc/B/|"F&lt;"AA"Em"BB/c/|"G&gt;"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
 <br>
 T: Mon Père Avait un Gars Lonla<br>
 S: Gonnagles Balfolksessieboekje 1<br>
@@ -147,17 +147,24 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 				<textarea id="abc" style="display:none;height:100%" spellcheck="false">
 				</textarea>
 			</div>
-			<div id="abcfooter" style="box-sizing:border-box;">
+			<div id="abcfooter" class="blockend">
 				<div id="warnings"></div>
-				<div>
-					<h2>Playback</h2>
+				<h2>Playback</h2>
+				<div class="block">
+					
 					<table>
-						<tr><td>Voices </td><td><select id="reeds" onchange="CreateEditor()"></select>                                                          </td><td>Bass volume</td><td><input type="range" min="0" max="150" value="100" class="slider" id="bassvol" onchange="CreateEditor()">           </td>
-						<tr><td>Tremolo</td><td><input type="range" min="0" max="30"  value="5" class="slider"  id="cents" onchange="CreateEditor(false, true)"></td><td>Fade in/out</td><td><input type="range" min="1" max="250" value="50"  class="slider" id="fade"    onchange="CreateEditor(false, true)"></td>
-					</select>
+						<tr><td>Voices </td><td><select id="reeds" style="width:100%;" onchange="CreateEditor()"></select>                                      </td></tr>
+						<tr><td>Tremolo</td><td><input type="range" min="0" max="30"  value="5" class="slider"  id="cents" onchange="CreateEditor(false, true)"></td></tr>
 					</table>
-					<div id="audio"></div>
 				</div>
+				<div class="block">
+					<table>
+						<tr><td>Bass volume</td><td><input type="range" min="0" max="150" value="100" class="slider" id="bassvol" onchange="CreateEditor()">           </td></tr>
+						<tr><td>Fade in/out</td><td><input type="range" min="1" max="250" value="50"  class="slider" id="fade"    onchange="CreateEditor(false, true)"></td></tr>
+					</table>
+				</div>
+				<div class="blockend"></div>
+				<div id="audio"></div>
 			</div>
 		</div>
 		<div id="tabtop" class="float-child-tab">
@@ -172,16 +179,17 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 	
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
 		<div class="overlay" onclick="event.stopPropagation()">
-			<br>
-			<a href="" onclick="return ExampleLoad(0)">Instrument layout in diatonic scale order</a><br>
-			<a href="" onclick="return ExampleLoad(1)">Instrument layout in button order</a><br>
-			<br>
-			<a href="" onclick="return ExampleLoad(2)">Andro (trad. Bretange)</a><br>
+			<h4>Instrument Layout</h4>
+			<a href="" onclick="return ExampleLoad(0)">Diatonic scale order</a><br>
+			<a href="" onclick="return ExampleLoad(1)">Button order</a><br>
+			<h4>Example Tunes</h4>
+			<a href="" onclick="return ExampleLoad(2)">Andro</a><br>
 			<a href="" onclick="return ExampleLoad(3)">Kerfank 1870/Den Andro</a><br>
 			<a href="" onclick="return ExampleLoad(4)">Mon Père Avait un Gars Lonla</a><br>
 			<a href="" onclick="return ExampleLoad(5)">What Shall We Do With the Drunken Sailor?</a><br>
 			<br>
 			<b><a href="" onclick="return ExampleClose()">Close</a></b><br>
+			<br>
 		</div>
 	</div>
 	<div id="print_paper" class="print_paper"></div>

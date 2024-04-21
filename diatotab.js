@@ -513,7 +513,7 @@ function CalcAbcScroll() {
 		AbcScrollDiv.style.height = ScrollHeight + "px";
 	}
 	else {
-		//Use normal page rendering if editor would become to small (many warnings in ABC)
+		//Use normal page rendering if editor would become too small (many warnings in ABC)
 		AbcTopDiv.style.paddingTop = "";
 		AbcScrollDiv.style.height  = "";
 	}

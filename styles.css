@@ -17,9 +17,31 @@ body {
   color: currentColor;
 }
 
-div.container {
-  margin: auto;
-  max-width: min(100%, 1000px);
+div.block {
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  padding-right: 10px;
+}
+
+div.blockborder {
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  border: solid grey 1px;
+}
+
+div.blockright {
+  float: right;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+div.blockend {
+  clear: left;
 }
 
 div.footer {
@@ -30,24 +52,9 @@ div.footer {
   font-size: 12px;
 }
 
-div.borderblock {
-  float: left;
-  display: inline-block;
-  vertical-align: top;
-  overflow: hidden;
-  border: solid grey 1px;
-}
-
-div.block {
-  float: left;
-  display: inline-block;
-  vertical-align: top;
-  overflow: hidden;
-  padding-left: 10px;
-}
-
-div.blockend {
-  clear: left;
+div.container {
+  margin: auto;
+  max-width: min(100%, 1000px);
 }
 
 div.float-container {
@@ -91,27 +98,23 @@ div.overlay-container {
   bottom: 0;
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-  cursor: pointer; /* Add a pointer on hover */
-  
-   
-   width:100%;
-   height: 100%;
-   text-align:center;
-   
+  text-align:center;
   align-items: center;
   justify-content: center;
 }
 
 div.overlay {
-   background-color: #fff;
+   background-color: #ffffff;
    width:            400px;
-   height:           250px;
-   margin: 50px 50px 50px 50px;
 }
 
 select.list {
   padding: 10px;
   margin: -5px -20px -5px -5px;
+}
+
+h4 {
+  margin-bottom: 0px;
 }
 
 textarea {
@@ -127,6 +130,10 @@ textarea {
 }
 
 @media (prefers-color-scheme: dark) {
+  div.overlay {
+    background-color: #000000;
+  }
+   
   body {
     color: #ffffff;
     background: #121212;
@@ -146,8 +153,11 @@ textarea {
 }
 
 div.abcscroll {
+  float: left;
+  clear: left;
   border: 1px solid #888;
   overflow-y: auto;
+  width: 100%;
 }
 
 [contenteditable] {
