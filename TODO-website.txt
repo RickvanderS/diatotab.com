@@ -1,6 +1,13 @@
-- Open/save ABC button
-- Help button with overlay text to explain playback controls
+Bugs:
 - Paste problems, desync between syntax and editor
+- PDF filename in firefox when using print button
+Improvements:
+- Help button with overlay text to explain playback controls
 - Better syntax highlighting around |[
 - Better syntax highlighting for %% meta comment
-- PDF filename in firefox when using print button
+New features:
+- Open/save ABC button
+- Instrument variant selector
+
+
+
