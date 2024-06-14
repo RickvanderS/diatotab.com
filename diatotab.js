@@ -32,7 +32,7 @@ function AddInstruments() {
 	Instrument.value    = "M_2_21";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
-/*	
+/*
 	Instrument = document.createElement("option");
 	Instrument.text     = "2.5 row club, 33 button, Diatonic Accordion / Melodeon";
 	Instrument.value    = "M_3club_33";
@@ -48,7 +48,17 @@ function AddInstruments() {
 	Instrument.text  = "2.5 row, 21+5 button Castagnari, Diatonic Accordion / Melodeon";
 	Instrument.value = "M_3castagnari";
 	Instruments.add(Instrument);
-*/
+	
+	Instrument = document.createElement("option");
+	Instrument.text  = "2.5 row, 21+X button vanderAa, Diatonic Accordion / Melodeon";
+	Instrument.value = "M_3vanderaa";
+	Instruments.add(Instrument);
+	
+	Instrument = document.createElement("option");
+	Instrument.text  = "2.5 row, 21+X button Rick, Diatonic Accordion / Melodeon";
+	Instrument.value = "M_3rick";
+	Instruments.add(Instrument);
+/**/
 	Instrument = document.createElement("option");
 	Instrument.text  = "10 hole, Diatonic Harmonica / French Harp";
 	Instrument.value = "H_10";
@@ -101,8 +111,10 @@ function AddTunings() {
 			break;
 		case "M_2_21":
 		case "M_3club_33":
-		case "M_3castagnari":
 		case "M_3saltarelle":
+		case "M_3castagnari":
+		case "M_3vanderaa":
+		case "M_3rick":
 			show_options = true;
 			var Tuning = document.createElement("option");
 			Tuning.text     = "G/C";
@@ -301,8 +313,10 @@ function GetAbcjsParamsFromControls() {
 			break;
 		case "M_2_21":
 		case "M_3club_33":
-		case "M_3castagnari":
 		case "M_3saltarelle":
+		case "M_3castagnari":
+		case "M_3vanderaa":
+		case "M_3rick":
 			//Get chin accidentals
 			let chinacc = false;
 			if (document.getElementById("chin").checked)
@@ -332,6 +346,10 @@ function GetAbcjsParamsFromControls() {
 				TuningArray[2] = "saltarelle";
 			else if (Instrument == "M_3castagnari")
 				TuningArray[2] = "castagnari";
+			else if (Instrument == "M_3vanderaa")
+				TuningArray[2] = "vanderaa";
+			else if (Instrument == "M_3rick")
+				TuningArray[2] = "rick";
 			
 			//Tablature options
 			let showall              = false;
@@ -1737,51 +1755,15 @@ function GetChordNotes(ChordName, ForceSharp) {
 	return aChordNotes;
 }
 
-/// Return Xm7 cross-bass chords for chords in the same direction
-function FindCrossBassChords(aDirChords) {
-	let aCrossChords = new Array();
-	
-	for (let i = 0; i < aDirChords.length; ++i) {
-		//Skip minor chords
-		if (aDirChords[i].indexOf("m") >= 0)
-			continue;
-		
-		let CrossChordName = aDirChords[i] + "m7";
-		
-		//Get the notes for the potential Xm7 chord
-		let aChordM7Notes = GetChordNotes(CrossChordName, true);
-		
-		//See if there is a chord with matching notes (except for the bass)
-		for (let j = 0; j < aDirChords.length; ++j) {
-			let aChordNotes = GetChordNotes(aDirChords[j], true);
-			
-			let Match = true;
-			for (n = 1; n < aChordM7Notes.length; ++n) {
-				let len = aChordM7Notes[n].length;
-				if (aChordNotes[n-1].length < len)
-					len = aChordNotes[n-1].length;
-				
-				if (aChordM7Notes[n].substr(0, len) != aChordNotes[n-1].substr(0, len)) {
-					Match = false;
-					break;
-				}
-			}
-			
-			if (Match)
-				aCrossChords.push(CrossChordName + " " + aDirChords[j]);
-		}
-	}
-	
-	//Remove duplicates
-	aCrossChords = aCrossChords.filter(function(elem, index, self) {
-	return index === self.indexOf(elem);
-	})
-	
-	return aCrossChords;
-}
-
 function GenChord(ChordName, aButtonNotes) {
-	let aChordNotes = GetChordNotes(ChordName.replaceAll("m7", "m"));
+	let StrippedChordName = ChordName;
+	let Pos = StrippedChordName.search(" ");
+	if (Pos >= 0) {
+		StrippedChordName = StrippedChordName.substr(0, Pos);
+		if (ChordName.slice(-1) == ">" || ChordName.slice(-1) == "<")
+			StrippedChordName += ChordName.slice(-1);
+	}
+	let aChordNotes = GetChordNotes(StrippedChordName.replaceAll("m7", "m"));
 	
 	let aBass  = new Array();
 	let aOther = new Array();
@@ -1814,9 +1796,10 @@ function GenChord(ChordName, aButtonNotes) {
 	
 	var ABC = '';
 	if (aBass.length || aOther.length) {
-		ChordName = ChordName.replaceAll("b", "♭");
+		StrippedChordName = StrippedChordName.replaceAll("b", "♭");
+		ChordName         = ChordName.replaceAll("b", "♭");
 		
-		let BassName = ChordName;
+		let BassName = StrippedChordName;
 		BassName = BassName.replaceAll("m7", "");
 		BassName = BassName.replaceAll("m", "");
 		let SepIndex = BassName.indexOf(" ");
@@ -1886,7 +1869,7 @@ function ExampleLoad(Index) {
 				break;
 		}
 	}
-	else if (Instruments.value.substr(0, 3) == "M_2" || Instruments.value == "M_3club_33" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3saltarelle") {
+	else if (Instruments.value.substr(0, 3) == "M_2" || Instruments.value == "M_3club_33" || Instruments.value == "M_3saltarelle" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3vanderaa" || Instruments.value == "M_3rick") {
 		//From G/C to selected
 		switch (Tunings.value) {
 			case "G/C":
@@ -1983,12 +1966,12 @@ function ExampleLoad(Index) {
 				let aRawPull = aRawRow2Pull.concat(aRawRow1Pull);
 				
 				//Get bass chords from ABCjs
-				let aRawChordRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
-				let aRawChordRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
-				let aRawChordRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
-				let aRawChordRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
-				let aRawChordPush = aRawChordRow1Push.concat(aRawChordRow2Push);
-				let aRawChordPull = aRawChordRow1Pull.concat(aRawChordRow2Pull);
+				let aRawChordRow1Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
+				let aRawChordRow1Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
+				let aRawChordRow2Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
+				let aRawChordRow2Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
+				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
+				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
 				let Row2Key = KeyTranspose("C", TransposeSteps);
 				aRow2Push = ButtonArrayConvert(aRawRow2Push, AsInsteadOfGis);
@@ -2067,31 +2050,24 @@ function ExampleLoad(Index) {
 				aLines.push(Line);
 				
 				//Add ABC for bass cross-rows
-				let aPushCrossChord = FindCrossBassChords(aRawChordPush);
-				let aPullCrossChord = FindCrossBassChords(aRawChordPull);
-				let Len = aPushCrossChord.length;
-				if (aPullCrossChord.length > Len)
+				let Len = aRawChordCrossPush.length;
+				if (aRawChordCrossPull.length > Len)
 					Len = aPullCrossChord.length;
 				if (Len > 0) {
 					aLines.push('P:Bass Cross Row');
 					Line = "]";
 					for (let i = 0; i < Len; ++i) {
-						if (i < aPushCrossChord.length)
-							Line += GenChord(aPushCrossChord[i] + '>' , aRawPush);
-						if (i < aPullCrossChord.length)
-							Line += GenChord(aPullCrossChord[i] + '<' , aRawPull);
+						if (i < aRawChordCrossPush.length)
+							Line += GenChord(aRawChordCrossPush[i] + '>' , aRawPush);
+						if (i < aRawChordCrossPull.length)
+							Line += GenChord(aRawChordCrossPull[i] + '<' , aRawPull);
 						
 					}
 					aLines.push(Line);
 				}
-				
-				let aMixCrossChord = FindCrossBassChords(aRawChordPull.concat(aRawChordPush));
-				if (aMixCrossChord.length) {
-					
-				}
 			}
 			//Three row melodeons with the third row containing accidentals
-			else if (Instruments.value == "M_3club_33" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3saltarelle") {
+			else if (Instruments.value == "M_3club_33" || Instruments.value == "M_3saltarelle" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3vanderaa" || Instruments.value == "M_3rick") {
 				let AsInsteadOfGis = Tunings.value == "Bb/Eb";
 				
 				//Get treble buttons from ABCjs
@@ -2101,16 +2077,16 @@ function ExampleLoad(Index) {
 				let aRawRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row2;
 				let aRawRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row1;
 				let aRawRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row1;
-				let aRawPush = aRawRow2Push.concat(aRawRow1Push);
-				let aRawPull = aRawRow2Pull.concat(aRawRow1Pull);
+				let aRawPush = aRawRow3Push.concat(aRawRow2Push.concat(aRawRow1Push));
+				let aRawPull = aRawRow3Pull.concat(aRawRow2Pull.concat(aRawRow1Pull));
 				
 				//Get bass chords from ABCjs
-				let aRawChordRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
-				let aRawChordRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
-				let aRawChordRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
-				let aRawChordRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
-				let aRawChordPush = aRawChordRow1Push.concat(aRawChordRow2Push);
-				let aRawChordPull = aRawChordRow1Pull.concat(aRawChordRow2Pull);
+				let aRawChordRow1Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
+				let aRawChordRow1Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
+				let aRawChordRow2Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
+				let aRawChordRow2Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
+				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
+				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
 				aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
 				aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
@@ -2203,27 +2179,20 @@ function ExampleLoad(Index) {
 				aLines.push(Line);
 				
 				//Add ABC for bass cross-rows
-				let aPushCrossChord = FindCrossBassChords(aRawChordPush);
-				let aPullCrossChord = FindCrossBassChords(aRawChordPull);
-				let Len = aPushCrossChord.length;
-				if (aPullCrossChord.length > Len)
+				let Len = aRawChordCrossPush.length;
+				if (aRawChordCrossPull.length > Len)
 					Len = aPullCrossChord.length;
 				if (Len > 0) {
-					aLines.push('P:Cross Bass');
+					aLines.push('P:Bass Cross Row');
 					Line = "]";
 					for (let i = 0; i < Len; ++i) {
-						if (i < aPushCrossChord.length)
-							Line += GenChord(aPushCrossChord[i] + '>' , aRawPush);
-						if (i < aPullCrossChord.length)
-							Line += GenChord(aPullCrossChord[i] + '<' , aRawPull);
+						if (i < aRawChordCrossPush.length)
+							Line += GenChord(aRawChordCrossPush[i] + '>' , aRawPush);
+						if (i < aRawChordCrossPull.length)
+							Line += GenChord(aRawChordCrossPull[i] + '<' , aRawPull);
 						
 					}
 					aLines.push(Line);
-				}
-				
-				let aMixCrossChord = FindCrossBassChords(aRawChordPull.concat(aRawChordPush));
-				if (aMixCrossChord.length) {
-					
 				}
 			}
 			else if (Instruments.value.substr(0, 1) == "H") {
