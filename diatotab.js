@@ -32,7 +32,7 @@ function AddInstruments() {
 	Instrument.value    = "M_2_21";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
-/*
+/**/
 	Instrument = document.createElement("option");
 	Instrument.text     = "2.5 row club, 33 button, Diatonic Accordion / Melodeon";
 	Instrument.value    = "M_3club_33";
@@ -1638,7 +1638,7 @@ function ButtonArraysToAbc(aRowPush, aRowPull) {
 			AbcRow += aRowPush[i]
 		if (i < aRowPull.length && aRowPull[i].length != 0)
 			AbcRow += aRowPull[i];
-		if (PrevLen != AbcRow.length)
+		if (PrevLen != AbcRow.length && (aRowPull.length > 0 || i % 2 == 1) )
 			AbcRow += "|";
 	}
 	return AbcRow;
