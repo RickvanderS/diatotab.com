@@ -2435,16 +2435,16 @@ function ExampleLoad(Index) {
 					Row3Key = KeyTranspose("F", TransposeSteps);
 					aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
 					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
-					aRow3Push = ButtonArrayAddNames(aRow3Push, ">;");
-					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<;");
+					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
+					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
 					aRow3Push = ButtonArrayToKey(aRow3Push, Row3Key);
 					aRow3Pull = ButtonArrayToKey(aRow3Pull, Row3Key);
 				}
 				else {
 					aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
 					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
-					aRow3Push = ButtonArrayAddNames(aRow3Push, ">;");
-					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<;");
+					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
+					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
 				}
 				
 				let Row2Key = KeyTranspose("C", TransposeSteps);
