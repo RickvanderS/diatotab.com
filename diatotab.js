@@ -7,9 +7,13 @@ function removeOptions(selectElement) {
 
 function showElement(id, show) {
 	if (show)
-		document.getElementById(id).style.visibility = "visible";
+		document.getElementById(id).style.display = "";
 	else
-		document.getElementById(id).style.visibility = "hidden";
+		document.getElementById(id).style.display = "none";
+}
+
+function isShown(id) {
+	return document.getElementById(id).style.display != "none";
 }
 
 function AddInstruments() {
@@ -18,157 +22,424 @@ function AddInstruments() {
 	let Instrument;
 	
 	Instrument = document.createElement("option");
-	Instrument.text  = "1 row, 7 button, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_1_7";
+	Instrument.text  = "Diatonic Accordion / Melodeon 1 row";
+	Instrument.value = "M_1";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text  = "1 row, 10 button, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_1_10";
-	Instruments.add(Instrument);
-	
-	Instrument = document.createElement("option");
-	Instrument.text     = "2 row, 21 button, Diatonic Accordion / Melodeon";
-	Instrument.value    = "M_2_21";
-	Instrument.selected = 'selected';
-	Instruments.add(Instrument);
-/**/
-	Instrument = document.createElement("option");
-	Instrument.text     = "2.5 row club, 33 button, Diatonic Accordion / Melodeon";
-	Instrument.value    = "M_3club_33";
+	Instrument.text     = "Diatonic Accordion / Melodeon 2 row fourth apart";
+	Instrument.value    = "M_2";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
 
 	Instrument = document.createElement("option");
-	Instrument.text  = "2.5 row, 21+5 button Saltarelle, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_3saltarelle";
+	Instrument.text     = "Diatonic Accordion / Melodeon 2.5 row fourth apart, helper row";
+	Instrument.value    = "M_25";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text  = "2.5 row, 21+5 button Castagnari, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_3castagnari";
+	Instrument.text     = "Diatonic Accordion / Melodeon 2.5 row club";
+	Instrument.value    = "M_CLUB";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text  = "2.5 row, 21+X button vanderAa, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_3vanderaa";
+	Instrument.text     = "Diatonic Accordion / Melodeon 3 row fourth apart";
+	Instrument.value    = "M_3";
 	Instruments.add(Instrument);
-	
-	Instrument = document.createElement("option");
-	Instrument.text  = "2.5 row, 21+X button Rick, Diatonic Accordion / Melodeon";
-	Instrument.value = "M_3rick";
-	Instruments.add(Instrument);
-/**/
-	Instrument = document.createElement("option");
-	Instrument.text  = "10 hole, Diatonic Harmonica / French Harp";
-	Instrument.value = "H_10";
-	Instruments.add(Instrument);
-	
-/*	Instrument = document.createElement("option");
-	Instrument.text  = "TEST Guitar";
-	Instrument.value = "G_TEST";
-	Instruments.add(Instrument);
-*/
 
+	Instrument = document.createElement("option");
+	Instrument.text  = "Diatonic Harmonica / French Harp";
+	Instrument.value = "H_1";
+	Instruments.add(Instrument);
+	
 	Instrument = document.createElement("option");
 	Instrument.text  = "No tablature, notes only";
 	Instrument.value = "NONE";
 	Instruments.add(Instrument);
 	
-	AddTunings();
+	AddVariantsTunings();
 }
 
-function AddTunings() {
+function AddTunings2Row() {
 	let Tunings = document.getElementById("tuning");
+	
+	var Tuning = document.createElement("option");
+	Tuning.text     = "G/C";
+	Tuning.selected = 'selected';
+	Tunings.add(Tuning);
+	
+	var Tuning = document.createElement("option");
+	Tuning.text = "A/D";
+	Tunings.add(Tuning);
+	
+	var Tuning = document.createElement("option");
+	Tuning.text = "B♭/E♭";
+	Tunings.add(Tuning);
+	
+	var Tuning = document.createElement("option");
+	Tuning.text = "C/F";
+	Tunings.add(Tuning);
+	
+	var Tuning = document.createElement("option");
+	Tuning.text = "D/G";
+	Tunings.add(Tuning);
+}
+
+function AddVariantsTunings() {
+	//Get selectors
+	let Instruments = document.getElementById("instrument");
+	let Variants    = document.getElementById("variant");
+	let Tunings     = document.getElementById("tuning");
+	
+	//Get selected instrument
+	let Instrument = Instruments.value;
+	
+	//Clear variants and tunings
+	removeOptions(Variants);
 	removeOptions(Tunings);
 	
-	let show_tuning  = true;
-	let show_options = false;
-	let Instrument = document.getElementById("instrument").value;
+	//Load depending on the selected instrument
+	let show_options = true;
 	switch (Instrument) {
-		case "M_1_7":
-		case "M_1_10":
-			var Tuning = document.createElement("option");
-			Tuning.text = "Bb";
-			Tunings.add(Tuning);
+		case "M_1":
+			//Add 1row variants
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "7 button";
+				Variant.value      = "7";
+				Variant.dataSource = "";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "10 button";
+				Variant.value      = "10";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/keyboards/1%20Row%204%20Bass%20-%20C.jpg";
+				Variant.selected   = 'selected';
+				Variants.add(Variant);
+			}
 			
-			var Tuning = document.createElement("option");
-			Tuning.text = "C";
-			Tunings.add(Tuning);
-			
-			var Tuning = document.createElement("option");
-			Tuning.text = "D";
-			Tunings.add(Tuning);
-			
-			var Tuning = document.createElement("option");
-			Tuning.text     = "G";
-			Tuning.selected = 'selected';
-			Tunings.add(Tuning);
-			
-			var Tuning = document.createElement("option");
-			Tuning.text = "A";
-			Tunings.add(Tuning);
+			//Add 1row tunings
+			{
+				var Tuning = document.createElement("option");
+				Tuning.text = "B♭";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "C";
+				Tuning.selected = 'selected';
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "D";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "G";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "A";
+				Tunings.add(Tuning);
+			}
 			break;
-		case "M_2_21":
-		case "M_3club_33":
-		case "M_3saltarelle":
-		case "M_3castagnari":
-		case "M_3vanderaa":
-		case "M_3rick":
-			show_options = true;
-			var Tuning = document.createElement("option");
-			Tuning.text     = "G/C";
-			Tuning.selected = 'selected';
-			Tunings.add(Tuning);
+		case "M_2":
+			//Add 2row variants
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "21 button, 3th button start, 1/1' accidentals";
+				Variant.value      = "21^";
+				Variant.dataSource = "https://ggms.nl/toetsenschemas/frans/2Rij-G_C-Knoppen.pdf";
+				Variant.selected   = 'selected';
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21 button, 3th button start, 1/1' low notes";
+				Variant.value      = "21";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/keyboards/2%20Row%20-%20G_C%20-%20with%20low%20notes.jpg";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21 button, 4th button start, 1/1' accidentals";
+				Variant.value      = "21^>";
+				Variant.dataSource = "";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21 button, 4th button start, 1/1' low notes";
+				Variant.value      = "21>";
+				Variant.dataSource = "";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23 button, 4th button start, 1/1' accidentals";
+				Variant.value      = "23^>";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/DG23acc.gif";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23 button, 4th button start, 1/1' low notes";
+				Variant.value      = "23>";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/DG23low.gif";
+				Variants.add(Variant);
+			}
 			
-			var Tuning = document.createElement("option");
-			Tuning.text = "A/D";
-			Tunings.add(Tuning);
-			
-			var Tuning = document.createElement("option");
-			Tuning.text = "Bb/Eb";
-			Tunings.add(Tuning);
-			
-			var Tuning = document.createElement("option");
-			Tuning.text = "C/F";
-			Tunings.add(Tuning);
-			
-			var Tuning = document.createElement("option");
-			Tuning.text = "D/G";
-			Tunings.add(Tuning);
+			//Add 2row tunings
+			AddTunings2Row();
 			break;
-		case "H_10":
-			var Tuning = document.createElement("option");
-			Tuning.text     = "C";
-			Tuning.selected = 'selected';
-			Tunings.add(Tuning);
+		case "M_25":
+			//Add 2.5row variants
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "21+2 button, 8 bass, Hohner Merlin";
+				Variant.value      = "21+2_Hohner";
+				Variant.dataSource = "";
+				Variant.selected   = "selected";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21+4 button, 12 bass, Hohner Galaad";
+				Variant.value      = "21+4_Hohner";
+				Variant.dataSource = "";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21+5 button, 12 bass, Castagnari";
+				Variant.value      = "21+5_Castagnari";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/DG21plus5castagnari.gif";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21+5 button, 12 bass, Saltarelle";
+				Variant.value      = "21+5_Saltarelle";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/DG21plus5saltarelle.gif";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23+4 button, 12 bass, Saltarelle";
+				Variant.value      = "23+4_Saltarelle";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/DG23plus4saltarelle.gif";
+				Variants.add(Variant);
+			}
+			
+			//Add 2row tunings
+			AddTunings2Row();
+			break;
+		case "M_CLUB":
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "21+4 button, 8 bass, Hohner Club";
+				Variant.value      = "21+4_Club";
+				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23+4 button, 8 bass, Hohner Club";
+				Variant.value      = "23+4_Club";
+				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23+7 button, 8 bass, Hohner Club";
+				Variant.value      = "23+7_Club";
+				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23+8 button, 8 bass, Hohner Club";
+				Variant.value      = "23+8_Club";
+				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 8 bass, Hohner Club";
+				Variant.value      = "23+10_Club";
+				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
+				Variant.selected   = "selected";
+				Variants.add(Variant);
+			}
+			
+			//Add 2row tunings
+			AddTunings2Row();
+			break;
+			
+		case "M_3":
+			//Add 3row variants
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "27 button, 12 bass";
+				Variant.value      = "27";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/ADG27cheviot.gif";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "31 button, 12 bass, Hohner Corona";
+				Variant.value      = "31";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/gcf31corona.gif";
+				Variant.selected   = "selected";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "33 button, 12 bass";
+				Variant.value      = "33";
+				Variant.dataSource = "http://forum.melodeon.net/files/site/ADG33.gif";
+				Variants.add(Variant);
+			}
+			
+			//Add 3row tunings
+			{
+				var Tuning = document.createElement("option");
+				Tuning.text = "E/A/D";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "F/B♭/E♭";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "G/C/F";
+				Tuning.selected = 'selected';
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "A/D/G";
+				Tunings.add(Tuning);
+			}
+		
+			break;
+		case "H_1":
+			show_options = false;
+			
+			//Add harmonica variants
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "10 hole";
+				Variant.value      = "10";
+				Variant.dataSource = "";
+				Variant.selected   = 'selected';
+				Variants.add(Variant);
+			}
+			
+			//Add harmonica tunings
+			{
+				var Tuning = document.createElement("option");
+				Tuning.text     = "C";
+				Tuning.selected = 'selected';
+				Tunings.add(Tuning);
+			}
 			break;
 		default:
-			show_tuning = false;
-			var Tuning = document.createElement("option");
+			show_options = false;
+			
+/*			var Tuning = document.createElement("option");
 			Tuning.text     = "\xa0";
 			Tuning.selected = 'selected';
 			Tunings.add(Tuning);
-			break;
+			break;*/
 	}
 	
-	showElement("tuningdiv"         , show_tuning);
-	showElement("chin"              , show_options);
-	showElement("chin_lab"          , show_options);
-	showElement("inv1"              , show_options);
-	showElement("inv1_lab"          , show_options);
-	showElement("inv1a"             , show_options);
-	showElement("inv1a_lab"         , show_options);
-	showElement("inv5a"             , show_options);
-	showElement("inv5a_lab"         , show_options);
-	showElement("tabmode"           , show_options);
-	showElement("tabmode_lab"       , show_options);
-	showElement("innerstyle"        , show_options);
-	showElement("innerstyle_lab"    , show_options);
-	showElement("changenotehead"    , show_options);
-	showElement("changenotehead_lab", show_options);
+	//Give all selector the same height
+	let MaxLength = Instruments.length;
+	if (Variants.length > MaxLength)
+		MaxLength = Variants.length;
+	if (Tunings.length > MaxLength)
+		MaxLength = Tunings.length;
+	Instruments.size = MaxLength;
+	Variants.size    = MaxLength;
+	Tunings.size     = MaxLength;
+	Variants.style.height = Instruments.offsetHeight + "px";
+	Tunings.style.height  = Instruments.offsetHeight + "px";
 	
+	//Hide empty selectors
+	showElement("variantdiv", Variants.length > 0);
+	showElement("tuningdiv" , Tunings.length  > 0);
+	
+	//Show/hide tablature options
+	showElement("optdiv", show_options);
+	
+	ShowHideVariantOptions();
 	CreateEditor();
+}
+
+function ReplaceElement(id, ori, rep) {
+	let Element = document.getElementById(id);
+	let Str = Element.innerText;
+	Str = Str.replace(ori, rep);
+	Element.innerText = Str;
+}
+
+function ShowHideVariantOptions() {
+	//Get selectors
+	let Instruments = document.getElementById("instrument");
+	let Variants    = document.getElementById("variant");
+	
+	//Get selected instrument and variant
+	let Instrument = Instruments.value;
+	let Variant    = Variants.value;
+	
+	//Give option to start numbering at 0 for 4th button starts
+	let ShowZero = Variant.includes(">") || Variant.includes("23") || Variant.includes("Saltarelle");
+	showElement("startzero", ShowZero);
+	
+	//Show/hide accidental at 1 inverses
+	let ShowInvAccidentatals1_1 = false;
+	let ShowInvAccidentatals1_2 = false;
+	let ShowInvAccidentatals2_1 = false;
+	let ShowInvAccidentatals3_1 = false;
+	if (Instrument == "M_2" && Variant.includes("^")) {
+		ShowInvAccidentatals1_1 = true;
+		ShowInvAccidentatals2_1 = true;
+	}
+	else if (Instrument == "M_3") {
+		if (Variant.includes("31"))
+			ShowInvAccidentatals1_2 = true;
+		else
+			ShowInvAccidentatals1_1 = true;
+		ShowInvAccidentatals2_1 = true;
+		ShowInvAccidentatals3_1 = true;
+	}
+	showElement("inv1div" , ShowInvAccidentatals1_1);
+	showElement("inv2div" , ShowInvAccidentatals1_2);
+	showElement("inv1adiv", ShowInvAccidentatals2_1);
+	showElement("inv1bdiv", ShowInvAccidentatals3_1);
+	
+	//Give 1/2 the same value
+	if (ShowInvAccidentatals1_1)
+		document.getElementById("inv2").checked = document.getElementById("inv1").checked;
+	if (ShowInvAccidentatals1_2)
+		document.getElementById("inv1").checked = document.getElementById("inv2").checked;
+	
+	//Show/hide 5'/6' inverse
+	let ShowInv5 = false;
+	let ShowInv6 = false;
+	if (Instrument == "M_2" || Instrument == "M_25" || Instrument == "M_3") {
+		if (!ShowZero)
+			ShowInv5 = true;
+		else
+			ShowInv6 = true;
+	}
+	showElement("inv5adiv", ShowInv5);
+	showElement("inv6adiv", ShowInv6);
+	
+	//Give 5'/6' the same value
+	if (ShowInv5)
+		document.getElementById("inv6a").checked = document.getElementById("inv5a").checked;
+	if (ShowInv6)
+		document.getElementById("inv5a").checked = document.getElementById("inv6a").checked;
+	
+	//Rename labels depending on starting at 0 or starting at 1
+	if (!ShowZero || (ShowZero && !document.getElementById("zero").checked)) {
+		ReplaceElement("inv1_lab" , "0", "1");
+		ReplaceElement("inv1a_lab", "0", "1");
+		ReplaceElement("inv1b_lab", "0", "1");
+		ReplaceElement("inv6a_lab", "5", "6");
+	}
+	else {
+		ReplaceElement("inv1_lab" , "1", "0");
+		ReplaceElement("inv1a_lab", "1", "0");
+		ReplaceElement("inv1b_lab", "1", "0");
+		ReplaceElement("inv6a_lab", "6", "5");
+	}
+	
 }
 
 function AddReeds() {
@@ -295,63 +566,128 @@ function GetAbcjsParamsFromControls() {
 	
 	//Choose instrument/tuning
 	let Instrument = document.getElementById("instrument").value;
+	let Variant    = document.getElementById("variant").value;
 	let Tuning     = document.getElementById("tuning").value;
+	Tuning = Tuning.replaceAll("♭", "b");
 	switch (Instrument) {
-		case "M_1_7":
-			abcjsParams.tablature = [{
-				instrument: 'melodeon',
-				label: '',
-				tuning: [Tuning + "7"],
-			}];
+		case "M_1":
+			if (Variant == "7") {
+				abcjsParams.tablature = [{
+					instrument: 'melodeon',
+					label: '',
+					tuning: [Tuning + "7"],
+				}];
+			}
+			else if (Variant == "10") {
+				abcjsParams.tablature = [{
+					instrument: 'melodeon',
+					label: '',
+					tuning: [Tuning],
+				}];
+			}
 			break;
-		case "M_1_10":
-			abcjsParams.tablature = [{
-				instrument: 'melodeon',
-				label: '',
-				tuning: [Tuning],
-			}];
-			break;
-		case "M_2_21":
-		case "M_3club_33":
-		case "M_3saltarelle":
-		case "M_3castagnari":
-		case "M_3vanderaa":
-		case "M_3rick":
-			//Get chin accidentals
-			let chinacc = false;
-			if (document.getElementById("chin").checked)
-				chinacc = true;
-			
-			//Get row1 inversions
-			let Row1_inv = "";
-			if (document.getElementById("inv1").checked)
-				Row1_inv += "1";
-			
-			//Get row2 inversions
-			let Row2_inv = "";
-			if (document.getElementById("inv1a").checked)
-				Row2_inv += "1";
-			if (document.getElementById("inv5a").checked)
-				Row2_inv += "5";
-			
-			//Split tuning and add inversions
+
+		case "M_2":
+		case "M_25":
+		case "M_CLUB":
+		case "M_3":
+			//Split tuning
 			let TuningArray = Tuning.split("/");
-			TuningArray[0] += Row1_inv;
-			TuningArray[1] += Row2_inv;
 			
-			//Set row3 system
-			if (Instrument == "M_3club_33")
-				TuningArray[2] = "33club";
-			else if (Instrument == "M_3saltarelle")
-				TuningArray[2] = "saltarelle";
-			else if (Instrument == "M_3castagnari")
-				TuningArray[2] = "castagnari";
-			else if (Instrument == "M_3vanderaa")
-				TuningArray[2] = "vanderaa";
-			else if (Instrument == "M_3rick")
-				TuningArray[2] = "rick";
+			//Instrument specific readouts
+			if (Instrument == "M_2") {
+				//Get chin accidentals
+				if (Variant.includes("^")) {
+					TuningArray[0] += "^";
+					TuningArray[1] += "^";
+				}
+				
+				//4th button start
+				if (Variant.includes(">")) {
+					TuningArray[0] += ">";
+					TuningArray[1] += ">";
+				}
+				
+				//Non-default number of buttons
+				if (Variant.includes("23")) {
+					TuningArray[0] = "12" + TuningArray[0];
+					TuningArray[1] = "11" + TuningArray[1];
+				}
+			}
+			else if (Instrument == "M_25" || Instrument == "M_CLUB") {
+				//Lookup special names for helper rows
+				if (Variant == "21+2_Hohner")
+					TuningArray[2] = "23Hohner";
+				else if (Variant == "21+4_Hohner")
+					TuningArray[2] = "25Hohner";
+				else if (Variant == "21+5_Saltarelle")
+					TuningArray[2] = "26Saltarelle";
+				else if (Variant == "23+4_Saltarelle")
+					TuningArray[2] = "27Saltarelle";
+				else if (Variant == "21+5_Castagnari")
+					TuningArray[2] = "26Castagnari";
+				else if (Variant == "21+4_Club")
+					TuningArray[2] = "25Club";
+				else if (Variant == "23+4_Club")
+					TuningArray[2] = "27Club";
+				else if (Variant == "23+7_Club")
+					TuningArray[2] = "30Club";
+				else if (Variant == "23+8_Club")
+					TuningArray[2] = "31Club";
+				else if (Variant == "23+10_Club")
+					TuningArray[2] = "33Club";
+			}
+			else if (Instrument == "M_3") {
+				//Set number of buttons for each row
+				if (Variant.includes("27")) {
+					TuningArray[0] = "10" + TuningArray[0];
+					TuningArray[1] = "9"  + TuningArray[1];
+					TuningArray[2] = "8"  + TuningArray[2];
+				}
+				else if (Variant.includes("31")) {
+					TuningArray[0] = "10" + TuningArray[0];
+					TuningArray[1] = "11" + TuningArray[1];
+					TuningArray[2] = "10" + TuningArray[2];
+				}
+				else if (Variant.includes("33")) {
+					TuningArray[0] = "12" + TuningArray[0];
+					TuningArray[1] = "11" + TuningArray[1];
+					TuningArray[2] = "10" + TuningArray[2];
+				}
+			}
+			
+			//Add button inversion options
+			{
+				//Get row1 inversions
+				let Row1_inv = ""; 
+				if (isShown("inv1div") && document.getElementById("inv1").checked)
+					Row1_inv += "1";
+				if (isShown("inv2div") && document.getElementById("inv2").checked)
+					Row1_inv += "2";
+				
+				//Get row2 inversions
+				let Row2_inv = "";
+				if (isShown("inv1adiv") && document.getElementById("inv1a").checked)
+					Row2_inv += "1";
+				if (isShown("inv5adiv") && document.getElementById("inv5a").checked)
+					Row2_inv += "5";
+				if (isShown("inv6adiv") && document.getElementById("inv6a").checked)
+					Row2_inv += "6";
+				
+				//Get row3 inversions
+				let Row3_inv = ""; 
+				if (isShown("inv1bdiv") && document.getElementById("inv1b").checked)
+					Row3_inv += "1";
+				
+				//Add inversions to the tuning strings
+				TuningArray[0] += Row1_inv;
+				TuningArray[1] += Row2_inv;
+				if (TuningArray.length == 3)
+					TuningArray[2] += Row3_inv;
+			}
 			
 			//Tablature options
+			let startzero = document.getElementById("zero").checked;
 			let showall              = false;
 			let showall_ignorechords = false;
 			if (document.getElementById("tabmode").value == "1") {
@@ -370,26 +706,18 @@ function GetAbcjsParamsFromControls() {
 				instrument: 'melodeon',
 				label: '',
 				tuning: TuningArray,
-				chinacc: chinacc,
+				startzero: startzero,
 				showall: showall,
 				showall_ignorechords: showall_ignorechords,
 				Row2Marker: Row2Marker,
 				changenoteheads: changenoteheads,
 			}];
 			break;
-		case "H_10":
+		case "H_1":
 			abcjsParams.tablature = [{
 				instrument: 'harmonica',
 				label: '',
 				tuning: [Tuning],
-			}];
-			break;
-		case "G_TEST":
-			abcjsParams.tablature = [{
-				instrument: 'guitar',
-				label: '',
-				tuning: ['D,', 'A,', 'D', 'G', 'A', 'd'],
-				capo: 0
 			}];
 			break;
 	}
@@ -582,18 +910,20 @@ function Load() {
 		if (Value !== null) {
 			//Set value in the control
 			let Control = document.getElementById(ID);
-			if (Control.type == "checkbox")
-				Control.checked = (Value === "true");
-			else if (typeof Control.value !== 'undefined')
-				Control.value = Value;
-			else
-				Control.innerText = Value;
-			
-			//Call special handlers
-			if (ID == "abc_editable")
-				AbcInput();
-			else if (ID == "instrument")
-				AddTunings();
+			if (Control) {
+				if (Control.type == "checkbox")
+					Control.checked = (Value === "true");
+				else if (typeof Control.value !== 'undefined')
+					Control.value = Value;
+				else
+					Control.innerText = Value;
+				
+				//Call special handlers
+				if (ID == "abc_editable")
+					AbcInput();
+				else if (ID == "instrument")
+					AddVariantsTunings();
+			}
 		}
 	}
 }
@@ -608,16 +938,18 @@ function Store() {
 		
 		//Get value from the control
 		let Control = document.getElementById(ID);
-		let Value;
-		if (Control.type == "checkbox")
-			Value = Control.checked;
-		else if (typeof Control.value !== 'undefined')
-			Value = Control.value;
-		else
-			Value = Control.innerText;
-		
-		//Store on client
-		localStorage.setItem(ID, Value);
+		if (Control) {
+			let Value;
+			if (Control.type == "checkbox")
+				Value = Control.checked;
+			else if (typeof Control.value !== 'undefined')
+				Value = Control.value;
+			else
+				Value = Control.innerText;
+			
+			//Store on client
+			localStorage.setItem(ID, Value);
+		}
 	}
 }
 
@@ -1845,6 +2177,7 @@ function ExampleLoad(Index) {
 	let aLines = [];
 	
 	let Instruments = document.getElementById("instrument");
+	let Variants    = document.getElementById("variant");
 	let Tunings     = document.getElementById("tuning");
 	
 	//Lookup the number of transpose steps
@@ -1852,7 +2185,7 @@ function ExampleLoad(Index) {
 	if (Instruments.value.substr(0, 3) == "M_1") {
 		//From G to selected
 		switch (Tunings.value) {
-			case "Bb":
+			case "B♭":
 				TransposeSteps = -9;
 				break;
 			case "C":
@@ -1869,16 +2202,24 @@ function ExampleLoad(Index) {
 				break;
 		}
 	}
-	else if (Instruments.value.substr(0, 3) == "M_2" || Instruments.value == "M_3club_33" || Instruments.value == "M_3saltarelle" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3vanderaa" || Instruments.value == "M_3rick") {
+	else if (Instruments.value.substr(0, 3) == "M_2" || Instruments.value.substr(0, 3) == "M_3") {
 		//From G/C to selected
 		switch (Tunings.value) {
+			case "E/A/D":
+				TransposeSteps = -3;
+				break;
+			case "F/B♭/E♭":
+				TransposeSteps = -2;
+				break;
 			case "G/C":
+			case "G/C/F":
 				TransposeSteps = 0;
 				break;
 			case "A/D":
+			case "A/D/G":
 				TransposeSteps = 2;
 				break;
-			case "Bb/Eb":
+			case "B♭/E♭":
 				TransposeSteps = 3;
 				break;
 			case "C/F":
@@ -1901,11 +2242,12 @@ function ExampleLoad(Index) {
 			ExampleLoad(2);
 		
 			//Set header
-			aLines.push('T: Layout ' + Instruments[Instruments.selectedIndex].text + ' ' + Tunings[Tunings.selectedIndex].text);
+			aLines.push('T: Layout ' + Instruments[Instruments.selectedIndex].text);
+			aLines.push('T: ' + Variants[Variants.selectedIndex].text + ' ' + Tunings[Tunings.selectedIndex].text);
 			aLines.push('L: 1/4');
 			
 			//Instrument specific ABC
-			if (Instruments.value.substr(0, 3) == "M_1") { //Single row melodeons
+			if (Instruments.value == "M_1") { //Single row melodeons
 				let Mini = false;
 				if (Instruments.value == "M_1_7")
 					Mini = true;
@@ -1954,8 +2296,8 @@ function ExampleLoad(Index) {
 				}
 				aLines.push(Line);
 			}
-			else if (Instruments.value.substr(0, 3) == "M_2") { //Dual row melodeons
-				let AsInsteadOfGis = Tunings.value == "Bb/Eb";
+			else if (Instruments.value == "M_2") { //Dual row melodeons
+				let AsInsteadOfGis = Tunings.value == "B♭/E♭";
 				
 				//Get treble buttons from ABCjs
 				let aRawRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row2;
@@ -2016,12 +2358,12 @@ function ExampleLoad(Index) {
 				}
 				
 				//Add C row to ABC
-				aLines.push('P: Treble Inner Row');
+				aLines.push('P: Treble Inner Row ' + Row2Key.replaceAll("b", "♭"));
 				aLines.push('K: ' + Row2Key);
 				aLines.push(LayoutTrebleRow2);
 				
 				//Add G row to ABC
-				aLines.push('P: Treble Outer Row');
+				aLines.push('P: Treble Outer Row ' + Row1Key.replaceAll("b", "♭"));
 				aLines.push('K: ' + Row1Key);
 				aLines.push(LayoutTrebleRow1);
 				
@@ -2066,9 +2408,9 @@ function ExampleLoad(Index) {
 					aLines.push(Line);
 				}
 			}
-			//Three row melodeons with the third row containing accidentals
-			else if (Instruments.value == "M_3club_33" || Instruments.value == "M_3saltarelle" || Instruments.value == "M_3castagnari" || Instruments.value == "M_3vanderaa" || Instruments.value == "M_3rick") {
-				let AsInsteadOfGis = Tunings.value == "Bb/Eb";
+			//Three row melodeons
+			else if (Instruments.value == "M_25" || Instruments.value == "M_CLUB" || Instruments.value == "M_3") {
+				let AsInsteadOfGis = Tunings.value == "B♭/E♭";
 				
 				//Get treble buttons from ABCjs
 				let aRawRow3Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row3;
@@ -2088,10 +2430,22 @@ function ExampleLoad(Index) {
 				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
-				aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
-				aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
-				aRow3Push = ButtonArrayAddNames(aRow3Push, ">:");
-				aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<:");
+				let Row3Key = "";
+				if (Instruments.value == "M_3") {
+					Row3Key = KeyTranspose("F", TransposeSteps);
+					aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
+					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
+					aRow3Push = ButtonArrayAddNames(aRow3Push, ">;");
+					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<;");
+					aRow3Push = ButtonArrayToKey(aRow3Push, Row3Key);
+					aRow3Pull = ButtonArrayToKey(aRow3Pull, Row3Key);
+				}
+				else {
+					aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
+					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
+					aRow3Push = ButtonArrayAddNames(aRow3Push, ">;");
+					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<;");
+				}
 				
 				let Row2Key = KeyTranspose("C", TransposeSteps);
 				aRow2Push = ButtonArrayConvert(aRawRow2Push, AsInsteadOfGis);
@@ -2113,8 +2467,23 @@ function ExampleLoad(Index) {
 				let LayoutTrebleRow2 = "";
 				let LayoutTrebleRow1 = "";
 				if (Index == 0) { //Diatonic scale order
-					//Row 3 always in button order
-					LayoutTrebleRow3 = ButtonArraysToAbc(aRow3Push, aRow3Pull);
+					if (Row3Key == "") {
+						//Row 3 always in button order
+						LayoutTrebleRow3 = ButtonArraysToAbc(aRow3Push, aRow3Pull);
+					}
+					else {
+						//Split buttons with out of key notes
+						let aRow3PushButtons = new Array();
+						let aRow3PullButtons = new Array();
+						SplitOutOfKey(aRow3Push, aRow3Pull, aRow3PushButtons, aRow3PullButtons);
+						
+						//Sort by note order
+						let aRow3 = aRow3Push.concat(aRow3Pull);
+						aRow3.sort(ChordNoteCompare);
+						
+						//Create buttons + note order
+						LayoutTrebleRow3 = ButtonArraysToAbc(aRow3PushButtons, aRow3PullButtons) + ButtonArraysToAbc(aRow3, new Array());
+					}
 					
 					//Split buttons with out of key notes
 					let aRow1PushButtons = new Array();
@@ -2141,16 +2510,21 @@ function ExampleLoad(Index) {
 				}
 				
 				//Add acc row to ABC
+				aLines.push('[]');
 				aLines.push('P: Treble Inner Row');
+				if (Row3Key != "") {
+					aLines[aLines.length - 1] += " " + Row3Key.replaceAll("b", "♭");
+					aLines.push('K: ' + Row3Key);
+				}
 				aLines.push(LayoutTrebleRow3);
 				
 				//Add C row to ABC
-				aLines.push('P: Treble Middle Row');
+				aLines.push('P: Treble Middle Row ' + Row2Key.replaceAll("b", "♭"));
 				aLines.push('K: ' + Row2Key);
 				aLines.push(LayoutTrebleRow2);
 				
 				//Add G row to ABC
-				aLines.push('P: Treble Outer Row');
+				aLines.push('P: Treble Outer Row '  + Row1Key.replaceAll("b", "♭"));
 				aLines.push('K: ' + Row1Key);
 				aLines.push(LayoutTrebleRow1);
 				
@@ -2203,8 +2577,20 @@ function ExampleLoad(Index) {
 				aLines.push('"G"g|"A"a|"Bb"_b| "B"b|"C"c\'| "D"d\'|"Eb"_e\'|"E"e\'| "F"f\'|"Gb"_g\'|"G"g\'| "A"a\'|"Bb"_b\'|"B"b\'|');
 			}
 			
+			//Add layout source URL
+			for (var i = 0; i < Variants.children.length; i++) {
+				if (Variants.children[i].selected != "") {
+					if (Variants.children[i].dataSource != "")
+						aLines.push('S: ' + Variants.children[i].dataSource);
+					break;
+				}
+			}
+			
+			//Add some meta comments to fix the layout
 			aLines.push('%%stretchlast');
 			aLines.push('%%staffsep 80');
+			
+			//No transpose, already done
 			TransposeSteps = 0;
 			break;
 		default:

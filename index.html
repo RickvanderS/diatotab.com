@@ -48,26 +48,49 @@
 		
 		<h2>Instrument / Tuning / Options</h2>
 		<div class="blockborder">
-			<select class="list" id="instrument" size="5" onchange="AddTunings()">
+			<select class="list" id="instrument" size="5" onchange="AddVariantsTunings()">
+			</select>
+		</div>
+		<div id="variantdiv" class="blockborder">
+			<select class="list" id="variant" size="5" onchange="ShowHideVariantOptions();CreateEditor();">
 			</select>
 		</div>
 		<div id="tuningdiv" class="blockborder">
 			<select class="list" id="tuning" size="5" onchange="CreateEditor()">
 			</select>
 		</div>
-		<div class="block">
-			<input type="checkbox" id="chin"  onchange="CreateEditor()" checked>
-			<label for="chin" id="chin_lab">Top accidentals (1/1')</label><br>
-			<input type="checkbox" id="inv1"  onchange="CreateEditor()">
-			<label for="inv1" id="inv1_lab">Button 1 push/pull reverse</label><br>
-			<input type="checkbox" id="inv1a" onchange="CreateEditor()">
-			<label for="inv1a" id="inv1a_lab">Button 1' push/pull reverse</label><br>
-			<input type="checkbox" id="inv5a" onchange="CreateEditor()">
-			<label for="inv5a" id="inv5a_lab">Button 5' push/pull reverse</label><br>
-			
+		<div id="invdiv" class="block">
+			<div id="startzero">
+				<input type="checkbox" id="zero"  onchange="ShowHideVariantOptions();CreateEditor();">
+				<label for="zero">Start numbering at 0</label>
+			</div>
+			<div id="inv1div">
+				<input type="checkbox" id="inv1"  onchange="ShowHideVariantOptions();CreateEditor()">
+				<label for="inv1" id="inv1_lab">Button 1 push/pull reverse</label>
+			</div>
+			<div id="inv2div">
+				<input type="checkbox" id="inv2"  onchange="ShowHideVariantOptions();CreateEditor()">
+				<label for="inv2" id="inv2_lab">Button 2 push/pull reverse</label>
+			</div>
+			<div id="inv1adiv">
+				<input type="checkbox" id="inv1a" onchange="CreateEditor()">
+				<label for="inv1a" id="inv1a_lab">Button 1' push/pull reverse</label>
+			</div>
+			<div id="inv1bdiv">
+				<input type="checkbox" id="inv1b" onchange="CreateEditor()">
+				<label for="inv1b" id="inv1b_lab">Button 1" push/pull reverse</label>
+			</div>
+			<div id="inv5adiv">
+				<input type="checkbox" id="inv5a" onchange="ShowHideVariantOptions();CreateEditor()">
+				<label for="inv5a" id="inv5a_lab">Button 5' push/pull reverse</label>
+			</div>
+			<div id="inv6adiv">
+				<input type="checkbox" id="inv6a" onchange="ShowHideVariantOptions();CreateEditor()">
+				<label for="inv6a" id="inv6a_lab">Button 6' push/pull reverse</label>
+			</div>
 		</div>
-		<div class="block">
-			<label for="tabmode" id="tabmode_lab">Tablature algorithm</label>
+		<div id="optdiv" class="block">
+			<label for="tabmode" id="tabmode_lab">&nbsp;Tablature algorithm</label>
 			<select name="tabmode" id="tabmode" onchange="CreateEditor()">
 				<option value="0">Normal</option>
 				<option value="1">Show all remaining possibilities</option>
