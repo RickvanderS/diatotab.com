@@ -91,8 +91,9 @@ function AddVariantsTunings() {
 	let Variants    = document.getElementById("variant");
 	let Tunings     = document.getElementById("tuning");
 	
-	//Get selected instrument
-	let Instrument = Instruments.value;
+	//Get selected instrument, and currently selected tuning
+	let Instrument    = Instruments.value;
+	let RestoreTuning = Tunings.value;
 	
 	//Clear variants and tunings
 	removeOptions(Variants);
@@ -355,6 +356,19 @@ function AddVariantsTunings() {
 	
 	//Show/hide tablature options
 	showElement("optdiv", show_options);
+	
+	//Restore previously selected tuning
+	if (RestoreTuning.length > 0) {
+		for (var i = 0; i < Tunings.children.length; i++) {
+			var Len = RestoreTuning.length;
+			if (Tunings.children[i].value.length < Len)
+				Len = Tunings.children[i].value.length;
+			
+			if (Tunings.children[i].value.substr(0, Len) == RestoreTuning.substr(0, Len)) {
+				Tunings.children[i].selected = 'selected';
+			}
+		}
+	}
 	
 	ShowHideVariantOptions();
 	CreateEditor();
@@ -832,9 +846,10 @@ function DownloadWav2() {
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "tuning", "chin", "inv1", "inv1a", "inv5a", "tabmode", "innerstyle", "changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
+let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv2", "inv1a", "inv1b", "inv5a", "inv6a", "tabmode", "innerstyle", "changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
+	//Test for first time load
 	//localStorage.clear();
 	
 	OriginalTitle = document.title;
@@ -923,6 +938,8 @@ function Load() {
 					AbcInput();
 				else if (ID == "instrument")
 					AddVariantsTunings();
+				else if (ID == "variant")
+					ShowHideVariantOptions();
 			}
 		}
 	}
@@ -2238,6 +2255,11 @@ function ExampleLoad(Index) {
 	switch (Index) {
 		case 0: //Instrument layout in scale order
 		case 1: //Instrument layout in button order
+			if (Instruments.value == "NONE") {
+				ExampleClose();
+				return false;
+			}
+		
 			//Load a working example so we can copy the button arrays
 			ExampleLoad(2);
 		
@@ -2609,7 +2631,7 @@ function ExampleLoad(Index) {
 			}
 			
 			if (ExampleIndex < FindExampleIndex)
-				return;
+				return false;
 			break;
 	}
 	

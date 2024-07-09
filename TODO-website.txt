@@ -7,7 +7,6 @@ Improvements:
 - Better syntax highlighting for %% meta comment
 New features:
 - Open/save ABC button
-- Instrument variant selector
 
 
 
