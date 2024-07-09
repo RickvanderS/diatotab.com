@@ -22,6 +22,7 @@
 				<p>
 					Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>.
 				</p>
+				<a href="#tool">Skip explanation and scroll to the tool</a>
 			</div>
 			<img style="margin-left:25px; width:300px; height:127px;" src="logo.png">
 		</div>
@@ -38,16 +39,23 @@
 				If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
 				Whenever a number is entered, the transposition is applied directly to the output. Click the 'Transpose ABC' button to apply the transposition to the input ABC.
 			</p>
+			
+			<h4>ABC notation syntax highlighting</h4>
+			<p>
+				To make the ABC input easier to read, colors are added automatically to the input. Most importantly chords get different colors than treble notes and the treble note colors alternate.
+			</p>
 
 			<h4>Reading the dots</h4>
 			<p>
 				If you are trying to read the dots directly and no longer rely on tablature, it is possible to hide the tablature and display alternative note heads for notes played on the inner row(s) of the instrument. This resolves any ambiguity when reading the dots.
 				Under the ABC example button, you can load the instrument layout, this will show the names of the dots and their mappings to instrument button numbers.
 			</p>
+			
 			<h4>Playing by ear</h4>
 			<p>
 				For players that play by ear rather than tablature or dots, the tool allows you to playback the ABC tune. You can configure the amount of voices of the instrument and the amount of tremolo with which the instrument is tuned. You can choose to play only the melody or bass chords and control their relative volume if played simultaneously. Use the fade in/out control to make it should more staccato or legato.
 			</p>
+			
 			<h4>Melodeon acquisition disorder (MAD) cure</h4>
 			<p>
 				Have you ever wondered how another keyboard layout would affect the difficulty of the tunes you are playing? Just select another layout and see instantly what it does to the tablature, no need to buy another melodeon.
@@ -58,7 +66,7 @@
 				There are some special layout options for melodeons with more than one row. For layouts with accidentals on the first button of each row, the push and pull notes of these buttons can be flipped. Same holds for 5', to configure the layout for 'Dutch reversal'. For melodeons with 4th button start, rather than the more common 3th button start, you can choose to start button numbering on 0 instead of 1, this is to make the tablature more similar to 3th button starts.
 			</p>
 			<p>
-				For multi row layouts there are often multiple possibilities to play the same tune. The algorithm tries to find the easiest way, but you might not agree with the result. The push/pull direction is derived from the bass chord (written in ABC notation between " "). For chords that can be played in both directions you can add annotations to overrule the direction. In addition, annotations can be added to force the melody row number.<br>
+				For multi row layouts there are often multiple possibilities to play the same tune. The algorithm tries to find the easiest way, but you might not agree with the result. The push/pull direction is derived from the bass chord (written in ABC notation between " "). For chords that can be played in both directions you can add annotations to overrule the direction. In addition, annotations can be added to force the treble row number.<br>
 			</p>
 			<h4>Push/pull annotations</h3>
 			<p>
@@ -77,7 +85,7 @@
 				<b>,</b> means row 3, write <b>"G,"a</b> to play it with 7" (in push).<br>
 			</p>
 		
-		<h2>Instrument / Tuning / Options</h2>
+		<h2 id="tool">Instrument / Tuning / Options</h2>
 		<div class="blockborder">
 			<select class="list" id="instrument" size="5" onchange="AddVariantsTunings()">
 			</select>
