@@ -16,39 +16,66 @@
 		<h1>Dia To Tab</h1>
 		<div class="intro">
 			<div>
-				Tablature generation tool for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature is created based on instrument selection.
-				<br><br>
-				Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>. You can choose the required instrument and tuning, one and two row melodeons with 3th button starts and harmonicas are supported. If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
+				<p>
+					Tablature generation tool for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature is created based on instrument, layout and key selection.
+				</p>
+				<p>
+					Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>.
+				</p>
 			</div>
 			<img style="margin-left:25px; width:300px; height:127px;" src="logo.png">
 		</div>
 		
-		<h2>Moving beyond tablature</h2>
-		Although the primary purpose of the tool is to generate tablature, it might have its use if you do not want to play from tablature.
-		<h3>Reading the dots</h3>
-		If you are trying to read the dots directly and no longer rely on tablature, it is possible to hide the tablature and display alternative note heads for notes played on the inner row of the instrument. This resolves any ambiguity when reading the dots.
-		Under the ABC example button, you can load the instrument layout, this will show the names of the dots and their mappings to instrument button numbers.
-		<h3>Playing by ear</h3>
-		For players that play by ear rather than tablature or dots, the tool allows you to playback the ABC tune. You can configure the amount of voices of the instrument and the amount of tremolo with which the instrument is tuned. You can choose to play only the melody or bass chords and control their relative volume if played simultaneously. Use the fade in/out control to make it should more staccato or legato.
-		
-		<h2> Two row melodeons </h2>
-		There are some special layout options for two row melodeons. Buttons 1 and 1' can either be used for low notes or for accidentals. The push and pull notes of these buttons can be flipped. Same holds for 5', to configure the layout to use 'Dutch reversal'.
-		<br><br>
-		There are often multiple possibilities of playing the same tune. The algorithm tries to find the easiest way, but you might not agree with the result. The push/pull direction is derived from the bass chord (written in ABC notation between ""). For chords that can be played in both directions you can add annotations to overrule the direction. In addition, annotations can be added to force the melody row number.<br>
+		<h2>Additional functionality</h2>
+		<p>
+			Although the primary purpose of the tool is to generate tablature, there is other functionality that might come in handy.
+		</p>
+			<h4>Transposition</h4>
+			<p>
+				By the very nature of diatonic instruments, not all keys can be played. Therefore a transposition tool is built-in.
+			</p>
+			<p>
+				If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
+				Whenever a number is entered, the transposition is applied directly to the output. Click the 'Transpose ABC' button to apply the transposition to the input ABC.
+			</p>
 
-		<h3>Push/pull annotations</h3>
-		Example for G/C melodeon where the <b>G</b> chord can be played in both push and pull.<br>
-		<b>&gt;</b> means push direction, write <b>"G&gt;"</b> to set G chord to push.<br>
-		<b>&lt;</b> means pull direction, write <b>"G&lt;"</b> to set G chord to pull.<br>
-
-		<h3>Row number annotations</h3>
-		Example for G/C melodeon where the <b>a</b> note can be played on both the outer and the inner row (both in pull).<br>
-		<b>.</b> means row 1 or outer row, write <b>"G."a</b> to play it with 11 (in pull).<br>
-		<b>:</b> means row 2 or inner row, write <b>"G:"a</b> to play it with 9' (in pull).<br>
+			<h4>Reading the dots</h4>
+			<p>
+				If you are trying to read the dots directly and no longer rely on tablature, it is possible to hide the tablature and display alternative note heads for notes played on the inner row(s) of the instrument. This resolves any ambiguity when reading the dots.
+				Under the ABC example button, you can load the instrument layout, this will show the names of the dots and their mappings to instrument button numbers.
+			</p>
+			<h4>Playing by ear</h4>
+			<p>
+				For players that play by ear rather than tablature or dots, the tool allows you to playback the ABC tune. You can configure the amount of voices of the instrument and the amount of tremolo with which the instrument is tuned. You can choose to play only the melody or bass chords and control their relative volume if played simultaneously. Use the fade in/out control to make it should more staccato or legato.
+			</p>
+			<h4>Melodeon acquisition disorder (MAD) cure</h4>
+			<p>
+				Have you ever wondered how another keyboard layout would affect the difficulty of the tunes you are playing? Just select another layout and see instantly what it does to the tablature, no need to buy another melodeon.
+			</p>
 		
-		<h4> Three row melodeons </h4>
-		For three rows, the row number annotations are extended. The example below is for a G/C/F.<br>
-		<b>,</b> means row 3, write <b>"G,"a</b> to play it with 7" (in push).<br>
+		<h2>Two and three row melodeons</h2>
+			<p>
+				There are some special layout options for melodeons with more than one row. For layouts with accidentals on the first button of each row, the push and pull notes of these buttons can be flipped. Same holds for 5', to configure the layout for 'Dutch reversal'. For melodeons with 4th button start, rather than the more common 3th button start, you can choose to start button numbering on 0 instead of 1, this is to make the tablature more similar to 3th button starts.
+			</p>
+			<p>
+				For multi row layouts there are often multiple possibilities to play the same tune. The algorithm tries to find the easiest way, but you might not agree with the result. The push/pull direction is derived from the bass chord (written in ABC notation between " "). For chords that can be played in both directions you can add annotations to overrule the direction. In addition, annotations can be added to force the melody row number.<br>
+			</p>
+			<h4>Push/pull annotations</h3>
+			<p>
+				Example for G/C melodeon where the <b>G</b> chord can be played in both push and pull.<br>
+				<b>&gt;</b> means push direction, write <b>"G&gt;"</b> to set G chord to push.<br>
+				<b>&lt;</b> means pull direction, write <b>"G&lt;"</b> to set G chord to pull.<br>
+			</p>
+			<h4>Row number annotations</h4>
+			<p>
+				Example for G/C melodeon where the <b>a</b> note can be played on both the outer and the inner row (both in pull).<br>
+				<b>.</b> means row 1 or outer row, write <b>"G."a</b> to play it with 11 (in pull).<br>
+				<b>:</b> means row 2 or inner row, write <b>"G:"a</b> to play it with 9' (in pull).<br>
+			</p>
+			<p>
+				For three rows, the row number annotations are extended. The example below is for a G/C/F.<br>
+				<b>,</b> means row 3, write <b>"G,"a</b> to play it with 7" (in push).<br>
+			</p>
 		
 		<h2>Instrument / Tuning / Options</h2>
 		<div class="blockborder">
