@@ -716,6 +716,10 @@ function GetAbcjsParamsFromControls() {
 				Row2Marker = "*";
 			let changenoteheads = document.getElementById("changenotehead").checked;
 			
+			var tabstyle = 2;
+			if (document.getElementById("tabmode").value == "3")
+				tabstyle = 0;
+			
 			abcjsParams.tablature = [{
 				instrument: 'melodeon',
 				label: '',
@@ -725,6 +729,7 @@ function GetAbcjsParamsFromControls() {
 				showall_ignorechords: showall_ignorechords,
 				Row2Marker: Row2Marker,
 				changenoteheads: changenoteheads,
+				tabstyle: tabstyle
 			}];
 			break;
 		case "H_1":
@@ -735,6 +740,9 @@ function GetAbcjsParamsFromControls() {
 			}];
 			break;
 	}
+	
+	//if (abcjsParams.tablature)
+	//	abcjsParams.tablature[0].tabstyle = Number(document.getElementById("tabstyle").value);
 	
 	return abcjsParams;
 }

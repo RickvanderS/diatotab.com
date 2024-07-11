@@ -87,7 +87,7 @@
 		
 		<h2 id="tool">Instrument / Tuning / Options</h2>
 		<div class="blockborder">
-			<select class="list" id="instrument" size="5" onchange="AddVariantsTunings()">
+			<select class="list" id="instrument" size="5" onchange="AddVariantsTunings();CreateEditor();">
 			</select>
 		</div>
 		<div id="variantdiv" class="blockborder">
@@ -134,11 +134,19 @@
 				<option value="0">Normal</option>
 				<option value="1">Show all remaining possibilities</option>
 				<option value="2">Show all possibilities</option>
+				<option value="3">No tablature, notes only</option>
 			</select><br>
-			<input type="checkbox" id="innerstyle"  onchange="CreateEditor()">
-			<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for inner row</label><br>
+			<!--<label for="tabstyle" id="tabstyle_lab">&nbsp;Tablature style</label>
+			<select name="tabstyle" id="tabstyle" onchange="CreateEditor()">
+				<option value="1">One line</option>
+				<option value="2">Two lines (push and pull)</option>
+				<option value="3">Line for every instrument row</option>
+				<option value="0">No tablature, notes only</option>
+			</select><br>-->
 			<input type="checkbox" id="changenotehead"  onchange="CreateEditor()" checked>
-			<label for="changenotehead" id="changenotehead_lab">Use diamand note heads for inner row notes</label>
+			<label for="changenotehead" id="changenotehead_lab">Use alternative note heads for inner rows</label><br>
+			<input type="checkbox" id="innerstyle"  onchange="CreateEditor()">
+			<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for row 2</label><br>
 		</div>
 		<div class="blockend"></div>
 	</div>
