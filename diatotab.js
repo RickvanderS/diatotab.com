@@ -103,6 +103,8 @@ function AddVariantsTunings() {
 	let show_options = true;
 	switch (Instrument) {
 		case "M_1":
+			show_options = false;
+			
 			//Add 1row variants
 			{
 				var Variant = document.createElement("option");
