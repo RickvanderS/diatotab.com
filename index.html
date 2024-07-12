@@ -133,11 +133,17 @@
 				<label for="single_tabstyle">&nbsp;Tablature style</label>
 				<select id="single_tabstyle" onchange="CreateEditor()">
 					<option value="1">One line</option>
-					<option value="2">Two lines (brow and draw)</option>
+					<option value="2" selected="selected">Two lines (push and pull)</option>
 					<option value="0">No tablature, notes only</option>
 				</select><br>
 			</div>
 			<div id="opt_harm">
+				<label for="harm_tabstyle">&nbsp;Tablature style</label>
+				<select id="harm_tabstyle" onchange="CreateEditor()">
+					<option value="1" selected="selected">One line</option>
+					<option value="2">Two lines (brow and draw)</option>
+					<option value="0">No tablature, notes only</option>
+				</select><br>
 				<input  id="harm_changenotehead" type="checkbox" onchange="CreateEditor()" checked>
 				<label for="harm_changenotehead">Use alternative note heads for bends</label><br>
 			</div>
@@ -145,7 +151,7 @@
 				<label for="tabstyle">&nbsp;Tablature style</label>
 				<select id="tabstyle" onchange="CreateEditor()">
 					<option value="1">One line</option>
-					<option value="2">Two lines (push and pull)</option>
+					<option value="2" selected="selected">Two lines (push and pull)</option>
 					<option value="3">Line for every instrument row</option>
 					<option value="0">No tablature, notes only</option>
 				</select><br>

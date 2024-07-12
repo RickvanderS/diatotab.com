@@ -313,9 +313,8 @@ function AddVariantsTunings() {
 		
 			break;
 		case "H_1":
-			show_options_single = true;
-			show_options_mel    = false;
-			show_options_harm   = true;
+			show_options_mel  = false;
+			show_options_harm = true;
 			
 			//Add harmonica variants
 			{
@@ -774,7 +773,7 @@ function GetAbcjsParamsFromControls() {
 				instrument     : 'diatonic',
 				label          : '',
 				tuning         : Array(Tuning + "~"), //Add ~ to indicate harmonica
-				tabstyle       : Number(document.getElementById("single_tabstyle").value),
+				tabstyle       : Number(document.getElementById("harm_tabstyle").value),
 				changenoteheads:        document.getElementById("harm_changenotehead").checked
 				
 			}];
