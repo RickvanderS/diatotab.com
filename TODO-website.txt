@@ -5,6 +5,8 @@ Improvements:
 - Help button with overlay text to explain playback controls
 - Better syntax highlighting around |[
 - Better syntax highlighting for %% meta comment
+- Layout load: Re-implement for harmonica
+- Layout load: Better choosing between flat and sharp
 New features:
 - Open/save ABC button
 - Open custom layout file

@@ -100,10 +100,13 @@ function AddVariantsTunings() {
 	removeOptions(Tunings);
 	
 	//Load depending on the selected instrument
-	let show_options = true;
+	let show_options_single = false;
+	let show_options_mel    = true;
+	let show_options_harm   = false;
 	switch (Instrument) {
 		case "M_1":
-			show_options = false;
+			show_options_single = true;
+			show_options_mel    = false;
 			
 			//Add 1row variants
 			{
@@ -310,7 +313,9 @@ function AddVariantsTunings() {
 		
 			break;
 		case "H_1":
-			show_options = false;
+			show_options_single = true;
+			show_options_mel    = false;
+			show_options_harm   = true;
 			
 			//Add harmonica variants
 			{
@@ -325,19 +330,57 @@ function AddVariantsTunings() {
 			//Add harmonica tunings
 			{
 				var Tuning = document.createElement("option");
+				Tuning.text     = "G";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "A♭";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "A";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "B♭";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "B";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
 				Tuning.text     = "C";
 				Tuning.selected = 'selected';
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "D♭";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "D";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "E♭";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "E";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "F";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text     = "F#";
 				Tunings.add(Tuning);
 			}
 			break;
 		default:
-			show_options = false;
-			
-/*			var Tuning = document.createElement("option");
-			Tuning.text     = "\xa0";
-			Tuning.selected = 'selected';
-			Tunings.add(Tuning);
-			break;*/
+			show_options_mel = false;
 	}
 	
 	//Give all selector the same height
@@ -357,7 +400,9 @@ function AddVariantsTunings() {
 	showElement("tuningdiv" , Tunings.length  > 0);
 	
 	//Show/hide tablature options
-	showElement("optdiv", show_options);
+	showElement("opt_single", show_options_single);
+	showElement("opt_mel"   , show_options_mel);
+	showElement("opt_harm"  , show_options_harm);
 	
 	//Restore previously selected tuning
 	if (RestoreTuning.length > 0) {
@@ -587,20 +632,15 @@ function GetAbcjsParamsFromControls() {
 	Tuning = Tuning.replaceAll("♭", "b");
 	switch (Instrument) {
 		case "M_1":
-			if (Variant == "7") {
-				abcjsParams.tablature = [{
-					instrument: 'melodeon',
-					label: '',
-					tuning: [Tuning + "7"],
-				}];
-			}
-			else if (Variant == "10") {
-				abcjsParams.tablature = [{
-					instrument: 'melodeon',
-					label: '',
-					tuning: [Tuning],
-				}];
-			}
+			if (Variant == "7")
+				Tuning = "7" + Tuning;
+
+			abcjsParams.tablature = [{
+				instrument: 'diatonic',
+				label     : '',
+				tuning    : [Tuning],
+				tabstyle  : Number(document.getElementById("single_tabstyle").value),
+			}];
 			break;
 
 		case "M_2":
@@ -716,35 +756,30 @@ function GetAbcjsParamsFromControls() {
 			let Row2Marker = null;
 			if (document.getElementById("innerstyle").checked)
 				Row2Marker = "*";
-			let changenoteheads = document.getElementById("changenotehead").checked;
-			
-			var tabstyle = 2;
-			if (document.getElementById("tabmode").value == "3")
-				tabstyle = 0;
 			
 			abcjsParams.tablature = [{
-				instrument: 'melodeon',
-				label: '',
-				tuning: TuningArray,
-				startzero: startzero,
-				showall: showall,
-				showall_ignorechords: showall_ignorechords,
-				Row2Marker: Row2Marker,
-				changenoteheads: changenoteheads,
-				tabstyle: tabstyle
+				instrument          : 'diatonic',
+				label               : '',
+				tuning              : TuningArray,
+				tabstyle            : Number(document.getElementById("tabstyle").value),
+				changenoteheads     :        document.getElementById("changenotehead").checked,
+				startzero           : startzero,
+				Row2Marker          : Row2Marker,
+				showall             : showall,
+				showall_ignorechords: showall_ignorechords
 			}];
 			break;
 		case "H_1":
 			abcjsParams.tablature = [{
-				instrument: 'harmonica',
-				label: '',
-				tuning: [Tuning],
+				instrument     : 'diatonic',
+				label          : '',
+				tuning         : Array(Tuning + "~"), //Add ~ to indicate harmonica
+				tabstyle       : Number(document.getElementById("single_tabstyle").value),
+				changenoteheads:        document.getElementById("harm_changenotehead").checked
+				
 			}];
 			break;
 	}
-	
-	//if (abcjsParams.tablature)
-	//	abcjsParams.tablature[0].tabstyle = Number(document.getElementById("tabstyle").value);
 	
 	return abcjsParams;
 }
@@ -856,7 +891,7 @@ function DownloadWav2() {
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv2", "inv1a", "inv1b", "inv5a", "inv6a", "tabmode", "innerstyle", "changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
+let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv2", "inv1a", "inv1b", "inv5a", "inv6a", "tabmode", "innerstyle", "tabstyle", "single_tabstyle", "changenotehead", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
 	//Test for first time load
