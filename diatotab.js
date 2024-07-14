@@ -1692,14 +1692,6 @@ function GetSharpFlatConverts(LowKey, HighKey) {
 	let KeyIndex2 = FindCicrleKeyIndex(HighKey);
 	if (KeyIndex2 - KeyIndex1 > 6)
 		KeyIndex2 -= 12;
-	let SharpSize = false;
-	{
-		let Average = (KeyIndex1 + KeyIndex2) / 2;
-		if (Average < 0)
-			Average += 12;
-		if (Average <= 6)
-			SharpSize = true;
-	}
 	let CsharpToDflat = false;
 	let DsharpToEflat = false;
 	let FsharpToGflat = false;
@@ -1714,18 +1706,10 @@ function GetSharpFlatConverts(LowKey, HighKey) {
 		let KeyIndex = Index;
 		if (Index > KeyIndex2) {
 			var Diff2 = Index - KeyIndex2;
-			if (SharpSize) {
-				if (Diff2 % 2 == 1)
-					KeyIndex = KeyIndex1 - (Diff2+1) / 2;
-				else
-					KeyIndex = KeyIndex2 + Diff2 / 2;
-			}
-			else {
-				if (Diff2 % 2 == 1)
-					KeyIndex = KeyIndex2 + (Diff2+1) / 2;
-				else
-					KeyIndex = KeyIndex1 - Diff2 / 2;
-			}
+			if (Diff2 % 2 == 1)
+				KeyIndex = KeyIndex1 - (Diff2+1) / 2;
+			else
+				KeyIndex = KeyIndex2 + Diff2 / 2;
 		}
 		if (KeyIndex < 0)
 			KeyIndex += 12;
@@ -2263,7 +2247,28 @@ function GetChordNotes(ChordName, ForceSharp) {
 	return aChordNotes;
 }
 
-function GenChord(ChordName, aButtonNotes) {
+function GenChord(ChordName, aButtonNotes, Options) {
+	if (Options.CsharpToDflat)
+		ChordName = ChordName.replaceAll('C#', 'Db');
+	if (Options.DsharpToEflat)
+		ChordName = ChordName.replaceAll('D#', 'Eb');
+	if (Options.FsharpToGflat)
+		ChordName = ChordName.replaceAll('F#', 'Gb');
+	if (Options.GsharpToAflat)
+		ChordName = ChordName.replaceAll('G#', 'Ab');
+	if (Options.AsharpToBflat)
+		ChordName = ChordName.replaceAll('A#', 'Bb');
+	if (Options.DflatToCsharp)
+		ChordName = ChordName.replaceAll('Db', 'C#');
+	if (Options.EflatToDsharp)
+		ChordName = ChordName.replaceAll('Eb', 'D#');
+	if (Options.GflatToFsharp)
+		ChordName = ChordName.replaceAll('Gb', 'F#');
+	if (Options.AflatToGsharp)
+		ChordName = ChordName.replaceAll('Ab', 'G#');
+	if (Options.BflatToAsharp)
+		ChordName = ChordName.replaceAll('Bb', 'A#');
+	
 	let StrippedChordName = ChordName;
 	let Pos = StrippedChordName.search(" ");
 	if (Pos >= 0) {
@@ -2496,8 +2501,8 @@ function ExampleLoad(Index) {
 				aLines.push('P:Bass');
 				var Line = "]";
 				for (let i = 0; i < aRawChordRowPush.length; ++i) {
-					Line += GenChord(aRawChordRowPush[i] + '>', aRawPush);
-					Line += GenChord(aRawChordRowPull[i] + '<', aRawPull);
+					Line += GenChord(aRawChordRowPush[i] + '>', aRawPush, convOptions);
+					Line += GenChord(aRawChordRowPull[i] + '<', aRawPull, convOptions);
 				}
 				aLines.push(Line);
 			}
@@ -2584,8 +2589,8 @@ function ExampleLoad(Index) {
 					let Ann = ".";
 					if (i > 0)
 						Ann = ":";
-					Line += GenChord(aRawChordRow1Push[i] + '>' + Ann, aRawPush);
-					Line += GenChord(aRawChordRow1Pull[i] + '<' + Ann, aRawPull);
+					Line += GenChord(aRawChordRow1Push[i] + '>' + Ann, aRawPush, convOptions);
+					Line += GenChord(aRawChordRow1Pull[i] + '<' + Ann, aRawPull, convOptions);
 				}
 				aLines.push(Line);
 				aLines.push('P:Bass Inner Row');
@@ -2594,8 +2599,8 @@ function ExampleLoad(Index) {
 					let Ann = ".";
 					if (i > 0)
 						Ann = ":";
-					Line += GenChord(aRawChordRow2Push[i] + '>' + Ann, aRawPush);
-					Line += GenChord(aRawChordRow2Pull[i] + '<' + Ann, aRawPull);
+					Line += GenChord(aRawChordRow2Push[i] + '>' + Ann, aRawPush, convOptions);
+					Line += GenChord(aRawChordRow2Pull[i] + '<' + Ann, aRawPull, convOptions);
 				}
 				aLines.push(Line);
 				
@@ -2608,9 +2613,9 @@ function ExampleLoad(Index) {
 					Line = "]";
 					for (let i = 0; i < Len; ++i) {
 						if (i < aRawChordCrossPush.length)
-							Line += GenChord(aRawChordCrossPush[i] + '>' , aRawPush);
+							Line += GenChord(aRawChordCrossPush[i] + '>' , aRawPush, convOptions);
 						if (i < aRawChordCrossPull.length)
-							Line += GenChord(aRawChordCrossPull[i] + '<' , aRawPull);
+							Line += GenChord(aRawChordCrossPull[i] + '<' , aRawPull, convOptions);
 						
 					}
 					aLines.push(Line);
@@ -2754,8 +2759,8 @@ function ExampleLoad(Index) {
 					let Ann = ".";
 					if (i > 0)
 						Ann = ":";
-					Line += GenChord(aRawChordRow1Push[i] + '>' + Ann, aRawPush);
-					Line += GenChord(aRawChordRow1Pull[i] + '<' + Ann, aRawPull);
+					Line += GenChord(aRawChordRow1Push[i] + '>' + Ann, aRawPush, convOptions);
+					Line += GenChord(aRawChordRow1Pull[i] + '<' + Ann, aRawPull, convOptions);
 				}
 				aLines.push(Line);
 				aLines.push('P:Bass Inner Row');
@@ -2764,8 +2769,8 @@ function ExampleLoad(Index) {
 					let Ann = ".";
 					if (i > 0)
 						Ann = ":";
-					Line += GenChord(aRawChordRow2Push[i] + '>' + Ann, aRawPush);
-					Line += GenChord(aRawChordRow2Pull[i] + '<' + Ann, aRawPull);
+					Line += GenChord(aRawChordRow2Push[i] + '>' + Ann, aRawPush, convOptions);
+					Line += GenChord(aRawChordRow2Pull[i] + '<' + Ann, aRawPull, convOptions);
 				}
 				aLines.push(Line);
 				
@@ -2778,9 +2783,9 @@ function ExampleLoad(Index) {
 					Line = "]";
 					for (let i = 0; i < Len; ++i) {
 						if (i < aRawChordCrossPush.length)
-							Line += GenChord(aRawChordCrossPush[i] + '>' , aRawPush);
+							Line += GenChord(aRawChordCrossPush[i] + '>' , aRawPush, convOptions);
 						if (i < aRawChordCrossPull.length)
-							Line += GenChord(aRawChordCrossPull[i] + '<' , aRawPull);
+							Line += GenChord(aRawChordCrossPull[i] + '<' , aRawPull, convOptions);
 						
 					}
 					aLines.push(Line);
@@ -2843,15 +2848,6 @@ function ExampleLoad(Index) {
 				aLines.push('P: Bends');
 				aLines.push('K: C');
 				aLines.push(LayoutBends);
-				
-				
-
-				/*
-				//Add C row
-				//           1                  2                      3                             4                 5          
-				aLines.push('|"C"C|"Db"_D|"D"D| "E"E|"F"F|"Gb"_G|"G"G| "G"G|"Ab"_A|"A"A|"Bb"_B|"B"B| "C"c|"Db"_d|"D"d| "E"e|"F"f|');
-				//           6                 7            8                       9                       10
-				aLines.push('"G"g|"A"a|"Bb"_b| "B"b|"C"c\'| "D"d\'|"Eb"_e\'|"E"e\'| "F"f\'|"Gb"_g\'|"G"g\'| "A"a\'|"Bb"_b\'|"B"b\'|');*/
 			}
 			
 			//Add layout source URL
