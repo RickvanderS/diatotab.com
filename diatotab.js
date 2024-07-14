@@ -333,10 +333,6 @@ function AddVariantsTunings() {
 				Tunings.add(Tuning);
 				
 				var Tuning = document.createElement("option");
-				Tuning.text     = "A♭";
-				Tunings.add(Tuning);
-				
-				var Tuning = document.createElement("option");
 				Tuning.text     = "A";
 				Tunings.add(Tuning);
 				
@@ -345,16 +341,8 @@ function AddVariantsTunings() {
 				Tunings.add(Tuning);
 				
 				var Tuning = document.createElement("option");
-				Tuning.text     = "B";
-				Tunings.add(Tuning);
-				
-				var Tuning = document.createElement("option");
 				Tuning.text     = "C";
 				Tuning.selected = 'selected';
-				Tunings.add(Tuning);
-				
-				var Tuning = document.createElement("option");
-				Tuning.text     = "D♭";
 				Tunings.add(Tuning);
 				
 				var Tuning = document.createElement("option");
@@ -371,10 +359,6 @@ function AddVariantsTunings() {
 				
 				var Tuning = document.createElement("option");
 				Tuning.text     = "F";
-				Tunings.add(Tuning);
-				
-				var Tuning = document.createElement("option");
-				Tuning.text     = "F#";
 				Tunings.add(Tuning);
 			}
 			break;
@@ -1691,19 +1675,151 @@ function ExampleClose() {
 	return false;
 }
 
-function ButtonArrayConvert(RawArray, AsInsteadOfGis) {
+function FindCicrleKeyIndex(Key) {
+	//Find key in the circle of fifths
+	let i = 0;
+	for (; i < 12; ++i) {
+		if (GetCircleFifths(i).KeyFlat == Key || GetCircleFifths(i).KeySharp == Key)
+			break;
+	}
+	if (i == 12)
+		return 0;
+	return i;
+}
+
+function GetSharpFlatConverts(LowKey, HighKey) {
+	let KeyIndex1 = FindCicrleKeyIndex(LowKey);
+	let KeyIndex2 = FindCicrleKeyIndex(HighKey);
+	if (KeyIndex2 - KeyIndex1 > 6)
+		KeyIndex2 -= 12;
+	let SharpSize = false;
+	{
+		let Average = (KeyIndex1 + KeyIndex2) / 2;
+		if (Average < 0)
+			Average += 12;
+		if (Average <= 6)
+			SharpSize = true;
+	}
+	let CsharpToDflat = false;
+	let DsharpToEflat = false;
+	let FsharpToGflat = false;
+	let GsharpToAflat = false;
+	let AsharpToBflat = false;
+	let DflatToCsharp = false;
+	let EflatToDsharp = false;
+	let GflatToFsharp = false;
+	let AflatToGsharp = false;
+	let BflatToAsharp = false;
+	for (Index = KeyIndex1; Index <= KeyIndex2 + 10; ++Index) {
+		let KeyIndex = Index;
+		if (Index > KeyIndex2) {
+			var Diff2 = Index - KeyIndex2;
+			if (SharpSize) {
+				if (Diff2 % 2 == 1)
+					KeyIndex = KeyIndex1 - (Diff2+1) / 2;
+				else
+					KeyIndex = KeyIndex2 + Diff2 / 2;
+			}
+			else {
+				if (Diff2 % 2 == 1)
+					KeyIndex = KeyIndex2 + (Diff2+1) / 2;
+				else
+					KeyIndex = KeyIndex1 - Diff2 / 2;
+			}
+		}
+		if (KeyIndex < 0)
+			KeyIndex += 12;
+		let TestKey = GetCircleFifths(KeyIndex).KeyFlat;
+		
+		if (KeyIndex <= 6) {
+			//In key flats
+			if (IsInKey(KeyIndex, "^C") && !CsharpToDflat)
+				DflatToCsharp = true;
+			if (IsInKey(KeyIndex, "^D") && !DsharpToEflat)
+				EflatToDsharp = true;
+			if (IsInKey(KeyIndex, "^F") && !FsharpToGflat)
+				GflatToFsharp = true;
+			if (IsInKey(KeyIndex, "^G") && !GsharpToAflat)
+				AflatToGsharp = true;
+			if (IsInKey(KeyIndex, "^A") && !AsharpToBflat)
+				BflatToAsharp = true;
+		}
+		else {
+			//In key sharps
+			if (IsInKey(KeyIndex, "_D") && !DflatToCsharp)
+				CsharpToDflat = true;
+			if (IsInKey(KeyIndex, "_E") && !EflatToDsharp)
+				DsharpToEflat = true;
+			if (IsInKey(KeyIndex, "_G") && !GflatToFsharp)
+				FsharpToGflat = true;
+			if (IsInKey(KeyIndex, "_A") && !AflatToGsharp)
+				GsharpToAflat = true;
+			if (IsInKey(KeyIndex, "_B") && !BflatToAsharp)
+				AsharpToBflat = true;
+		}
+		
+	}
+	
+	return {
+		CsharpToDflat : CsharpToDflat,
+		DsharpToEflat : DsharpToEflat,
+		FsharpToGflat : FsharpToGflat,
+		GsharpToAflat : GsharpToAflat,
+		AsharpToBflat : AsharpToBflat,
+		DflatToCsharp : DflatToCsharp,
+		EflatToDsharp : EflatToDsharp,
+		GflatToFsharp : GflatToFsharp,
+		AflatToGsharp : AflatToGsharp,
+		BflatToAsharp : BflatToAsharp
+	};
+}
+
+function ButtonArrayConvert(RawArray, Options) {
 	let aRow = new Array;
 	for (let i = 0; i < RawArray.length; ++i) {
 		if (RawArray[i] != "") {
 			//Treble note preferences (not in key), want Bes and Es, all others -is
 			let Note = RawArray[i].SharpName;
-			Note = Note.replaceAll('^A', '_B');
-			Note = Note.replaceAll('^a', '_b');
-			Note = Note.replaceAll('^D', '_E');
-			Note = Note.replaceAll('^d', '_e');
-			if (AsInsteadOfGis) {
+			
+			if (Options.CsharpToDflat) {
+				Note = Note.replaceAll('^C', '_D');
+				Note = Note.replaceAll('^c', '_d');
+			}
+			if (Options.DsharpToEflat) {
+				Note = Note.replaceAll('^D', '_E');
+				Note = Note.replaceAll('^d', '_e');
+			}
+			if (Options.FsharpToGflat) {
+				Note = Note.replaceAll('^F', '_G');
+				Note = Note.replaceAll('^f', '_g');
+			}
+			if (Options.GsharpToAflat) {
 				Note = Note.replaceAll('^G', '_A');
 				Note = Note.replaceAll('^g', '_a');
+			}
+			if (Options.AsharpToBflat) {
+				Note = Note.replaceAll('^A', '_B');
+				Note = Note.replaceAll('^a', '_b');
+			}
+			if (Options.DflatToCsharp) {
+				Note = Note.replaceAll('_D', '^C');
+				Note = Note.replaceAll('_d', '^c');
+			}
+			if (Options.EflatToDsharp) {
+				Note = Note.replaceAll('_E', '^D');
+				Note = Note.replaceAll('_e', '^d');
+			}
+			if (Options.GflatToFsharp) {
+				Note = Note.replaceAll('_G', '^F');
+				Note = Note.replaceAll('_g', '^f');
+			}
+			if (Options.AflatToGsharp) {
+				Note = Note.replaceAll('_A', '^G');
+				Note = Note.replaceAll('_a', '^g');
+			}
+			if (Options.BflatToAsharp) {
+				Note = Note.replaceAll('_B', '^A');
+				Note = Note.replaceAll('_b', '^a');
 			}
 			aRow.push(Note);
 		}
@@ -1876,6 +1992,18 @@ function GetCircleFifths(Index) {
 	}
 }
 
+function IsInKey(CircleIndex, Note) {
+	let InKey = false;
+	for (let k = CircleIndex - 1; k <= CircleIndex+5; ++k) {
+		let CircleEntry = GetCircleFifths(k);
+		if (Note.startsWith(CircleEntry.NoteFlat) || Note.startsWith(CircleEntry.NoteSharp) || Note.startsWith(CircleEntry.NoteFlat.toLowerCase()) || Note.startsWith(CircleEntry.NoteSharp.toLowerCase())) {
+			InKey = true;
+			break;
+		}
+	}
+	return InKey;
+}
+
 function GetNote(ChordNote) {
 	let Note = ChordNote.substr(ChordNote.lastIndexOf('"') + 1);
 	return Note;
@@ -1889,13 +2017,7 @@ function KeyTranspose(Key, TransposeSteps) {
 
 function ButtonArrayToKey(aRow, Key) {
 	//Find key in the circle of fifths
-	let i = 0;
-	for (; i < 12; ++i) {
-		if (GetCircleFifths(i).KeyFlat == Key || GetCircleFifths(i).KeySharp == Key)
-			break;
-	}
-	if (i == 12)
-		return;
+	let KeyIndex = FindCicrleKeyIndex(Key);
 	
 	//For all buttons in the row
 	for (let n = 0; n < aRow.length; ++n) {
@@ -1904,14 +2026,7 @@ function ButtonArrayToKey(aRow, Key) {
 		let Note = GetNote(aRow[n]);
 		
 		//Remove _ and ^ from buttons if within range in the circle of fifths
-		let InKey = false;
-		for (let k = i - 1; k <= i+5; ++k) {
-			let CircleEntry = GetCircleFifths(k);
-			if (Note.startsWith(CircleEntry.NoteFlat) || Note.startsWith(CircleEntry.NoteSharp) || Note.startsWith(CircleEntry.NoteFlat.toLowerCase()) || Note.startsWith(CircleEntry.NoteSharp.toLowerCase())) {
-				InKey = true;
-				break;
-			}
-		}
+		let InKey = IsInKey(KeyIndex, Note);
 		
 		//Check sharp/flat specified
 		let Acc = Note.includes('_') || Note.includes('^');
@@ -2243,7 +2358,7 @@ function ExampleLoad(Index) {
 	
 	//Lookup the number of transpose steps
 	let TransposeSteps = 0;
-	if (Instruments.value.substr(0, 3) == "M_1") {
+	if (Instruments == "M_1") {
 		//From G to selected
 		switch (Tunings.value) {
 			case "B♭":
@@ -2263,7 +2378,7 @@ function ExampleLoad(Index) {
 				break;
 		}
 	}
-	else if (Instruments.value.substr(0, 3) == "M_2" || Instruments.value.substr(0, 3) == "M_3") {
+	else {
 		//From G/C to selected
 		switch (Tunings.value) {
 			case "E/A/D":
@@ -2272,27 +2387,50 @@ function ExampleLoad(Index) {
 			case "F/B♭/E♭":
 				TransposeSteps = -2;
 				break;
+			case "G":
 			case "G/C":
 			case "G/C/F":
 				TransposeSteps = 0;
 				break;
+			case "A♭":
+				TransposeSteps = 1;
+				break;
+			case "A":
 			case "A/D":
 			case "A/D/G":
 				TransposeSteps = 2;
 				break;
+			case "B♭":
 			case "B♭/E♭":
 				TransposeSteps = 3;
 				break;
+			case "B":
+				TransposeSteps = 4;
+				break;
+			case "C":
 			case "C/F":
 				TransposeSteps = 5;
 				break;
+			case "D♭":
+				TransposeSteps = 6;
+				break;
+			case "D":
 			case "D/G":
 				TransposeSteps = 7;
 				break;
+			case "E♭":
+				TransposeSteps = 8;
+				break;
+			case "E":
+				TransposeSteps = 9;
+				break;
+			case "F":
+				TransposeSteps = 10;
+				break;
+			case "F#":
+				TransposeSteps = 11;
+				break;
 		}
-	}
-	else if (Instruments.value.substr(0, 1) == "H") {
-		//TODO:
 	}
 	
 	//Lookup the example
@@ -2327,8 +2465,9 @@ function ExampleLoad(Index) {
 				let aRawChordRowPull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
 				
 				let RowKey = KeyTranspose("G", TransposeSteps);
-				aRowPush = ButtonArrayConvert(aRawPush, false);
-				aRowPull = ButtonArrayConvert(aRawPull, false);
+				let convOptions = GetSharpFlatConverts(RowKey, RowKey);
+				aRowPush = ButtonArrayConvert(aRawPush, convOptions);
+				aRowPull = ButtonArrayConvert(aRawPull, convOptions);
 				aRowPush = ButtonArrayAddNames(aRowPush, ">");
 				aRowPull = ButtonArrayAddNames(aRowPull, "<");
 				aRowPush = ButtonArrayToKey(aRowPush, RowKey);
@@ -2363,8 +2502,6 @@ function ExampleLoad(Index) {
 				aLines.push(Line);
 			}
 			else if (Instruments.value == "M_2") { //Dual row melodeons
-				let AsInsteadOfGis = Tunings.value == "B♭/E♭";
-				
 				//Get treble buttons from ABCjs
 				let aRawRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row2;
 				let aRawRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row2;
@@ -2381,17 +2518,22 @@ function ExampleLoad(Index) {
 				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
+				//Figure out flats and sharps
+				let Row1Key = KeyTranspose("G", TransposeSteps);
 				let Row2Key = KeyTranspose("C", TransposeSteps);
-				aRow2Push = ButtonArrayConvert(aRawRow2Push, AsInsteadOfGis);
-				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, AsInsteadOfGis);
+				let convOptions = GetSharpFlatConverts(Row1Key, Row2Key);
+				
+				//Format inner row
+				aRow2Push = ButtonArrayConvert(aRawRow2Push, convOptions);
+				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, convOptions);
 				aRow2Push = ButtonArrayAddNames(aRow2Push, ">:");
 				aRow2Pull = ButtonArrayAddNames(aRow2Pull, "<:");
 				aRow2Push = ButtonArrayToKey(aRow2Push, Row2Key);
 				aRow2Pull = ButtonArrayToKey(aRow2Pull, Row2Key);
 				
-				let Row1Key = KeyTranspose("G", TransposeSteps);
-				aRow1Push = ButtonArrayConvert(aRawRow1Push, AsInsteadOfGis);
-				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, AsInsteadOfGis);
+				//Format outer row
+				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
+				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
 				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
@@ -2476,8 +2618,6 @@ function ExampleLoad(Index) {
 			}
 			//Three row melodeons
 			else if (Instruments.value == "M_25" || Instruments.value == "M_CLUB" || Instruments.value == "M_3") {
-				let AsInsteadOfGis = Tunings.value == "B♭/E♭";
-				
 				//Get treble buttons from ABCjs
 				let aRawRow3Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row3;
 				let aRawRow3Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row3;
@@ -2496,34 +2636,45 @@ function ExampleLoad(Index) {
 				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
+				//Figure out flats and sharps
+				let Row1Key = KeyTranspose("G", TransposeSteps);
+				let Row2Key = KeyTranspose("C", TransposeSteps);
 				let Row3Key = "";
+				let convOptions;
 				if (Instruments.value == "M_3") {
 					Row3Key = KeyTranspose("F", TransposeSteps);
-					aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
-					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
+					convOptions = GetSharpFlatConverts(Row1Key, Row3Key);
+				}
+				else {
+					convOptions = GetSharpFlatConverts(Row1Key, Row2Key);
+				}
+				
+				if (Instruments.value == "M_3") {
+					aRow3Push = ButtonArrayConvert(aRawRow3Push, convOptions);
+					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, convOptions);
 					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
 					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
 					aRow3Push = ButtonArrayToKey(aRow3Push, Row3Key);
 					aRow3Pull = ButtonArrayToKey(aRow3Pull, Row3Key);
 				}
 				else {
-					aRow3Push = ButtonArrayConvert(aRawRow3Push, AsInsteadOfGis);
-					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, AsInsteadOfGis);
+					aRow3Push = ButtonArrayConvert(aRawRow3Push, convOptions);
+					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, convOptions);
 					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
 					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
 				}
 				
-				let Row2Key = KeyTranspose("C", TransposeSteps);
-				aRow2Push = ButtonArrayConvert(aRawRow2Push, AsInsteadOfGis);
-				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, AsInsteadOfGis);
+				
+				aRow2Push = ButtonArrayConvert(aRawRow2Push, convOptions);
+				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, convOptions);
 				aRow2Push = ButtonArrayAddNames(aRow2Push, ">:");
 				aRow2Pull = ButtonArrayAddNames(aRow2Pull, "<:");
 				aRow2Push = ButtonArrayToKey(aRow2Push, Row2Key);
 				aRow2Pull = ButtonArrayToKey(aRow2Pull, Row2Key);
 				
-				let Row1Key = KeyTranspose("G", TransposeSteps);
-				aRow1Push = ButtonArrayConvert(aRawRow1Push, AsInsteadOfGis);
-				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, AsInsteadOfGis);
+				
+				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
+				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
 				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
@@ -2635,12 +2786,72 @@ function ExampleLoad(Index) {
 					aLines.push(Line);
 				}
 			}
+			//Harmonica
 			else if (Instruments.value.substr(0, 1) == "H") {
+				//Get holes from ABCjs
+				let aRawRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row1;
+				let aRawRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row1;
+				
+				//Get bends from ABCjs
+				let aRawRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row2;
+				let aRawRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row2;
+				let aRawRow3Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row3;
+				let aRawRow3Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row3;
+				let aRawBendsPush = aRawRow3Push.concat(aRawRow2Push);
+				let aRawBendsPull = aRawRow3Pull.concat(aRawRow2Pull);
+				
+				//Process holes
+				let Row1Key = KeyTranspose("G", TransposeSteps);
+				let convOptions = GetSharpFlatConverts(Row1Key, Row1Key);
+				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
+				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
+				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
+				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
+				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
+				aRow1Pull = ButtonArrayToKey(aRow1Pull, Row1Key);
+				
+				//Process bends
+				aBendsPush = ButtonArrayConvert(aRawBendsPush, convOptions);
+				aBendsPull = ButtonArrayConvert(aRawBendsPull, convOptions);
+				aBendsPush = ButtonArrayAddNames(aBendsPush, ">,");
+				aBendsPull = ButtonArrayAddNames(aBendsPull, "<,");
+
+				//Holes in scale or instrument order
+				let LayoutRow1 = "";
+				if (Index == 0) { //Diatonic scale order
+					//Sort by note order
+					let aRow1 = aRow1Push.concat(aRow1Pull);
+					aRow1.sort(ChordNoteCompare);
+					LayoutRow1 = ButtonArraysToAbc(aRow1, new Array());
+				}
+				else if (Index == 1) { //Hole order, first blow then draw
+					LayoutRow1 = ButtonArraysToAbc(aRow1Push , aRow1Pull );
+				}
+				
+				//Bends always in scale order
+				let aBends = aBendsPush.concat(aBendsPull);
+				aBends.sort(ChordNoteCompare);
+				let LayoutBends = ButtonArraysToAbc(aBends, new Array());
+				
+				//Add acc row to ABC
+				aLines.push('[]');
+				aLines.push('P: Holes ' + Row1Key.replaceAll("b", "♭"));
+				aLines.push('K: ' + Row1Key);
+				aLines.push(LayoutRow1);
+				
+				//Add C row to ABC
+				aLines.push('P: Bends');
+				aLines.push('K: C');
+				aLines.push(LayoutBends);
+				
+				
+
+				/*
 				//Add C row
 				//           1                  2                      3                             4                 5          
 				aLines.push('|"C"C|"Db"_D|"D"D| "E"E|"F"F|"Gb"_G|"G"G| "G"G|"Ab"_A|"A"A|"Bb"_B|"B"B| "C"c|"Db"_d|"D"d| "E"e|"F"f|');
 				//           6                 7            8                       9                       10
-				aLines.push('"G"g|"A"a|"Bb"_b| "B"b|"C"c\'| "D"d\'|"Eb"_e\'|"E"e\'| "F"f\'|"Gb"_g\'|"G"g\'| "A"a\'|"Bb"_b\'|"B"b\'|');
+				aLines.push('"G"g|"A"a|"Bb"_b| "B"b|"C"c\'| "D"d\'|"Eb"_e\'|"E"e\'| "F"f\'|"Gb"_g\'|"G"g\'| "A"a\'|"Bb"_b\'|"B"b\'|');*/
 			}
 			
 			//Add layout source URL
