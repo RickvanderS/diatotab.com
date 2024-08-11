@@ -309,6 +309,14 @@ function AddVariantsTunings() {
 				var Tuning = document.createElement("option");
 				Tuning.text = "A/D/G";
 				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "B♭/E♭/A♭";
+				Tunings.add(Tuning);
+				
+				var Tuning = document.createElement("option");
+				Tuning.text = "C/F/B♭";
+				Tunings.add(Tuning);
 			}
 		
 			break;
@@ -2407,6 +2415,7 @@ function ExampleLoad(Index) {
 				break;
 			case "B♭":
 			case "B♭/E♭":
+			case "B♭/E♭/A♭":
 				TransposeSteps = 3;
 				break;
 			case "B":
@@ -2414,6 +2423,7 @@ function ExampleLoad(Index) {
 				break;
 			case "C":
 			case "C/F":
+			case "C/F/B♭":
 				TransposeSteps = 5;
 				break;
 			case "D♭":
