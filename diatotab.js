@@ -2363,7 +2363,7 @@ function ExampleLoad(Index) {
 	
 	//Lookup the number of transpose steps
 	let TransposeSteps = 0;
-	if (Instruments == "M_1") {
+	if (Instruments.value == "M_1") {
 		//From G to selected
 		switch (Tunings.value) {
 			case "B♭":
