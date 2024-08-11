@@ -2372,24 +2372,27 @@ function ExampleLoad(Index) {
 	//Lookup the number of transpose steps
 	let TransposeSteps = 0;
 	if (Instruments.value == "M_1") {
-		//From G to selected
+		//From C to selected
 		switch (Tunings.value) {
 			case "B♭":
-				TransposeSteps = -9;
+				TransposeSteps = -2;
 				break;
 			case "C":
-				TransposeSteps = -7;
-				break;
-			case "D":
-				TransposeSteps = -5;
-				break;
-			case "G":
 				TransposeSteps = 0;
 				break;
-			case "A":
+			case "D":
 				TransposeSteps = 2;
 				break;
+			case "G":
+				TransposeSteps = 7;
+				break;
+			case "A":
+				TransposeSteps = 9;
+				break;
 		}
+		
+		if (Index == 2 || Index == 3 || Index == 4)
+			TransposeSteps -= 12;
 	}
 	else {
 		//From G/C to selected
