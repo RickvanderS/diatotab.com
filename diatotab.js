@@ -734,7 +734,7 @@ function GetAbcjsParamsFromControls() {
 			}
 			
 			//Tablature options
-			let startzero = document.getElementById("zero").checked;
+			let startzero = isShown("startzero") && document.getElementById("zero").checked;
 			let showall              = false;
 			let showall_ignorechords = false;
 			if (document.getElementById("tabmode").value == "1") {
