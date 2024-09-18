@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="abcjs-audio.css">
 	<script src="abcjs-basic-min.js?v=20240918"></script>
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
-	<script src="diatotab.js?v=20240811_3"></script>
+	<script src="diatotab.js?v=20240918"></script>
 </head>
 <body>
 	<div class="container">
@@ -136,7 +136,7 @@
 					<option value="2" selected="selected">Two lines (push and pull)</option>
 					<option value="0">No tablature, notes only</option>
 				</select><br>
-				<input  id="single_notenames" type="checkbox" onchange="CreateEditor()" checked>
+				<input  id="single_notenames" type="checkbox" onchange="CreateEditor()">
 				<label for="single_notenames">Show note names instead of button numbers</label><br>
 			</div>
 			<div id="opt_harm">
@@ -148,7 +148,7 @@
 				</select><br>
 				<input  id="harm_changenotehead" type="checkbox" onchange="CreateEditor()" checked>
 				<label for="harm_changenotehead">Use alternative note heads for bends</label><br>
-				<input  id="harm_notenames" type="checkbox" onchange="CreateEditor()" checked>
+				<input  id="harm_notenames" type="checkbox" onchange="CreateEditor()">
 				<label for="harm_notenames">Show note names instead of hole numbers</label><br>
 			</div>
 			<div id="opt_mel">
@@ -163,7 +163,7 @@
 				<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for row 2</label><br>
 				<input  id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
 				<label for="changenotehead">Use alternative note heads for inner rows</label><br>
-				<input  id="notenames" type="checkbox" onchange="CreateEditor()" checked>
+				<input  id="notenames" type="checkbox" onchange="CreateEditor()">
 				<label for="notenames">Show note names instead of button numbers</label><br>
 				<label for="tabmode">&nbsp;Tablature algorithm</label>
 				<select id="tabmode" onchange="CreateEditor()">
