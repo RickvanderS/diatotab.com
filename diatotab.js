@@ -1175,20 +1175,30 @@ function AbcKeyDown() {
 }
 
 function AbcPaste(event) {
-	//Get the selection range or cursor position, this is where the text will be pasted
+	//Find the top of the element where the paste occurred
+	let PasteTarget = event.target;
+	while (PasteTarget != document.getElementById("abc_editable")) {
+		PasteTarget = PasteTarget.parentNode;
+		if (!PasteTarget)
+			return;
+	}
+
+	//This defines the ranges that will be replaced with the paste text
 	let StartNode   = null;
 	let StartOffset = 0;
 	let EndNode     = null;
 	let EndOffset   = 0;
+	
+	//Get the selection range or cursor position, this is where the text will be pasted
 	var sel = window.getSelection();
 	for (var i = 0; i < sel.rangeCount; ++i) {
 		let range = sel.getRangeAt(i);
-		if (range.startContainer == event.target && range.endContainer == event.target) {
+		if (range.startContainer == PasteTarget && range.endContainer == PasteTarget) {
 			StartNode   = range.startContainer.childNodes[range.startOffset];
 			StartOffset = 0;
 			if (range.endOffset < range.endContainer.childNodes.length) {
-				EndNode     = range.endContainer.childNodes[range.endOffset];
-				EndOffset   = 0;
+				EndNode   = range.endContainer.childNodes[range.endOffset];
+				EndOffset = 0;
 			}
 			else {
 				EndNode   = range.endContainer.childNodes[range.endContainer.childNodes.length - 1];
@@ -1197,7 +1207,7 @@ function AbcPaste(event) {
 			
 			break;
 		}
-		else if (range.startContainer.parentNode == event.target && range.endContainer.parentNode == event.target) {
+		else if (range.startContainer.parentNode == PasteTarget && range.endContainer.parentNode == PasteTarget) {
 			StartNode   = range.startContainer;
 			StartOffset = range.startOffset;
 			EndNode     = range.endContainer;
@@ -1205,48 +1215,50 @@ function AbcPaste(event) {
 			break;
 		}
 	}
+
+	//If there is no selection, try to get the cursor position instead
 	if (!StartNode) {
-		if (sel.focusNode == event.target) {
+		if (sel.focusNode == PasteTarget) {
 			StartNode   = sel.focusNode.childNodes[sel.focusOffset];
 			StartOffset = 0;
 		}
-		else if (sel.focusNode && sel.focusNode.parentNode == event.target) {
+		else if (sel.focusNode && sel.focusNode.parentNode == PasteTarget) {
 			StartNode   = sel.focusNode;
 			StartOffset = sel.focusOffset;
 		}
-		EndNode   = StartNode
+		EndNode   = StartNode;
 		EndOffset = StartOffset;
 	}
-	
+
 	//If selection range was found, we will handle the pasting
 	if (StartNode && EndNode) {
 		//Delete text between start and end position
 		let StartFound = false;
-		for (let i = 0; i < event.target.childNodes.length; ++i) {
-			if (event.target.childNodes[i] == StartNode && event.target.childNodes[i] == EndNode) {
-				let Text = event.target.childNodes[i].textContent;
+		for (let i = 0; i < PasteTarget.childNodes.length; ++i) {
+			if (PasteTarget.childNodes[i] == StartNode && PasteTarget.childNodes[i] == EndNode) {
+				let Text = PasteTarget.childNodes[i].textContent;
 				Text = Text.substr(0, StartOffset) + Text.substr(EndOffset);
-				event.target.childNodes[i].textContent = Text;
+				PasteTarget.childNodes[i].textContent = Text;
 				break;
 			}
-			else if (event.target.childNodes[i] == StartNode) {
-				let Text = event.target.childNodes[i].textContent;
+			else if (PasteTarget.childNodes[i] == StartNode) {
+				let Text = PasteTarget.childNodes[i].textContent;
 				Text = Text.substr(0, StartOffset);
-				event.target.childNodes[i].textContent = Text;
+				PasteTarget.childNodes[i].textContent = Text;
 				
 				StartFound = true;
 			}
-			else if (event.target.childNodes[i] == EndNode) {
-				let Text = event.target.childNodes[i].textContent;
+			else if (PasteTarget.childNodes[i] == EndNode) {
+				let Text = PasteTarget.childNodes[i].textContent;
 				Text = Text.substr(EndOffset);
 				if (Text.length > 0)
-					event.target.childNodes[i].textContent = Text;
+					PasteTarget.childNodes[i].textContent = Text;
 				else
-					event.target.childNodes[i].remove();
+					PasteTarget.childNodes[i].remove();
 				break;
 			}
 			else if (StartFound) {
-				event.target.childNodes[i].remove();
+				PasteTarget.childNodes[i].remove();
 				--i;
 			}
 		}
@@ -1260,25 +1272,25 @@ function AbcPaste(event) {
 			aPasteText[0] = PasteText;
 		
 		//Insert paste text at the start position
-		for (let i = 0; i < event.target.childNodes.length; ++i) {
-			if (event.target.childNodes[i] == StartNode) {
+		for (let i = 0; i < PasteTarget.childNodes.length; ++i) {
+			if (PasteTarget.childNodes[i] == StartNode) {
 				let LastNode = null;
 				let PostText = "";
 				for (let l = 0; l < aPasteText.length; ++l) {
 					//First line?
 					if (l == 0) {
-						if (event.target.childNodes[i].nodeName == "BR") {
+						if (PasteTarget.childNodes[i].nodeName == "BR") {
 							let Line = document.createTextNode(aPasteText[l]);
-							event.target.childNodes[i].before(Line);
+							PasteTarget.childNodes[i].before(Line);
 						}
 						else {
-							let Text = event.target.childNodes[i].textContent;
+							let Text = PasteTarget.childNodes[i].textContent;
 							PostText = Text.substr(StartOffset);
 							Text = Text.substr(0, StartOffset) + aPasteText[l];
-							event.target.childNodes[i].textContent = Text;
+							PasteTarget.childNodes[i].textContent = Text;
 						}
 						
-						LastNode = event.target.childNodes[i];
+						LastNode = PasteTarget.childNodes[i];
 					}
 					else {
 						let Break = document.createElement("br");
@@ -1305,15 +1317,14 @@ function AbcPaste(event) {
 				break;
 			}
 		}
-		
-		//Prevent default paste action
-		event.stopPropagation();
-		event.preventDefault();
-		
-		//Call ADC input event
-		if (event.target == document.getElementById("abc_editable"))
-			AbcInput();
 	}
+	
+	//Prevent default paste action, it gives problems because it allows formatting
+	event.stopPropagation();
+	event.preventDefault();
+	
+	//Call ADC input event to do syntax highlighting
+	AbcInput();
 }
 
 function HtmlEscape(instring) {

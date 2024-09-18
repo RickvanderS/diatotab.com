@@ -197,6 +197,7 @@ div.abcscroll {
 .highLite_editable {
   height:100%;
   padding: 16px;
+  word-wrap: break-word;
 }
 
 /* THE UNDERLAYING ONE WITH COLORS */
