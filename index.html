@@ -7,7 +7,7 @@
 	<link rel="icon" href="favicon.ico">
 	<link rel="stylesheet" href="styles.css?v=20240730">
 	<link rel="stylesheet" href="abcjs-audio.css">
-	<script src="abcjs-basic-min.js?v=20240811"></script>
+	<script src="abcjs-basic-min.js?v=20240918"></script>
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
 	<script src="diatotab.js?v=20240811_3"></script>
 </head>
@@ -136,6 +136,8 @@
 					<option value="2" selected="selected">Two lines (push and pull)</option>
 					<option value="0">No tablature, notes only</option>
 				</select><br>
+				<input  id="single_notenames" type="checkbox" onchange="CreateEditor()" checked>
+				<label for="single_notenames">Show note names instead of button numbers</label><br>
 			</div>
 			<div id="opt_harm">
 				<label for="harm_tabstyle">&nbsp;Tablature style</label>
@@ -146,24 +148,28 @@
 				</select><br>
 				<input  id="harm_changenotehead" type="checkbox" onchange="CreateEditor()" checked>
 				<label for="harm_changenotehead">Use alternative note heads for bends</label><br>
+				<input  id="harm_notenames" type="checkbox" onchange="CreateEditor()" checked>
+				<label for="harm_notenames">Show note names instead of hole numbers</label><br>
 			</div>
 			<div id="opt_mel">
 				<label for="tabstyle">&nbsp;Tablature style</label>
 				<select id="tabstyle" onchange="CreateEditor()">
-					<option value="1">One line</option>
+					<option value="1"                    >One line</option>
 					<option value="2" selected="selected">Two lines (push and pull)</option>
-					<option value="3">Line for every instrument row</option>
-					<option value="0">No tablature, notes only</option>
+					<option value="3"                    >Line for every instrument row</option>
+					<option value="0"                    >No tablature, notes only</option>
 				</select><br>
-				<input  id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
-				<label for="changenotehead">Use alternative note heads for inner rows</label><br>
 				<input  id="innerstyle" type="checkbox" onchange="CreateEditor()">
 				<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for row 2</label><br>
+				<input  id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
+				<label for="changenotehead">Use alternative note heads for inner rows</label><br>
+				<input  id="notenames" type="checkbox" onchange="CreateEditor()" checked>
+				<label for="notenames">Show note names instead of button numbers</label><br>
 				<label for="tabmode">&nbsp;Tablature algorithm</label>
 				<select id="tabmode" onchange="CreateEditor()">
-					<option value="0">Normal</option>
-					<option value="1">Show all remaining possibilities</option>
-					<option value="2">Show all possibilities</option>
+					<option value="0" selected="selected">Normal</option>
+					<option value="1"                    >Show all remaining possibilities</option>
+					<option value="2"                    >Show all possibilities</option>
 				</select><br>
 			</div>
 		</div>

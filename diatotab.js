@@ -225,6 +225,11 @@ function AddVariantsTunings() {
 				Variant.value      = "23+4_Saltarelle";
 				Variant.dataSource = "http://forum.melodeon.net/files/site/DG23plus4saltarelle.gif";
 				Variants.add(Variant);
+				
+				/*var Variant = document.createElement("option");
+				Variant.text       = "21+7 button, 12 bass, Rick";
+				Variant.value      = "21+7_Rick";
+				Variants.add(Variant);*/
 			}
 			
 			//Add 2row tunings
@@ -630,7 +635,8 @@ function GetAbcjsParamsFromControls() {
 				instrument: 'diatonic',
 				label     : '',
 				tuning    : [Tuning],
-				tabstyle  : Number(document.getElementById("single_tabstyle").value),
+				tabstyle  : Number(document.getElementById("single_tabstyle" ).value),
+				tabformat :        document.getElementById("single_notenames").checked ? 1 : 0,
 			}];
 			break;
 
@@ -673,6 +679,8 @@ function GetAbcjsParamsFromControls() {
 					TuningArray[2] = "27Saltarelle";
 				else if (Variant == "21+5_Castagnari")
 					TuningArray[2] = "26Castagnari";
+				else if (Variant == "21+7_Rick")
+					TuningArray[2] = "Rick";
 				else if (Variant == "21+4_Club")
 					TuningArray[2] = "25Club";
 				else if (Variant == "23+4_Club")
@@ -752,7 +760,8 @@ function GetAbcjsParamsFromControls() {
 				instrument          : 'diatonic',
 				label               : '',
 				tuning              : TuningArray,
-				tabstyle            : Number(document.getElementById("tabstyle").value),
+				tabstyle            : Number(document.getElementById("tabstyle"      ).value),
+				tabformat           :        document.getElementById("notenames"     ).checked ? 1 : 0,
 				changenoteheads     :        document.getElementById("changenotehead").checked,
 				startzero           : startzero,
 				Row2Marker          : Row2Marker,
@@ -765,9 +774,9 @@ function GetAbcjsParamsFromControls() {
 				instrument     : 'diatonic',
 				label          : '',
 				tuning         : Array(Tuning + "~"), //Add ~ to indicate harmonica
-				tabstyle       : Number(document.getElementById("harm_tabstyle").value),
+				tabstyle       : Number(document.getElementById("harm_tabstyle"      ).value),
+				tabformat      :        document.getElementById("harm_notenames"     ).checked ? 1 : 0,
 				changenoteheads:        document.getElementById("harm_changenotehead").checked
-				
 			}];
 			break;
 	}
@@ -882,7 +891,7 @@ function DownloadWav2() {
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv2", "inv1a", "inv1b", "inv5a", "inv6a", "tabmode", "innerstyle", "tabstyle", "single_tabstyle", "changenotehead", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
+let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv2", "inv1a", "inv1b", "inv5a", "inv6a", "tabmode", "tabstyle", "notenames", "innerstyle", "changenotehead", "single_tabstyle", "single_notenames", "harm_tabstyle", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
 	//Test for first time load
@@ -1333,9 +1342,9 @@ function AbcInput() {
 	//Get the enter ABC
 	let ABC = "";
 	for (let i = 0; i < ABC_Editor.childNodes.length; ++i) {
-		if (ABC_Editor.childNodes[i].nodeValue)
+		if (ABC_Editor.childNodes[i].nodeName == "#text")
 			ABC += ABC_Editor.childNodes[i].nodeValue;
-		else
+		if (ABC_Editor.childNodes[i].nodeName == "BR")
 			ABC += "\n";
 	}
 	
