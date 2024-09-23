@@ -802,7 +802,7 @@ var g_AbcPrependLength = 0;
 
 function CreateEditor(NoUpdate, ClearSoundsCache) {
 	if (!NoUpdate)
-		AbcInput();
+		AbcInputIntern();
 	
 	//Stop playback
 	if (Editor) {
@@ -888,6 +888,7 @@ function DownloadWav2() {
 	Editor.synth.synthControl.download(document.title + ".wav");
 }
 
+let UpdateTitle = false;
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
@@ -895,13 +896,13 @@ let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning"
 
 function InitPage() {
 	//Test for first time load
-	//localStorage.clear();
+	//window.localStorage.clear();
 	
 	OriginalTitle = document.title;
 	aExampleLines = document.getElementById("abc_editable").textContent.split("\n");
 	AddInstruments();
 	AddReeds();
-	ExampleLoad(2);
+	ExampleLoadIntern(3);
 	try {
 		Load();
 		CreateEditor();
@@ -959,7 +960,7 @@ function CalcAbcScroll() {
 }
 
 function Load() {
-	//For all stored controls
+	//Load all stored form controls
 	for (let i = 0; i < aStoreElements.length; ++i) {
 		let ID = aStoreElements[i];
 		
@@ -980,11 +981,14 @@ function Load() {
 				
 				//Call special handlers
 				if (ID == "abc_editable")
-					AbcInput();
+					AbcInputIntern();
 				else if (ID == "instrument")
 					AddVariantsTunings();
 				else if (ID == "variant")
 					ShowHideVariantOptions();
+				
+				//If at least one control was stored, the update title functionality is enabled
+				UpdateTitle = true;
 			}
 		}
 	}
@@ -994,7 +998,7 @@ function Store() {
 	if (!StoreAllowed)
 		return;
 	
-	//For all controls to store
+	//Store all required form controls
 	for (let i = 0; i < aStoreElements.length; ++i) {
 		let ID = aStoreElements[i];
 		
@@ -1010,7 +1014,7 @@ function Store() {
 				Value = Control.innerText;
 			
 			//Store on client
-			localStorage.setItem(ID, Value);
+			window.localStorage.setItem(ID, Value);
 		}
 	}
 }
@@ -1345,6 +1349,11 @@ function HtmlEscape(instring) {
 }
 
 function AbcInput() {
+	UpdateTitle = true;
+	AbcInputIntern();
+}
+
+function AbcInputIntern() {
 	NewUndo();
 	
 	//Get the ABC input editor
@@ -1537,16 +1546,18 @@ function AbcInput() {
 	CreateEditor(true);
 	
 	//Update page title
-	let RenderDiv = document.getElementById("paper");
-	if (RenderDiv.children.length) {
-		let Title = RenderDiv.children[0].ariaLabel;
-		let Expected = "Sheet Music for \"";
-		if (Title.search(Expected) >= 0) {
-			Title = Title.substring(Expected.length, Title.length-1) + " - Diatotab";
-			document.title = Title;
-		}
-		else {
-			document.title = OriginalTitle;
+	if (UpdateTitle) {
+		let RenderDiv = document.getElementById("paper");
+		if (RenderDiv.children.length) {
+			let Title = RenderDiv.children[0].ariaLabel;
+			let Expected = "Sheet Music for \"";
+			if (Title.search(Expected) >= 0) {
+				Title = Title.substring(Expected.length, Title.length-1) + " - Diatotab";
+				document.title = Title;
+			}
+			else {
+				document.title = OriginalTitle;
+			}
 		}
 	}
 }
@@ -2383,6 +2394,11 @@ function GenChord(ChordName, aButtonNotes, Options) {
 }
 
 function ExampleLoad(Index) {
+	UpdateTitle = true;
+	return ExampleLoadIntern(Index);
+}
+
+function ExampleLoadIntern(Index) {
 	let aLines = [];
 	
 	let Instruments = document.getElementById("instrument");
@@ -2481,7 +2497,7 @@ function ExampleLoad(Index) {
 			}
 		
 			//Load a working example so we can copy the button arrays
-			ExampleLoad(2);
+			ExampleLoadIntern(2);
 		
 			//Set header
 			aLines.push('T: Layout ' + Instruments[Instruments.selectedIndex].text);
