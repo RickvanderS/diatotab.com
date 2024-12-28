@@ -679,7 +679,7 @@ function GetAbcjsParamsFromControls() {
 					TuningArray[2] = "27Saltarelle";
 				else if (Variant == "21+5_Castagnari")
 					TuningArray[2] = "26Castagnari";
-				else if (Variant == "21+7_Rick")
+				else if (Variant == "21+9_Rick")
 					TuningArray[2] = "Rick";
 				else if (Variant == "21+4_Club")
 					TuningArray[2] = "25Club";
