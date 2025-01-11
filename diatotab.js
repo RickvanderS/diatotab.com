@@ -227,8 +227,8 @@ function AddVariantsTunings() {
 				Variants.add(Variant);
 				
 				/*var Variant = document.createElement("option");
-				Variant.text       = "21+7 button, 12 bass, Rick";
-				Variant.value      = "21+7_Rick";
+				Variant.text       = "21+9 button, 12 bass, Rick";
+				Variant.value      = "21+9_Rick";
 				Variants.add(Variant);*/
 			}
 			
@@ -780,6 +780,9 @@ function GetAbcjsParamsFromControls() {
 			}];
 			break;
 	}
+	
+	//Set tablature for multiple voices
+	abcjsParams.tablature = [abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0]]
 	
 	return abcjsParams;
 }
