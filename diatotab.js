@@ -779,10 +779,13 @@ function GetAbcjsParamsFromControls() {
 				changenoteheads:        document.getElementById("harm_changenotehead").checked
 			}];
 			break;
+		default:
+			abcjsParams.tablature = [];
 	}
 	
 	//Set tablature for multiple voices
-	abcjsParams.tablature = [abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0]]
+	if (abcjsParams.tablature.lenght > 0)
+		abcjsParams.tablature = [abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0]]
 	
 	return abcjsParams;
 }
