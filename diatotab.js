@@ -784,7 +784,7 @@ function GetAbcjsParamsFromControls() {
 	}
 	
 	//Set tablature for multiple voices
-	if (abcjsParams.tablature.lenght > 0)
+	if (abcjsParams.tablature.length > 0)
 		abcjsParams.tablature = [abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0], abcjsParams.tablature[0]]
 	
 	return abcjsParams;
