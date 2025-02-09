@@ -497,6 +497,10 @@ function ShowHideVariantOptions() {
 		ReplaceElement("inv6a_lab", "6", "5");
 	}
 	
+	let ShowInstrumentKeyboard = false;
+	if (Instrument.substr(0, 2) == "M_")
+		ShowInstrumentKeyboard = true;
+	showElement("instrkey_div", ShowInstrumentKeyboard);
 }
 
 function AddReeds() {
@@ -1157,10 +1161,6 @@ function Undo() {
 	range.setEnd  (ABC_Editor.childNodes[aAbcUndo[aAbcUndo.length - 2].focusNodeIndex], aAbcUndo[aAbcUndo.length - 2].focusOffset);
 	sel.addRange(range);
 	
-	
-	
-	//TODO: Cursor position
-	
 	//Remove last item
 	aAbcUndo.splice(aAbcUndo.length - 1, 1);
 	aAbcUndo.splice(aAbcUndo.length - 1, 1);
@@ -1175,13 +1175,319 @@ function AbcKeyDown(event) {
 
 	//Enter must create <br>, not a <div>
 	if (event.key === 'Enter') {
-		document.execCommand('insertLineBreak')
-		event.preventDefault()
+		document.execCommand('insertLineBreak');
+		event.preventDefault();
+	}
+	//Note typing, determine push/pull from CTRL status, define button number for qwerty layout, but should work for any layout
+	else if (isShown("instrkey_div") && document.getElementById("instrkey").checked) {
+		//Overrule if user pressed control key
+		if (event.ctrlKey) {
+			if (event.key.length == 1)
+				document.execCommand('insertText', false, event.key);
+			else if (event.key == "Backspace")
+				document.execCommand('delete');
+			event.preventDefault();
+			return;
+		}
+		
+		//Lookup mapping to instrument button
+		var PushNotPull = !event.altKey;
+		var Button      = -1;
+		var Row         =  0;
+		switch (event.code) {
+			case 'ShiftLeft':
+			case 'Backslash':
+				Row    = 1;
+				Button = 1;
+				break;
+			case "KeyZ":
+				Row    = 1;
+				Button = 2;
+				break;
+			case "KeyX":
+				Row    = 1;
+				Button = 3;
+				break;
+			case "KeyC":
+				Row    = 1;
+				Button = 4;
+				break;
+			case "KeyV":
+				Row    = 1;
+				Button = 5;
+				break;
+			case "KeyB":
+				Row    = 1;
+				Button = 6;
+				break;
+			case "KeyN":
+				Row    = 1;
+				Button = 7;
+				break;
+			case "KeyM":
+				Row    = 1;
+				Button = 8;
+				break;
+			case "Comma":
+				Row    = 1;
+				Button = 9;
+				break;
+			case "Period":
+				Row    = 1;
+				Button = 10;
+				break;
+			case "Slash":
+				Row    = 1;
+				Button = 11;
+				break;
+			case 'ShiftRight':
+				Row    = 1;
+				Button = 12;
+				break;
+			case "CapsLock":
+				Row    = 2;
+				Button = 0;
+				break;
+			case "KeyA":
+				Row    = 2;
+				Button = 1;
+				break;
+			case "KeyS":
+				Row    = 2;
+				Button = 2;
+				break;
+			case "KeyD":
+				Row    = 2;
+				Button = 3;
+				break;
+			case "KeyF":
+				Row    = 2;
+				Button = 4;
+				break;
+			case "KeyG":
+				Row    = 2;
+				Button = 5;
+				break;
+			case "KeyH":
+				Row    = 2;
+				Button = 6;
+				break;
+			case "KeyJ":
+				Row    = 2;
+				Button = 7;
+				break;
+			case "KeyK":
+				Row    = 2;
+				Button = 8;
+				break;
+			case "KeyL":
+				Row    = 2;
+				Button = 9;
+				break;
+			case "Semicolon":
+				Row    = 2;
+				Button = 10;
+				break;
+			case "Quote":
+				Row    = 2;
+				Button = 11;
+				break;
+			case "KeyQ":
+				Row    = 3;
+				Button = 0;
+				break;
+			case "KeyW":
+				Row    = 3;
+				Button = 1;
+				break;
+			case "KeyE":
+				Row    = 3;
+				Button = 2;
+				break;
+			case "KeyR":
+				Row    = 3;
+				Button = 3;
+				break;
+			case "KeyT":
+				Row    = 3;
+				Button = 4;
+				break;
+			case "KeyY":
+				Row    = 3;
+				Button = 5;
+				break;
+			case "KeyU":
+				Row    = 3;
+				Button = 6;
+				break;
+			case "KeyI":
+				Row    = 3;
+				Button = 7;
+				break;
+			case "KeyO":
+				Row    = 3;
+				Button = 8;
+				break;
+			case "KeyP":
+				Row    = 3;
+				Button = 9;
+				break;
+			case "BracketLeft":
+				Row    = 3;
+				Button = 10;
+				break;
+			case "BracketRight":
+				Row    = 3;
+				Button = 11;
+				break;
+		}
+		
+		//If key is mapped to an instrument button
+		if (Row != 0) {
+			//If there is a valid tune in the editor, use it, otherwise create a temp one to obtain instrument information
+			var aTunes;
+			if (Editor.tunes.length > 0 && Editor.tunes[0].tablatures[0].instance) {
+				aTunes = Editor.tunes;
+			}
+			else {
+				//Get instrument from controls
+				let abcjsParams = GetAbcjsParamsFromControls();
+				aTunes = ABCJS.renderAbc("*", "X:1\nK:C\nA\n", abcjsParams);
+			}
+			
+			//Lookup the button row notes array
+			let aNotes;
+			switch (Row) {
+				case 1:
+					if (PushNotPull) 
+						aNotes = aTunes[0].tablatures[0].instance.semantics.push_row1;
+					else
+						aNotes = aTunes[0].tablatures[0].instance.semantics.pull_row1;
+					break;
+				case 2:
+					if (PushNotPull) 
+						aNotes = aTunes[0].tablatures[0].instance.semantics.push_row2;
+					else
+						aNotes = aTunes[0].tablatures[0].instance.semantics.pull_row2;
+					break;
+				case 3:
+					if (PushNotPull) 
+						aNotes = aTunes[0].tablatures[0].instance.semantics.push_row3;
+					else
+						aNotes = aTunes[0].tablatures[0].instance.semantics.pull_row3;
+					break;
+			}
+			
+			//Does it exist on the instrument
+			if (Button < aNotes.length) {
+				//Ignore key repeats for instrument typing
+				if (event.repeat) {
+					event.preventDefault();
+					return;
+				}
+				
+				//Get cursor position or start position of selection
+				let StartContainer = null;
+				let StartIndex     = 0;
+				var sel = window.getSelection();
+				if (sel.rangeCount) {
+					for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+						let range = sel.getRangeAt(i);
+						StartContainer = range.startContainer;
+						StartIndex     = range.startOffset;
+						break;
+					}
+				}
+				
+				//Check selection is in the ABC editor
+				let ABC_Editor = document.getElementById("abc_editable");
+				
+				//Calculate start character index for multiple lines
+				let Start = 0;
+				for (let i = 0; i < ABC_Editor.childNodes.length; ++i) {
+					if (ABC_Editor.childNodes[i] == StartContainer) {
+						Start += StartIndex;
+						break;
+					}
+					Start += ABC_Editor.childNodes[i].textContent.length;
+					if (ABC_Editor.childNodes[i].tagName == "BR")
+						Start++;
+				}
+				
+				//Get ABC before cursor, all upper case
+				var AnalyzeABC = ABC_Editor.innerText.toUpperCase().substr(0, Start);
+				
+				//Detect the last key set before the position we are typing
+				var Key = "C";
+				var aAbcLines = AnalyzeABC.replace(" ", "").split("\n");
+				for (let i = 0; i < aAbcLines.length; ++i) {
+					if (aAbcLines[i].substr(0, 2) == "K:")
+						Key = aAbcLines[i].substr(2);
+				}
+				
+				//Prefer to write it as an in key note
+				let Note     = "";
+				let KeyIndex = FindCicrleKeyIndex(Key);
+				if (IsInKey(KeyIndex, aNotes[Button].SharpName))
+					Note = aNotes[Button].SharpName;
+				else if (IsInKey(KeyIndex, aNotes[Button].FlatName))
+					Note = aNotes[Button].FlatName;
+				else {
+					//Use best guess for out of key note
+					let convOptions = GetSharpFlatConverts(Key, Key);
+					let aIn = [aNotes[Button]];
+					let aOut = ButtonArrayConvert(aIn, convOptions);
+					Note = aOut[0];
+				}
+				
+				//If note is not flat or sharp, it must be natural
+				if (Note[0] != "_" && Note[0] != "^")
+					Note = "=" + Note;
+				
+				//Get accidental based on key
+				let KeyAccidental = "";
+				if (IsInKey(KeyIndex, Note.substr(1)))
+					KeyAccidental = "=";
+				else if (IsInKey(KeyIndex, "_" + Note.substr(1)))
+					KeyAccidental = "_";
+				else if (IsInKey(KeyIndex, "^" + Note.substr(1)))
+					KeyAccidental = "^";
+				
+				//Get capitalized ABC for this measure up to cursor
+				let MeasureAbc = "";
+				if (aAbcLines.length > 0) {
+					MeasureAbc = aAbcLines[aAbcLines.length - 1];
+					for (let i = MeasureAbc.length - 1; i >= 0; --i) {
+						if (MeasureAbc[i] == "|")
+							MeasureAbc = MeasureAbc.substr(i + 1);
+					}
+				}
+				
+				//Find default accidental at cursor position
+				let MeasureAccidental = KeyAccidental;
+				for (let i = 1; i < MeasureAbc.length; ++i) {
+					if (MeasureAbc[i] == Note[1].toUpperCase()) {
+						if (MeasureAbc[i-1] == "=" || MeasureAbc[i-1] == "_" || MeasureAbc[i-1] == "^")
+							MeasureAccidental = MeasureAbc[i-1];
+					}
+				}
+				
+				//Drop accidental if it is default
+				if (Note[0] == MeasureAccidental)
+					Note = Note.substr(1);
+				
+				//Type the note in the editor
+				document.execCommand('insertText', false, Note);
+				
+				//We handled the keypress, do not do anything else
+				event.preventDefault();
+			}
+		}
 	}
 	//Ctrl+z pressed
-	else if (event.keyCode == 90 && event.ctrlKey) {
+	else if (event.ctrlKey && event.keyCode == 90) {
 		Undo();
-		event.preventDefault()
+		event.preventDefault();
 	}
 }
 

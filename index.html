@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="abcjs-audio.css">
 	<script src="abcjs-basic-min.js?v=20250209"></script>
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
-	<script src="diatotab.js?v=20250209"></script>
+	<script src="diatotab.js?v=20250209_2"></script>
 </head>
 <body>
 	<div class="container">
@@ -57,6 +57,16 @@
 			<p>
 				For players that play by ear rather than tablature or dots, the tool allows you to playback the ABC tune. You can configure the amount of voices of the instrument and the amount of tremolo with which the instrument is tuned. You can choose to play only the melody or bass chords and control their relative volume if played simultaneously. Use the fade in/out control to make it should more staccato or legato.
 			</p>
+			
+			<h4>Transcribe from instrument keyboard</h4>
+			<div class="intro">
+			<div>
+			<p>
+				If you can play a tune on the instrument from memory and want to transcribe it, you can use the computer keyboard as if it is the instrument keyboard. To do this, enable the 'instrument keyboard' checkbox, when enabled you can type notes in abc notation instead of the normal keyboard characters, rhythm is not taken into account. The default is push direction, hold down (left) ALT to change to pull direction. To temporarily type normal computer characters, hold down CTRL.
+			</p>
+			</div>
+			<img style="margin-left:25px; width:406px; height:135px;" src="PcKeyboard.png">
+			</div>
 			
 			<h4>Melodeon acquisition disorder (MAD) cure</h4>
 			<p>
@@ -184,6 +194,10 @@
 				<h2>ABC Editor</h2>
 				<div class="block">
 					<button onclick="ExampleShow()">Load ABC Example</button><br>
+				</div>
+				<div class="block" id="instrkey_div">
+					<input  id="instrkey" type="checkbox">
+					<label for="instrkey" id="instrkey_lab">Instrument keyboard</label><br>
 				</div>
 				<div class="blockright">
 					<label for="transpose">Transpose</label>

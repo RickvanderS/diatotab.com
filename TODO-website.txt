@@ -8,7 +8,6 @@ Improvements:
 New features:
 - Open/save ABC button
 - Open custom layout file
-- Type abc notes using computer keyboard
 
 
 
