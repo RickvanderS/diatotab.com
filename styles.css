@@ -67,14 +67,14 @@ div.blockend {
 div.footer {
   margin: auto;
   padding-top: 10px;
-  max-width: min(100%, 1100px);
+  max-width: min(100%, 1125px);
   text-align: center;
   font-size: 12px;
 }
 
 div.container {
   margin: auto;
-  max-width: min(100%, 1100px);
+  max-width: min(100%, 1125px);
 }
 
 div.float-container {
@@ -88,7 +88,7 @@ div.float-container {
 }
 
 /* On desktop screen use side by side editing */
-@media only screen and (width >= 1100px) {
+@media only screen and (width >= 1125px) {
   div.float-container {
     margin: 0 auto;
   }
@@ -101,7 +101,7 @@ div.float-container {
   }
   
   div.float-child-tab {
-    max-width: 1100px;
+    max-width: 1125px;
     overflow: hidden;
     padding: 0px;
   }
@@ -131,6 +131,16 @@ div.overlay {
 select.list {
   padding: 10px;
   margin: -5px -20px -5px -5px;
+}
+
+select.drop {
+  padding: 0px 0px 0px 5px;
+  min-width: 215px;
+}
+
+label.drop {
+  display: inline-block;
+  min-width: 145px;
 }
 
 h4 {

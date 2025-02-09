@@ -909,6 +909,7 @@ function InitPage() {
 	AddInstruments();
 	AddReeds();
 	ExampleLoadIntern(3);
+	aAbcUndo = [];
 	try {
 		Load();
 		CreateEditor();
@@ -1168,7 +1169,7 @@ function Undo() {
 	AbcInput();
 }
 
-function AbcKeyDown() {
+function AbcKeyDown(event) {
 	//Selection might have been changed
 	AbcSelect();
 
