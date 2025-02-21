@@ -1666,6 +1666,23 @@ function AbcInput() {
 	AbcInputIntern();
 }
 
+function AbcGetTitle() {
+	//Need ABC renderer
+	let RenderDiv = document.getElementById("paper");
+	if (!RenderDiv.children.length)
+		return "";
+	
+	//See if title was found by the renderer
+	let Title = RenderDiv.children[0].ariaLabel;
+	let Expected = "Sheet Music for \"";
+	if (Title.search(Expected) < 0)
+		return "";
+	
+	//Extract and return the title
+	Title = Title.substring(Expected.length, Title.length-1);
+	return Title;
+}
+
 function AbcInputIntern() {
 	NewUndo();
 	
@@ -1860,18 +1877,12 @@ function AbcInputIntern() {
 	
 	//Update page title
 	if (UpdateTitle) {
-		let RenderDiv = document.getElementById("paper");
-		if (RenderDiv.children.length) {
-			let Title = RenderDiv.children[0].ariaLabel;
-			let Expected = "Sheet Music for \"";
-			if (Title.search(Expected) >= 0) {
-				Title = Title.substring(Expected.length, Title.length-1) + " - Diatotab";
-				document.title = Title;
-			}
-			else {
-				document.title = OriginalTitle;
-			}
-		}
+		let Title = AbcGetTitle();
+		if (Title != "")
+			Title += " - Diatotab";
+		else
+			Title = OriginalTitle;
+		document.title = Title;
 	}
 }
 
@@ -3293,3 +3304,40 @@ function TransposeAbc() {
 	CreateEditor();
 }
 
+/// Ask user where the open ABC file from, open it if not canceled
+function AbcOpenFileBrowser() {
+	let FileInput = document.getElementById("OpenFile");
+	FileInput.click();
+}
+
+/// Loads ABC file into editor if user chose a file
+function AbcOpenFile() {
+	//Get information about the opened file
+	let FileInput = document.getElementById("OpenFile");
+	const file = FileInput.files[0];
+	
+	//Read the file and put it in the editor
+	var Reader = new FileReader();
+	Reader.onload = function(event) {
+		let ABC = document.getElementById("abc_editable");
+		ABC.innerText = event.target.result;
+		CreateEditor();
+	}
+	Reader.readAsText(file);
+}
+
+/// Downloads content of the ABC editor as a text file and ask user where to save it
+function AbcSaveFile() {
+	//Determine filename from the tune name
+	let FileName = AbcGetTitle();
+	if (FileName == "")
+		FileName = "abc";
+	FileName += ".txt";
+	
+	//Get the ABC input
+	let ABC = document.getElementById("abc_editable").innerText;
+	
+	//Ask user where to save
+	var ABCfile = new File([ABC], FileName, {type: "text/plain;charset=utf-8"});
+	saveAs(ABCfile);
+}

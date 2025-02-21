@@ -8,8 +8,9 @@
 	<link rel="stylesheet" href="styles.css?v=20250209">
 	<link rel="stylesheet" href="abcjs-audio.css">
 	<script src="abcjs-basic-min.js?v=20250209"></script>
+	<script src="FileSaver.js"></script>
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
-	<script src="diatotab.js?v=20250209_2"></script>
+	<script src="diatotab.js?v=20250221"></script>
 </head>
 <body>
 	<div class="container">
@@ -193,7 +194,10 @@
 			<div id="abcheader" style="box-sizing:border-box;">
 				<h2>ABC Editor</h2>
 				<div class="block">
-					<button onclick="ExampleShow()">Load ABC Example</button><br>
+					<button onclick="ExampleShow()">Examples</button>
+					<button onclick="AbcSaveFile()">Open</button>
+					<button onclick="AbcOpenFileBrowser()">Save</button>
+					<input id="OpenFile" type="file" onchange="AbcOpenFile()" style="display: none"/>
 				</div>
 				<div class="block" id="instrkey_div">
 					<input  id="instrkey" type="checkbox">

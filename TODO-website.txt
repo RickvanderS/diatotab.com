@@ -6,7 +6,6 @@ Improvements:
 - Better syntax highlighting around |[
 - Better syntax highlighting for %% meta comment
 New features:
-- Open/save ABC button
 - Open custom layout file
 
 
