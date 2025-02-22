@@ -424,83 +424,205 @@ function ReplaceElement(id, ori, rep) {
 	Element.innerText = Str;
 }
 
-function ShowHideVariantOptions() {
-	//Get selectors
-	let Instruments = document.getElementById("instrument");
-	let Variants    = document.getElementById("variant");
+function ConvertAbcNoteToFriendlyName(AbcNote, MakeUpperCase) {
+	let RetNote = AbcNote;
+	if (MakeUpperCase) {
+		RetNote = RetNote.replace(",", "");
+		RetNote = RetNote.replace("'", "");
+		if (RetNote.indexOf("^") >= 0) {
+			RetNote = RetNote.replace("^", "");
+			RetNote += "♯";
+		}
+		if (RetNote.indexOf("_") >= 0) {
+			RetNote = RetNote.replace("_", "");
+			RetNote += "♭";
+		}
+		RetNote = RetNote.toUpperCase();
+	}
+	else {
+		RetNote = ButtonArrayAddNames([RetNote], "")[0];
+		RetNote = RetNote.substr(1);
+		RetNote = RetNote.substr(0, RetNote.indexOf('"'));
+		RetNote = RetNote.replace("b", "♭");
+		RetNote = RetNote.replace("#", "♯");
+	}
 	
+	return RetNote;
+}
+
+function GetRow1FirstInvButtonNumber(Instrument, Variant, StartFromZero) {
+	//Check not applicable to the instrument
+	if (!(Instrument == "M_2" && Variant.includes("^")) && Instrument != "M_3")
+		return -1;
+	
+	//1 is normal
+	let ButtonNumber = 1;
+	
+	//Special case for instrument missing the first button
+	if (Instrument == "M_3" && Variant.includes("31"))
+		ButtonNumber = 2;
+	
+	//Subtract if starting from zero
+	if (StartFromZero)
+		ButtonNumber--;
+	
+	return ButtonNumber;
+}
+
+function GetRow2FirstInvButtonNumber(Instrument, Variant, StartFromZero) {
+	//Check not applicable to the instrument
+	if (!(Instrument == "M_2" && Variant.includes("^")) && Instrument != "M_3")
+		return -1;
+	
+	//1 is normal
+	let ButtonNumber = 1;
+	
+	//Subtract if starting from zero
+	if (StartFromZero)
+		ButtonNumber--;
+	
+	return ButtonNumber;
+}
+
+function GetRow3FirstInvButtonNumber(Instrument, Variant, StartFromZero) {
+	//Check not applicable to the instrument
+	if (Instrument != "M_3")
+		return -1;
+	
+	//1 is normal
+	let ButtonNumber = 1;
+	
+	//Subtract if starting from zero
+	if (StartFromZero)
+		ButtonNumber--;
+	
+	return ButtonNumber;
+}
+
+function GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero) {
+	//Check not applicable to the instrument
+	if (Instrument != "M_2" && Instrument != "M_25" && Instrument != "M_3")
+		return -1;
+	
+	//If this is a 4th button start instrument
+	if (Variant.includes(">") || Variant.includes("23") || Variant.includes("Saltarelle")) { //TODO: Function for this
+		if (StartFromZero)
+			return 5;
+		else
+			return 6;
+	}
+	
+	//Always button 5, StartFromZero is not applicable
+	return 5;
+}
+
+function ShowHideVariantOptions() {
 	//Get selected instrument and variant
-	let Instrument = Instruments.value;
-	let Variant    = Variants.value;
+	let Instrument = document.getElementById("instrument").value;
+	let Variant    = document.getElementById("variant").value;
 	
 	//Give option to start numbering at 0 for 4th button starts
 	let ShowZero = Variant.includes(">") || Variant.includes("23") || Variant.includes("Saltarelle");
 	showElement("startzero", ShowZero);
+	let StartFromZero = ShowZero && document.getElementById("zero").checked;
 	
-	//Show/hide accidental at 1 inverses
-	let ShowInvAccidentatals1_1 = false;
-	let ShowInvAccidentatals1_2 = false;
-	let ShowInvAccidentatals2_1 = false;
-	let ShowInvAccidentatals3_1 = false;
-	if (Instrument == "M_2" && Variant.includes("^")) {
-		ShowInvAccidentatals1_1 = true;
-		ShowInvAccidentatals2_1 = true;
-	}
-	else if (Instrument == "M_3") {
-		if (Variant.includes("31"))
-			ShowInvAccidentatals1_2 = true;
-		else
-			ShowInvAccidentatals1_1 = true;
-		ShowInvAccidentatals2_1 = true;
-		ShowInvAccidentatals3_1 = true;
-	}
-	showElement("inv1div" , ShowInvAccidentatals1_1);
-	showElement("inv2div" , ShowInvAccidentatals1_2);
-	showElement("inv1adiv", ShowInvAccidentatals2_1);
-	showElement("inv1bdiv", ShowInvAccidentatals3_1);
+	//Show/hide button push/pull reverse
+	let ShowInvAccidentatals1 = GetRow1FirstInvButtonNumber (Instrument, Variant, StartFromZero) >= 0;
+	let ShowInvAccidentatals2 = GetRow2FirstInvButtonNumber (Instrument, Variant, StartFromZero) >= 0;
+	let ShowInvAccidentatals3 = GetRow3FirstInvButtonNumber (Instrument, Variant, StartFromZero) >= 0;
+	let ShowInvMiddle2        = GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero) >= 0;
+	showElement("inv1div" , ShowInvAccidentatals1);
+	showElement("inv1adiv", ShowInvAccidentatals2);
+	showElement("inv1bdiv", ShowInvAccidentatals3);
+	showElement("inv5adiv", ShowInvMiddle2       );
 	
-	//Give 1/2 the same value
-	if (ShowInvAccidentatals1_1)
-		document.getElementById("inv2").checked = document.getElementById("inv1").checked;
-	if (ShowInvAccidentatals1_2)
-		document.getElementById("inv1").checked = document.getElementById("inv2").checked;
-	
-	//Show/hide 5'/6' inverse
-	let ShowInv5 = false;
-	let ShowInv6 = false;
-	if (Instrument == "M_2" || Instrument == "M_25" || Instrument == "M_3") {
-		if (!ShowZero)
-			ShowInv5 = true;
-		else
-			ShowInv6 = true;
-	}
-	showElement("inv5adiv", ShowInv5);
-	showElement("inv6adiv", ShowInv6);
-	
-	//Give 5'/6' the same value
-	if (ShowInv5)
-		document.getElementById("inv6a").checked = document.getElementById("inv5a").checked;
-	if (ShowInv6)
-		document.getElementById("inv5a").checked = document.getElementById("inv6a").checked;
-	
-	//Rename labels depending on starting at 0 or starting at 1
-	if (!ShowZero || (ShowZero && !document.getElementById("zero").checked)) {
-		ReplaceElement("inv1_lab" , "0", "1");
-		ReplaceElement("inv1a_lab", "0", "1");
-		ReplaceElement("inv1b_lab", "0", "1");
-		ReplaceElement("inv6a_lab", "5", "6");
-	}
-	else {
-		ReplaceElement("inv1_lab" , "1", "0");
-		ReplaceElement("inv1a_lab", "1", "0");
-		ReplaceElement("inv1b_lab", "1", "0");
-		ReplaceElement("inv6a_lab", "6", "5");
-	}
-	
+	//Show instrument keyboard typing
 	let ShowInstrumentKeyboard = false;
 	if (Instrument.substr(0, 2) == "M_")
 		ShowInstrumentKeyboard = true;
 	showElement("instrkey_div", ShowInstrumentKeyboard);
+}
+
+function VariantOptionsUpdateLabels() {
+	//Get inputs
+	let Instrument    = document.getElementById("instrument").value;
+	let Variant       = document.getElementById("variant").value;
+	let Tuning        = document.getElementById("tuning").value;
+	let StartFromZero = isShown("startzero") && document.getElementById("zero").checked;
+	let Row2Marker    = "'";
+	if (document.getElementById("innerstyle").checked)
+		Row2Marker    = "*";
+	
+	//Need a valid tablature from abcjs to display note names in labels
+	let Tablature;
+	let convOptions;
+	if (isShown("inv1div") || isShown("inv1adiv") || isShown("inv1bdiv") || isShown("inv5adiv")) {
+		Tablature = GetValidTune().tablatures[0].instance.semantics;
+		
+		let aRowKeys = FindRowKeys(Instrument, Tuning);
+		let Key1 = aRowKeys[0];
+		let Key2 = aRowKeys[aRowKeys.length - 1];
+		convOptions = GetSharpFlatConverts(Key1, Key2);
+	}
+	
+	//Label 0/1/2 reverse
+	if (isShown("inv1div")) {
+		let ButtonNumber = GetRow1FirstInvButtonNumber(Instrument, Variant, StartFromZero);
+		let aNotes = ButtonArrayConvert([Tablature.push_row1[ButtonNumber], Tablature.pull_row1[ButtonNumber]], convOptions);
+		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
+		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
+		document.getElementById("inv1_lab").innerText = "Button " + ButtonNumber + " " + Push + "/" + Pull + " reverse";
+	}
+	
+	//Label 0'/1' reverse
+	if (isShown("inv1adiv")) {
+		let ButtonNumber = GetRow2FirstInvButtonNumber(Instrument, Variant, StartFromZero);
+		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonNumber], Tablature.pull_row2[ButtonNumber]], convOptions);
+		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
+		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
+		document.getElementById("inv1a_lab").innerText = "Button " + ButtonNumber + Row2Marker + " " + Push + "/" + Pull + " reverse";
+	}
+	
+	//Label 0"/1" reverse
+	if (isShown("inv1bdiv")) {
+		let ButtonNumber = GetRow3FirstInvButtonNumber(Instrument, Variant, StartFromZero);
+		let aNotes = ButtonArrayConvert([Tablature.push_row3[ButtonNumber], Tablature.pull_row3[ButtonNumber]], convOptions);
+		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
+		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
+		document.getElementById("inv1b_lab").innerText = "Button " + ButtonNumber + '"' + " " + Push + "/" + Pull + " reverse";
+	}
+
+	//Label 5'/6' reverse
+	if (isShown("inv5adiv")) {
+		let ButtonNumber = GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero);
+		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonNumber], Tablature.pull_row2[ButtonNumber]], convOptions);
+		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
+		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
+		document.getElementById("inv5a_lab").innerText = "Button " + ButtonNumber + Row2Marker + " " + Push + "/" + Pull + " reverse";
+		
+		document.getElementById("inv5a_all").disabled = !document.getElementById("inv5a").checked;
+		Push = ConvertAbcNoteToFriendlyName(aNotes[0], true);
+		Pull = ConvertAbcNoteToFriendlyName(aNotes[1], true);
+		if (document.getElementById("inv5a").checked && !document.getElementById("inv5a_all").checked) {
+			let Tmp = Push;
+			Push = Pull;
+			Pull = Tmp;
+		}
+		document.getElementById("inv5a_all_lab").innerText = "Entire row " + Push + "/" + Pull;
+	}
+	
+	//Disable checkboxes not applicable to the tablature style
+	{
+		let tabstyle = document.getElementById("single_tabstyle").value;
+		document.getElementById("single_notenames").disabled = tabstyle == "0";
+		
+		tabstyle = document.getElementById("harm_tabstyle").value;
+		document.getElementById("harm_notenames").disabled = tabstyle == "0";
+		
+		tabstyle = document.getElementById("tabstyle").value;
+		document.getElementById("innerstyle").disabled = tabstyle == "0" || tabstyle == "3";
+		document.getElementById("notenames").disabled = tabstyle == "0";
+	}
 }
 
 function AddReeds() {
@@ -720,23 +842,22 @@ function GetAbcjsParamsFromControls() {
 				//Get row1 inversions
 				let Row1_inv = ""; 
 				if (isShown("inv1div") && document.getElementById("inv1").checked)
-					Row1_inv += "1";
-				if (isShown("inv2div") && document.getElementById("inv2").checked)
-					Row1_inv += "2";
+					Row1_inv += GetRow1FirstInvButtonNumber(Instrument, Variant, false);
 				
 				//Get row2 inversions
 				let Row2_inv = "";
 				if (isShown("inv1adiv") && document.getElementById("inv1a").checked)
-					Row2_inv += "1";
-				if (isShown("inv5adiv") && document.getElementById("inv5a").checked)
-					Row2_inv += "5";
-				if (isShown("inv6adiv") && document.getElementById("inv6a").checked)
-					Row2_inv += "6";
+					Row2_inv += GetRow2FirstInvButtonNumber(Instrument, Variant, false);
+				if (isShown("inv5adiv") && document.getElementById("inv5a").checked) {
+					Row2_inv += GetRow2MiddleInvButtonNumber(Instrument, Variant, false);
+					if (document.getElementById("inv5a_all").checked)
+						Row2_inv += "+";
+				}
 				
 				//Get row3 inversions
 				let Row3_inv = ""; 
 				if (isShown("inv1bdiv") && document.getElementById("inv1b").checked)
-					Row3_inv += "1";
+					Row3_inv += GetRow3FirstInvButtonNumber(Instrument, Variant, false);
 				
 				//Add inversions to the tuning strings
 				TuningArray[0] += Row1_inv;
@@ -746,7 +867,7 @@ function GetAbcjsParamsFromControls() {
 			}
 			
 			//Tablature options
-			let startzero = isShown("startzero") && document.getElementById("zero").checked;
+			let StartFromZero = isShown("startzero") && document.getElementById("zero").checked;
 			let showall              = false;
 			let showall_ignorechords = false;
 			if (document.getElementById("tabmode").value == "1") {
@@ -767,7 +888,7 @@ function GetAbcjsParamsFromControls() {
 				tabstyle            : Number(document.getElementById("tabstyle"      ).value),
 				tabformat           :        document.getElementById("notenames"     ).checked ? 1 : 0,
 				changenoteheads     :        document.getElementById("changenotehead").checked,
-				startzero           : startzero,
+				startzero           : StartFromZero,
 				Row2Marker          : Row2Marker,
 				showall             : showall,
 				showall_ignorechords: showall_ignorechords
@@ -887,6 +1008,7 @@ function CreateEditor(NoUpdate, ClearSoundsCache) {
 	SetLoop(isLooping);
 	Editor.synth.synthControl.control.options.loopHandler = ToggleLoop;
 	
+	VariantOptionsUpdateLabels();
 	CalcAbcScroll();
 }
 
@@ -902,7 +1024,7 @@ let UpdateTitle = false;
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv2", "inv1a", "inv1b", "inv5a", "inv6a", "tabmode", "tabstyle", "notenames", "innerstyle", "changenotehead", "single_tabstyle", "single_notenames", "harm_tabstyle", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
+let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv1a", "inv1b", "inv5a", "inv5a_all", "tabmode", "tabstyle", "notenames", "innerstyle", "changenotehead", "single_tabstyle", "single_notenames", "harm_tabstyle", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
 	//Test for first time load
@@ -1169,6 +1291,21 @@ function Undo() {
 	AbcInput();
 }
 
+function GetValidTune() {
+	//If there is a valid tune in the editor, use it, otherwise create a temp one to obtain instrument information
+	var aTunes;
+	if (Editor && Editor.tunes.length > 0 && Editor.tunes[0].tablatures[0].instance) {
+		aTunes = Editor.tunes;
+	}
+	else {
+		//Get instrument from controls
+		let abcjsParams = GetAbcjsParamsFromControls();
+		aTunes = ABCJS.renderAbc("*", "X:1\nK:C\nA\n", abcjsParams);
+	}
+	
+	return aTunes[0];
+}
+
 function AbcKeyDown(event) {
 	//Selection might have been changed
 	AbcSelect();
@@ -1344,37 +1481,28 @@ function AbcKeyDown(event) {
 		
 		//If key is mapped to an instrument button
 		if (Row != 0) {
-			//If there is a valid tune in the editor, use it, otherwise create a temp one to obtain instrument information
-			var aTunes;
-			if (Editor.tunes.length > 0 && Editor.tunes[0].tablatures[0].instance) {
-				aTunes = Editor.tunes;
-			}
-			else {
-				//Get instrument from controls
-				let abcjsParams = GetAbcjsParamsFromControls();
-				aTunes = ABCJS.renderAbc("*", "X:1\nK:C\nA\n", abcjsParams);
-			}
+			var Tune = GetValidTune();
 			
 			//Lookup the button row notes array
 			let aNotes;
 			switch (Row) {
 				case 1:
 					if (PushNotPull) 
-						aNotes = aTunes[0].tablatures[0].instance.semantics.push_row1;
+						aNotes = Tune.tablatures[0].instance.semantics.push_row1;
 					else
-						aNotes = aTunes[0].tablatures[0].instance.semantics.pull_row1;
+						aNotes = Tune.tablatures[0].instance.semantics.pull_row1;
 					break;
 				case 2:
 					if (PushNotPull) 
-						aNotes = aTunes[0].tablatures[0].instance.semantics.push_row2;
+						aNotes = Tune.tablatures[0].instance.semantics.push_row2;
 					else
-						aNotes = aTunes[0].tablatures[0].instance.semantics.pull_row2;
+						aNotes = Tune.tablatures[0].instance.semantics.pull_row2;
 					break;
 				case 3:
 					if (PushNotPull) 
-						aNotes = aTunes[0].tablatures[0].instance.semantics.push_row3;
+						aNotes = Tune.tablatures[0].instance.semantics.push_row3;
 					else
-						aNotes = aTunes[0].tablatures[0].instance.semantics.pull_row3;
+						aNotes = Tune.tablatures[0].instance.semantics.pull_row3;
 					break;
 			}
 			
@@ -2722,6 +2850,100 @@ function ExampleLoad(Index) {
 	return ExampleLoadIntern(Index);
 }
 
+function FindRowKeys(Instrument, Tuning) {
+	let aRowKey = new Array();
+	let TransposeSteps = LookupTransposeSteps(Instrument, Tuning);
+	
+	if (Instrument == "M_1") {
+		let Row1Key = KeyTranspose("C", TransposeSteps);
+		aRowKey.push(Row1Key);
+	}
+	else if (Instrument == "M_2" || Instrument == "M_25" || Instrument == "M_CLUB") {
+		let Row1Key = KeyTranspose("G", TransposeSteps);
+		let Row2Key = KeyTranspose("C", TransposeSteps);
+		aRowKey.push(Row1Key);
+		aRowKey.push(Row2Key);
+	}
+	//Three row melodeons
+	else if (Instrument == "M_3") {
+		let Row1Key = KeyTranspose("G", TransposeSteps);
+		let Row2Key = KeyTranspose("C", TransposeSteps);
+		let Row3Key = KeyTranspose("F", TransposeSteps);
+		aRowKey.push(Row1Key);
+		aRowKey.push(Row2Key);
+		aRowKey.push(Row3Key);
+	}
+	//Harmonica
+	else if (Instrument.substr(0, 1) == "H") {
+		let Row1Key = KeyTranspose("G", TransposeSteps);
+		aRowKey.push(Row1Key);
+	}
+	
+	return aRowKey;
+}
+
+function LookupTransposeSteps(Instrument, Tuning) {
+	if (Instrument == "M_1") {
+		//From C to selected
+		switch (Tuning) {
+			case "B♭":
+				return -2;
+			case "C":
+				return  0;
+			case "D":
+				return  2;
+			case "G":
+				return  7;
+			case "A":
+				return  9;
+		}
+	}
+	else {
+		//From G/C to selected
+		switch (Tuning) {
+			case "E/A/D":
+				return -3;
+			case "F/B♭/E♭":
+				return -2;
+			case "G":
+			case "G/C":
+			case "G/C/F":
+				return  0;
+			case "A♭":
+				return  1;
+			case "A":
+			case "A/D":
+			case "A/D/G":
+				return  2;
+			case "B♭":
+			case "B♭/E♭":
+			case "B♭/E♭/A♭":
+				return  3;
+			case "B":
+				return  4;
+			case "C":
+			case "C/F":
+			case "C/F/B♭":
+				return  5;
+			case "D♭":
+				return  6;
+			case "D":
+			case "D/G":
+				return  7;
+			case "E♭":
+				return  8;
+			case "E":
+				return  9;
+			case "F":
+				return  10;
+			case "F#":
+				return  11;
+		}
+	}
+	
+	return 0;
+}
+
 function ExampleLoadIntern(Index) {
 	let aLines = [];
 	
@@ -2730,85 +2952,10 @@ function ExampleLoadIntern(Index) {
 	let Tunings     = document.getElementById("tuning");
 	
 	//Lookup the number of transpose steps
-	let TransposeSteps = 0;
+	let TransposeSteps = LookupTransposeSteps(Instruments.value, Tunings.value);
 	if (Instruments.value == "M_1") {
-		//From C to selected
-		switch (Tunings.value) {
-			case "B♭":
-				TransposeSteps = -2;
-				break;
-			case "C":
-				TransposeSteps = 0;
-				break;
-			case "D":
-				TransposeSteps = 2;
-				break;
-			case "G":
-				TransposeSteps = 7;
-				break;
-			case "A":
-				TransposeSteps = 9;
-				break;
-		}
-		
 		if (Index == 2 || Index == 3 || Index == 4)
 			TransposeSteps -= 12;
-	}
-	else {
-		//From G/C to selected
-		switch (Tunings.value) {
-			case "E/A/D":
-				TransposeSteps = -3;
-				break;
-			case "F/B♭/E♭":
-				TransposeSteps = -2;
-				break;
-			case "G":
-			case "G/C":
-			case "G/C/F":
-				TransposeSteps = 0;
-				break;
-			case "A♭":
-				TransposeSteps = 1;
-				break;
-			case "A":
-			case "A/D":
-			case "A/D/G":
-				TransposeSteps = 2;
-				break;
-			case "B♭":
-			case "B♭/E♭":
-			case "B♭/E♭/A♭":
-				TransposeSteps = 3;
-				break;
-			case "B":
-				TransposeSteps = 4;
-				break;
-			case "C":
-			case "C/F":
-			case "C/F/B♭":
-				TransposeSteps = 5;
-				break;
-			case "D♭":
-				TransposeSteps = 6;
-				break;
-			case "D":
-			case "D/G":
-				TransposeSteps = 7;
-				break;
-			case "E♭":
-				TransposeSteps = 8;
-				break;
-			case "E":
-				TransposeSteps = 9;
-				break;
-			case "F":
-				TransposeSteps = 10;
-				break;
-			case "F#":
-				TransposeSteps = 11;
-				break;
-		}
 	}
 	
 	//Lookup the example
@@ -2842,14 +2989,14 @@ function ExampleLoadIntern(Index) {
 				let aRawChordRowPush = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
 				let aRawChordRowPull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
 				
-				let RowKey = KeyTranspose("G", TransposeSteps);
-				let convOptions = GetSharpFlatConverts(RowKey, RowKey);
+				let Row1Key = FindRowKeys(Instruments.value, Tunings.value)[0];
+				let convOptions = GetSharpFlatConverts(Row1Key, Row1Key);
 				aRowPush = ButtonArrayConvert(aRawPush, convOptions);
 				aRowPull = ButtonArrayConvert(aRawPull, convOptions);
 				aRowPush = ButtonArrayAddNames(aRowPush, ">");
 				aRowPull = ButtonArrayAddNames(aRowPull, "<");
-				aRowPush = ButtonArrayToKey(aRowPush, RowKey);
-				aRowPull = ButtonArrayToKey(aRowPull, RowKey);
+				aRowPush = ButtonArrayToKey(aRowPush, Row1Key);
+				aRowPull = ButtonArrayToKey(aRowPull, Row1Key);
 				
 				//Add row to ABC
 				let LayoutTrebleRow = "";
@@ -2866,7 +3013,7 @@ function ExampleLoadIntern(Index) {
 				}
 				
 				aLines.push('P: Treble');
-				aLines.push('K: ' + RowKey);
+				aLines.push('K: ' + Row1Key);
 				aLines.push(LayoutTrebleRow);
 				
 				aLines.push('K: C style=x');
@@ -2897,8 +3044,9 @@ function ExampleLoadIntern(Index) {
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
 				//Figure out flats and sharps
-				let Row1Key = KeyTranspose("G", TransposeSteps);
-				let Row2Key = KeyTranspose("C", TransposeSteps);
+				let aRowKeys = FindRowKeys(Instruments.value, Tunings.value);
+				let Row1Key = aRowKeys[0];
+				let Row2Key = aRowKeys[1];
 				let convOptions = GetSharpFlatConverts(Row1Key, Row2Key);
 				
 				//Format inner row
@@ -3015,12 +3163,13 @@ function ExampleLoadIntern(Index) {
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
 				//Figure out flats and sharps
-				let Row1Key = KeyTranspose("G", TransposeSteps);
-				let Row2Key = KeyTranspose("C", TransposeSteps);
+				let aRowKeys = FindRowKeys(Instruments.value, Tunings.value);
+				let Row1Key = aRowKeys[0];
+				let Row2Key = aRowKeys[1];
 				let Row3Key = "";
 				let convOptions;
-				if (Instruments.value == "M_3") {
-					Row3Key = KeyTranspose("F", TransposeSteps);
+				if (aRowKeys.length > 2) {
+					Row3Key = aRowKeys[2];
 					convOptions = GetSharpFlatConverts(Row1Key, Row3Key);
 				}
 				else {
@@ -3179,7 +3328,7 @@ function ExampleLoadIntern(Index) {
 				let aRawBendsPull = aRawRow3Pull.concat(aRawRow2Pull);
 				
 				//Process holes
-				let Row1Key = KeyTranspose("G", TransposeSteps);
+				let Row1Key = FindRowKeys(Instruments.value, Tunings.value)[0];
 				let convOptions = GetSharpFlatConverts(Row1Key, Row1Key);
 				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
 				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
