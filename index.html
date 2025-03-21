@@ -18,21 +18,21 @@
 		<div class="intro">
 			<div>
 				<p>
-					Tablature generation tool for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature is created based on instrument, layout and key selection.
+					Tablature generation tool for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature and normal sheet music are created based on instrument, layout and musical key.
 				</p>
 				<p>
-					Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>.
+					Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>. There are some simple music examples available on this site as well to get you started.
 				</p>
 				<a href="#tool">Skip explanation and scroll to the tool</a>
 			</div>
-			<img style="margin-left:25px; width:300px; height:127px;" src="logo.png">
+			<img style="margin-left:25px; width:300px; height:127px;" src="logo.png" alt="Diatotab logo">
 		</div>
 		
 		<h2>Additional functionality</h2>
 		<p>
 			Although the primary purpose of the tool is to generate tablature, there is other functionality that might come in handy.
 		</p>
-			<h4>Transposition</h4>
+			<h3>Transposition</h3>
 			<p>
 				By the very nature of diatonic instruments, not all keys can be played. Therefore a transposition tool is built-in.
 			</p>
@@ -41,12 +41,12 @@
 				Whenever a number is entered, the transposition is applied directly to the output. Click the 'Transpose ABC' button to apply the transposition to the input ABC.
 			</p>
 			
-			<h4>ABC notation syntax highlighting</h4>
+			<h3>ABC notation syntax highlighting</h3>
 			<p>
 				To make the ABC input easier to read, colors are added automatically to the input. Most importantly chords get different colors than treble notes and the treble note colors alternate.
 			</p>
 
-			<h4>Reading the dots</h4>
+			<h3>Reading the dots</h3>
 			<p>
 				If you are trying to read the dots directly and no longer rely on tablature, it is possible to hide the tablature and display alternative note heads for notes played on the inner row(s) of the instrument. This resolves any ambiguity when reading the dots. As an intermediate step you can display note names instead of button numbers.
 			</p>
@@ -54,22 +54,22 @@
 				Under the ABC example button, you can load the instrument layout, this will show the names of the dots and their mappings to instrument button numbers. It will also show where the left hand bass chords are played on the right hand treble side, useful for session play and improvisation.
 			</p>
 			
-			<h4>Playing by ear</h4>
+			<h3>Playing by ear</h3>
 			<p>
-				For players that play by ear rather than tablature or dots, the tool allows you to playback the ABC tune. You can configure the amount of voices of the instrument and the amount of tremolo with which the instrument is tuned. You can choose to play only the melody or bass chords and control their relative volume if played simultaneously. Use the fade in/out control to make it should more staccato or legato.
+				For players that play by ear rather than tablature or dots, the tool allows you to playback the ABC tune. You can configure the amount of voices (reeds per note) of the instrument and the amount of tremolo with which the instrument is tuned. You can choose to play only the melody or bass chords and control their relative volume if played simultaneously. Use the fade in/out control to make it should more staccato or legato.
 			</p>
 			
-			<h4>Transcribe from instrument keyboard</h4>
+			<h3>Transcribe from instrument keyboard</h3>
 			<div class="intro">
 			<div>
 			<p>
 				If you can play a tune on the instrument from memory and want to transcribe it, you can use the computer keyboard as if it is the instrument keyboard. To do this, enable the 'instrument keyboard' checkbox, when enabled you can type notes in abc notation instead of the normal keyboard characters, rhythm is not taken into account. The default is push direction, hold down (left) ALT to change to pull direction. To temporarily type normal computer characters, hold down CTRL.
 			</p>
 			</div>
-			<img style="margin-left:25px; width:406px; height:135px;" src="PcKeyboard.png">
+			<img style="margin-left:25px; width:406px; height:135px;" src="PcKeyboard.png" alt="Computer keyboard numbering">
 			</div>
 			
-			<h4>Melodeon acquisition disorder (MAD) cure</h4>
+			<h3>Melodeon acquisition disorder (MAD) cure</h3>
 			<p>
 				Have you ever wondered how another keyboard layout would affect the difficulty of the tunes you are playing? Just select another layout and see instantly what it does to the tablature, no need to buy another melodeon.
 			</p>
@@ -81,13 +81,13 @@
 			<p>
 				For multi row layouts there are often multiple possibilities to play the same tune. The algorithm tries to find the easiest way, but you might not agree with the result. The push/pull direction is derived from the bass chord (written in ABC notation between " "). For chords that can be played in both directions you can add annotations to overrule the direction. In addition, annotations can be added to force the treble row number.<br>
 			</p>
-			<h4>Push/pull annotations</h3>
+			<h3>Push/pull annotations</h3>
 			<p>
 				Example for G/C melodeon where the <b>G</b> chord can be played in both push and pull.<br>
 				<b>&gt;</b> means push direction, write <b>"G&gt;"</b> to set G chord to push.<br>
 				<b>&lt;</b> means pull direction, write <b>"G&lt;"</b> to set G chord to pull.<br>
 			</p>
-			<h4>Row number annotations</h4>
+			<h3>Row number annotations</h3>
 			<p>
 				Example for G/C melodeon where the <b>a</b> note can be played on both the outer and the inner row (both in pull).<br>
 				<b>.</b> means row 1 or outer row, write <b>"G."a</b> to play it with 11 (in pull).<br>
@@ -191,7 +191,7 @@
 					<button onclick="ExampleShow()">Examples</button>
 					<button onclick="AbcOpenFileBrowser()">Open</button>
 					<button onclick="AbcSaveFile()">Save</button>
-					<input id="OpenFile" type="file" onchange="AbcOpenFile()" style="display: none"/>
+					<input id="OpenFile" type="file" onchange="AbcOpenFile()" style="display: none">
 				</div>
 				<div class="block" id="instrkey_div">
 					<input  id="instrkey" type="checkbox">
@@ -271,14 +271,14 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 				<div class="block">
 					
 					<table>
-						<tr><td>Voices </td><td><select id="reeds" style="width:100%;" onchange="CreateEditor()"></select>                                      </td></tr>
-						<tr><td>Tremolo</td><td><input type="range" min="0" max="30"  value="5" class="slider"  id="cents" onchange="CreateEditor(false, true)"></td></tr>
+						<tr><td><label for="reeds">Voices </label></td><td><select id="reeds" style="width:100%;" onchange="CreateEditor()"></select>                                      </td></tr>
+						<tr><td><label for="cents">Tremolo</label></td><td><input  id="cents" type="range" min="0" max="30"  value="5" class="slider" onchange="CreateEditor(false, true)"></td></tr>
 					</table>
 				</div>
 				<div class="block">
 					<table>
-						<tr><td>Bass volume</td><td><input type="range" min="0" max="150" value="100" class="slider" id="bassvol" onchange="CreateEditor()">           </td></tr>
-						<tr><td>Fade in/out</td><td><input type="range" min="1" max="250" value="50"  class="slider" id="fade"    onchange="CreateEditor(false, true)"></td></tr>
+						<tr><td><label for="bassvol">Bass volume</label></td><td><input id="bassvol" type="range" min="0" max="150" value="100" class="slider" onchange="CreateEditor()">           </td></tr>
+						<tr><td><label for="fade"   >Fade in/out</label></td><td><input id="fade"    type="range" min="1" max="250" value="50"  class="slider" onchange="CreateEditor(false, true)"></td></tr>
 					</table>
 				</div>
 				<div class="blockright">
@@ -301,10 +301,10 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 	
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
 		<div class="overlay" onclick="event.stopPropagation()">
-			<h4>Instrument Layout</h4>
+			<h3>Instrument Layout</h3>
 			<a href="" onclick="return ExampleLoad(0)">Diatonic scale order</a><br>
 			<a href="" onclick="return ExampleLoad(1)">Button order</a><br>
-			<h4>Example Tunes</h4>
+			<h3>Example Tunes</h3>
 			<a href="" onclick="return ExampleLoad(2)">Andro</a><br>
 			<a href="" onclick="return ExampleLoad(3)">Kerfank 1870/Den Andro</a><br>
 			<a href="" onclick="return ExampleLoad(4)">Mon Père Avait un Gars Lonla</a><br>
