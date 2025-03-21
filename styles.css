@@ -49,6 +49,26 @@ div.blockborder {
   border: solid grey 1px;
 }
 
+div.listtrim {
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+label.listheader {
+  display: block;
+  height: 25px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom: solid grey 1px;
+}
+
+select.list {
+  padding: 5px;
+  margin: -5px -20px -5px -5px;
+}
+
 div.blockright {
   float: right;
   display: inline-block;
@@ -122,11 +142,6 @@ div.overlay-container {
 div.overlay {
    background-color: #ffffff;
    width:            400px;
-}
-
-select.list {
-  padding: 10px;
-  margin: -5px -20px -5px -5px;
 }
 
 select.drop {

@@ -3,11 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Create tablature and sheet music for diatonic accordion / melodeon and diatonic harmonica. The tunes are entered in ABC notation, specify your instrument, keyboard layout and key it is tuned to.">
 	<title>Diatotab, Diatonic Accordion / Melodeon Tablature Generator</title>
 	<link rel="icon" href="favicon.ico">
 	<link rel="stylesheet" href="styles.css?v=20250321">
 	<link rel="stylesheet" href="abcjs-audio.css">
-	<script src="diatotab.js?v=20250222"></script>
+	<script src="diatotab.js?v=20250222-2"></script>
 	<script src="FileSaver.js"></script>
 	<script src="abcjs-basic-min.js?v=20250222"></script>
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
@@ -18,7 +19,8 @@
 		<div class="intro">
 			<div>
 				<p>
-					Tablature generation tool for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>harmonica</a>. The tunes are entered in ABC notation, tablature and normal sheet music are created based on instrument, layout and musical key.
+					Create tablature and sheet music for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>diatonic harmonica</a>.
+					The tunes are entered in ABC notation, specify your instrument, keyboard layout and key it is tuned to.
 				</p>
 				<p>
 					Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>. There are some simple music examples available on this site as well to get you started.
@@ -98,18 +100,24 @@
 				<b>,</b> means row 3, write <b>"G,"a</b> to play it with 7" (in push).<br>
 			</p>
 		
-		<h2 id="tool">Instrument / Tuning / Options</h2>
+		<h2 id="tool">Instrument and options</h2>
 		<div class="blockborder">
-			<select class="list" id="instrument" size="5" onchange="AddVariantsTunings();CreateEditor();">
-			</select>
+			<label for="instrument" class="listheader">Instrument</label>
+			<div class="listtrim">
+				<select class="list" id="instrument" size="5" onchange="AddVariantsTunings();CreateEditor();"></select>
+			</div>
 		</div>
-		<div id="variantdiv" class="blockborder">
-			<select class="list" id="variant" size="5" onchange="ShowHideVariantOptions();CreateEditor();">
-			</select>
+		<div class="blockborder" id="variantdiv">
+			<label for="variant" class="listheader">Keyboard Layout</label>
+			<div  class="listtrim">
+				<select class="list" id="variant" size="5" onchange="ShowHideVariantOptions();CreateEditor();"></select>
+			</div>
 		</div>
-		<div id="tuningdiv" class="blockborder">
-			<select class="list" id="tuning" size="5" onchange="CreateEditor()">
-			</select>
+		<div class="blockborder" id="tuningdiv">
+			<label for="tuning" class="listheader">Tuning</label>
+			<div  class="listtrim">
+				<select class="list" id="tuning" size="5" onchange="CreateEditor()"></select>
+			</div>
 		</div>
 		<div id="invdiv" class="block">
 			<div id="startzero">
@@ -296,7 +304,7 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 		<div class="blockend"></div>
 	</div>
 	<div id="footer" class="footer">
-		The application runs client side using a fork of <a target="_blank" href='https://www.abcjs.net'>abcjs</a>, no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports. Github repository of abcjs fork <a target="_blank" href='https://github.com/RickvanderS/abcjs-melodeon-tab'>here</a>, website <a target="_blank" href='https://github.com/RickvanderS/diatotab.com'>here</a>.
+		The application runs client side using a fork of <a target="_blank" href='https://www.abcjs.net'>abcjs</a>, no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports. Github source code repositories: <a target="_blank" href='https://github.com/RickvanderS/abcjs-melodeon-tab'>abcjs fork</a>, <a target="_blank" href='https://github.com/RickvanderS/diatotab.com'>website</a>.
 	</div>
 	
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
