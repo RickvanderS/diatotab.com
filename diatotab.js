@@ -1556,10 +1556,8 @@ function AbcKeyDown(event) {
 				//Prefer to write it as an in key note
 				let Note     = "";
 				let KeyIndex = FindCicrleKeyIndex(Key);
-				if (IsInKey(KeyIndex, aNotes[Button].SharpName))
-					Note = aNotes[Button].SharpName;
-				else if (IsInKey(KeyIndex, aNotes[Button].FlatName))
-					Note = aNotes[Button].FlatName;
+				if (IsInKey(KeyIndex, aNotes[Button]))
+					Note = aNotes[Button];
 				else {
 					//Use best guess for out of key note
 					let convOptions = GetSharpFlatConverts(Key, Key);
@@ -2178,21 +2176,61 @@ function FindCicrleKeyIndex(Key) {
 	return i;
 }
 
+function ConvertFlatSharp(NoteName, Options) {
+	if (Options.Dflat) {
+		NoteName = NoteName.replaceAll('^C', '_D');
+		NoteName = NoteName.replaceAll('^c', '_d');
+	}
+	else {
+		NoteName = NoteName.replaceAll('_D', '^C');
+		NoteName = NoteName.replaceAll('_d', '^c');
+	}
+	if (Options.Eflat) {
+		NoteName = NoteName.replaceAll('^D', '_E');
+		NoteName = NoteName.replaceAll('^d', '_e');
+	}
+	else {
+		NoteName = NoteName.replaceAll('_E', '^D');
+		NoteName = NoteName.replaceAll('_e', '^d');
+	}
+	if (Options.Gflat) {
+		NoteName = NoteName.replaceAll('^F', '_G');
+		NoteName = NoteName.replaceAll('^f', '_g');
+	}
+	else {
+		NoteName = NoteName.replaceAll('_G', '^F');
+		NoteName = NoteName.replaceAll('_g', '^f');
+	}
+	if (Options.Aflat) {
+		NoteName = NoteName.replaceAll('^G', '_A');
+		NoteName = NoteName.replaceAll('^g', '_a');
+	}
+	else {
+		NoteName = NoteName.replaceAll('_A', '^G');
+		NoteName = NoteName.replaceAll('_a', '^g');
+	}
+	if (Options.Bflat) {
+		NoteName = NoteName.replaceAll('^A', '_B');
+		NoteName = NoteName.replaceAll('^a', '_b');
+	}
+	else {
+		NoteName = NoteName.replaceAll('_B', '^A');
+		NoteName = NoteName.replaceAll('_b', '^a');
+	}
+	
+	return NoteName;
+}
+
 function GetSharpFlatConverts(LowKey, HighKey) {
 	let KeyIndex1 = FindCicrleKeyIndex(LowKey);
 	let KeyIndex2 = FindCicrleKeyIndex(HighKey);
 	if (KeyIndex2 - KeyIndex1 > 6)
 		KeyIndex2 -= 12;
-	let CsharpToDflat = false;
-	let DsharpToEflat = false;
-	let FsharpToGflat = false;
-	let GsharpToAflat = false;
-	let AsharpToBflat = false;
-	let DflatToCsharp = false;
-	let EflatToDsharp = false;
-	let GflatToFsharp = false;
-	let AflatToGsharp = false;
-	let BflatToAsharp = false;
+	let Dflat = null;
+	let Eflat = null;
+	let Gflat = null;
+	let Aflat = null;
+	let Bflat = null;
 	for (Index = KeyIndex1; Index <= KeyIndex2 + 10; ++Index) {
 		let KeyIndex = Index;
 		if (Index > KeyIndex2) {
@@ -2207,45 +2245,40 @@ function GetSharpFlatConverts(LowKey, HighKey) {
 		let TestKey = GetCircleFifths(KeyIndex).KeyFlat;
 		
 		if (KeyIndex <= 6) {
-			//In key flats
-			if (IsInKey(KeyIndex, "^C") && !CsharpToDflat)
-				DflatToCsharp = true;
-			if (IsInKey(KeyIndex, "^D") && !DsharpToEflat)
-				EflatToDsharp = true;
-			if (IsInKey(KeyIndex, "^F") && !FsharpToGflat)
-				GflatToFsharp = true;
-			if (IsInKey(KeyIndex, "^G") && !GsharpToAflat)
-				AflatToGsharp = true;
-			if (IsInKey(KeyIndex, "^A") && !AsharpToBflat)
-				BflatToAsharp = true;
+			//In key sharps
+			if (IsInKey(KeyIndex, "^C") && Dflat == null)
+				Dflat = false;
+			if (IsInKey(KeyIndex, "^D") && Eflat == null)
+				Eflat = false;
+			if (IsInKey(KeyIndex, "^F") && Gflat == null)
+				Gflat = false;
+			if (IsInKey(KeyIndex, "^G") && Aflat == null)
+				Aflat = false;
+			if (IsInKey(KeyIndex, "^A") && Bflat == null)
+				Bflat = false;
 		}
 		else {
-			//In key sharps
-			if (IsInKey(KeyIndex, "_D") && !DflatToCsharp)
-				CsharpToDflat = true;
-			if (IsInKey(KeyIndex, "_E") && !EflatToDsharp)
-				DsharpToEflat = true;
-			if (IsInKey(KeyIndex, "_G") && !GflatToFsharp)
-				FsharpToGflat = true;
-			if (IsInKey(KeyIndex, "_A") && !AflatToGsharp)
-				GsharpToAflat = true;
-			if (IsInKey(KeyIndex, "_B") && !BflatToAsharp)
-				AsharpToBflat = true;
+			//In key flats
+			if (IsInKey(KeyIndex, "_D") && Dflat == null)
+				Dflat = true;
+			if (IsInKey(KeyIndex, "_E") && Eflat == null)
+				Eflat = true;
+			if (IsInKey(KeyIndex, "_G") && Gflat == null)
+				Gflat = true;
+			if (IsInKey(KeyIndex, "_A") && Aflat == null)
+				Aflat = true;
+			if (IsInKey(KeyIndex, "_B") && Bflat == null)
+				Bflat = true;
 		}
 		
 	}
 	
 	return {
-		CsharpToDflat : CsharpToDflat,
-		DsharpToEflat : DsharpToEflat,
-		FsharpToGflat : FsharpToGflat,
-		GsharpToAflat : GsharpToAflat,
-		AsharpToBflat : AsharpToBflat,
-		DflatToCsharp : DflatToCsharp,
-		EflatToDsharp : EflatToDsharp,
-		GflatToFsharp : GflatToFsharp,
-		AflatToGsharp : AflatToGsharp,
-		BflatToAsharp : BflatToAsharp
+		Dflat : Dflat,
+		Eflat : Eflat,
+		Gflat : Gflat,
+		Aflat : Aflat,
+		Bflat : Bflat
 	};
 }
 
@@ -2253,49 +2286,9 @@ function ButtonArrayConvert(RawArray, Options) {
 	let aRow = new Array;
 	for (let i = 0; i < RawArray.length; ++i) {
 		if (RawArray[i] != "") {
-			//Treble note preferences (not in key), want Bes and Es, all others -is
-			let Note = RawArray[i].SharpName;
-			
-			if (Options.CsharpToDflat) {
-				Note = Note.replaceAll('^C', '_D');
-				Note = Note.replaceAll('^c', '_d');
-			}
-			if (Options.DsharpToEflat) {
-				Note = Note.replaceAll('^D', '_E');
-				Note = Note.replaceAll('^d', '_e');
-			}
-			if (Options.FsharpToGflat) {
-				Note = Note.replaceAll('^F', '_G');
-				Note = Note.replaceAll('^f', '_g');
-			}
-			if (Options.GsharpToAflat) {
-				Note = Note.replaceAll('^G', '_A');
-				Note = Note.replaceAll('^g', '_a');
-			}
-			if (Options.AsharpToBflat) {
-				Note = Note.replaceAll('^A', '_B');
-				Note = Note.replaceAll('^a', '_b');
-			}
-			if (Options.DflatToCsharp) {
-				Note = Note.replaceAll('_D', '^C');
-				Note = Note.replaceAll('_d', '^c');
-			}
-			if (Options.EflatToDsharp) {
-				Note = Note.replaceAll('_E', '^D');
-				Note = Note.replaceAll('_e', '^d');
-			}
-			if (Options.GflatToFsharp) {
-				Note = Note.replaceAll('_G', '^F');
-				Note = Note.replaceAll('_g', '^f');
-			}
-			if (Options.AflatToGsharp) {
-				Note = Note.replaceAll('_A', '^G');
-				Note = Note.replaceAll('_a', '^g');
-			}
-			if (Options.BflatToAsharp) {
-				Note = Note.replaceAll('_B', '^A');
-				Note = Note.replaceAll('_b', '^a');
-			}
+			let Note = RawArray[i];
+			Note = ConvertFlatSharp(Note, Options);
+
 			aRow.push(Note);
 		}
 		else
@@ -2627,7 +2620,7 @@ function ButtonArraysToAbc(aRowPush, aRowPull) {
 	return AbcRow;
 }
 
-function GetChordNotes(ChordName, ForceSharp) {
+function GetChordNotes(ChordName) {
 	let aAllSharp = new Array();
 	aAllSharp.push( "C,,");
 	aAllSharp.push("^C,,");
@@ -2666,100 +2659,66 @@ function GetChordNotes(ChordName, ForceSharp) {
 	aAllFlat.push( "A,,");
 	aAllFlat.push("_B,,");
 	aAllFlat.push( "B,,");
-	aAllFlat.push( "C,");
-	aAllFlat.push("_D,");
-	aAllFlat.push( "D,");
-	aAllFlat.push("_E,");
-	aAllFlat.push( "E,");
-	aAllFlat.push( "F,");
-	aAllFlat.push("_G,");
-	aAllFlat.push( "G,");
-	aAllFlat.push("_A,");
-	aAllFlat.push( "A,");
-	aAllFlat.push("_B,");
-	aAllFlat.push( "B,");
 	
-	let BassSearch = ChordName[0];
+	//Get the upper case base name from the chord
+	let BassNote = ChordName[0];
 	if (ChordName.length > 1) {
 		if (ChordName[1] == "#")
-			BassSearch = "^" + BassSearch[0];
+			BassNote = "^" + BassNote[0];
 		else if (ChordName[1] == "b")
-			BassSearch = "_" + BassSearch[0];
+			BassNote = "_" + BassNote[0];
 	}
+	BassNote = BassNote.toUpperCase();
 	
-	let UseFlat = false;
+	//Find it in the lookup table
 	let BassIndex = 0;
 	for (; BassIndex < aAllSharp.length; ++BassIndex) {
-		if (aAllSharp[BassIndex].startsWith(BassSearch))
+		if (aAllSharp[BassIndex].startsWith(BassNote) || aAllFlat[BassIndex].startsWith(BassNote))
 			break;
-		else if (aAllFlat[BassIndex].startsWith(BassSearch)) {
-			UseFlat = true;
-			break;
-		}
 	}
-	if (ChordName[0] == "G")
-		UseFlat = true;
-	
-	if (ForceSharp)
-		UseFlat = false;
-	
 	if (BassIndex >= aAllSharp.length)
-		return "";
+		return new Array();
 	
-	
-	let aChordNotes = new Array();
-	//Major chord
+	//Compute indices relive to this
 	let Index1 = BassIndex + 0;
 	let Index2 = BassIndex + 4;
-	let Index3 = BassIndex + 7;
-	//Minor chord
 	if (ChordName.indexOf("m") >= 0)
-		Index2 = BassIndex + 3;
+		Index2 = BassIndex + 3; //Minor chord
+	let Index3 = BassIndex + 7;
 	
-	if (!UseFlat) {
-		aChordNotes.push(aAllSharp[Index1]);
-		aChordNotes.push(aAllSharp[Index2]);
-		aChordNotes.push(aAllSharp[Index3]);
-	}
-	else {
-		aChordNotes.push(aAllFlat[Index1]);
-		aChordNotes.push(aAllFlat[Index2]);
-		aChordNotes.push(aAllFlat[Index3]);
-	}
-	
-	if (ChordName.indexOf("m7") >= 0) {
-		let Index4 = BassIndex + 10;
-		if (!UseFlat)
-			aChordNotes.push(aAllSharp[Index4]);
-		else
-			aChordNotes.push(aAllFlat[Index4]);
-	}
+	//Return the sharp upper case chord notes
+	let aChordNotes = new Array();
+	aChordNotes.push(aAllSharp[Index1]);
+	aChordNotes.push(aAllSharp[Index2]);
+	aChordNotes.push(aAllSharp[Index3]);
 	
 	return aChordNotes;
 }
 
 function GenChord(ChordName, aButtonNotes, Options) {
-	if (Options.CsharpToDflat)
+	//Convert chord to display name
+	if (Options.Dflat)
 		ChordName = ChordName.replaceAll('C#', 'Db');
-	if (Options.DsharpToEflat)
-		ChordName = ChordName.replaceAll('D#', 'Eb');
-	if (Options.FsharpToGflat)
-		ChordName = ChordName.replaceAll('F#', 'Gb');
-	if (Options.GsharpToAflat)
-		ChordName = ChordName.replaceAll('G#', 'Ab');
-	if (Options.AsharpToBflat)
-		ChordName = ChordName.replaceAll('A#', 'Bb');
-	if (Options.DflatToCsharp)
+	else
 		ChordName = ChordName.replaceAll('Db', 'C#');
-	if (Options.EflatToDsharp)
+	if (Options.Eflat)
+		ChordName = ChordName.replaceAll('D#', 'Eb');
+	else
 		ChordName = ChordName.replaceAll('Eb', 'D#');
-	if (Options.GflatToFsharp)
+	if (Options.Gflat)
+		ChordName = ChordName.replaceAll('F#', 'Gb');
+	else
 		ChordName = ChordName.replaceAll('Gb', 'F#');
-	if (Options.AflatToGsharp)
+	if (Options.Aflat)
+		ChordName = ChordName.replaceAll('G#', 'Ab');
+	else
 		ChordName = ChordName.replaceAll('Ab', 'G#');
-	if (Options.BflatToAsharp)
+	if (Options.Bflat)
+		ChordName = ChordName.replaceAll('A#', 'Bb');
+	else
 		ChordName = ChordName.replaceAll('Bb', 'A#');
 	
+	//Get notes in the chord, low octave sharp
 	let StrippedChordName = ChordName;
 	let Pos = StrippedChordName.search(" ");
 	if (Pos >= 0) {
@@ -2767,24 +2726,27 @@ function GenChord(ChordName, aButtonNotes, Options) {
 		if (ChordName.slice(-1) == ">" || ChordName.slice(-1) == "<")
 			StrippedChordName += ChordName.slice(-1);
 	}
-	let aChordNotes = GetChordNotes(StrippedChordName.replaceAll("m7", "m"));
+	let aChordNotes = GetChordNotes(StrippedChordName);
 	
+	//Lookup all notes in the chord in all octaves
 	let aBass  = new Array();
 	let aOther = new Array();
 	for (let Octave = 0; Octave <= 8; ++Octave) {
+		//Find buttons for this octave
 		for (let i = 0; i < aChordNotes.length; ++i) {
 			for (let j = 0; j < aButtonNotes.length; ++j) {
-				if (aChordNotes[i] == aButtonNotes[j].FlatName || aChordNotes[i] == aButtonNotes[j].SharpName) {
+				if (aChordNotes[i] == aButtonNotes[j]) {
+					let NoteName = ConvertFlatSharp(aButtonNotes[j], Options);
 					if (i == 0)
-						aBass.push(aChordNotes[i]);
+						aBass.push(NoteName);
 					else
-						aOther.push(aChordNotes[i]);
+						aOther.push(NoteName);
 					break;
 				}
 			}
 		}
 		
-		//Make chord one octave higher
+		//Make chord notes one octave higher
 		for (let i = 0; i < aChordNotes.length; ++i) {
 			//Remove ,
 			if (aChordNotes[i][aChordNotes[i].length - 1] == ",")
@@ -2798,21 +2760,20 @@ function GenChord(ChordName, aButtonNotes, Options) {
 		}
 	}
 	
+	//Generate ABC string for chord and notes
 	var ABC = '';
 	if (aBass.length || aOther.length) {
+		//Add bass
 		StrippedChordName = StrippedChordName.replaceAll("b", "♭");
-		ChordName         = ChordName.replaceAll("b", "♭");
-		
 		let BassName = StrippedChordName;
 		BassName = BassName.replaceAll("m7", "");
 		BassName = BassName.replaceAll("m", "");
 		let SepIndex = BassName.indexOf(" ");
 		if (SepIndex >= 0)
 			BassName = BassName.substr(0, SepIndex);
-		
+		ABC += '"' + BassName + '"';
 		
 		//Add bass notes
-		ABC += '"' + BassName + '"';
 		if (aBass.length > 1)
 			ABC += "[";
 		for (let i = 0; i < aBass.length; ++i)
@@ -2822,10 +2783,12 @@ function GenChord(ChordName, aButtonNotes, Options) {
 		if (aBass.length == 0)
 			ABC += "z";
 		
+		//Add chords
+		ChordName = ChordName.replaceAll("b", "♭");
 		ChordName = ChordName.toLowerCase();
+		ABC += '"' + ChordName + '"';
 		
 		//Add chord notes
-		ABC += '"' + ChordName + '"';
 		let Added = false;
 		for (let i = 0; i < aOther.length; ++i) {
 			if (!Added) {

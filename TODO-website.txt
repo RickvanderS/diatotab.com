@@ -6,7 +6,7 @@ Improvements:
 - Better syntax highlighting around |[
 - Better syntax highlighting for %% meta comment
 New features:
-- Open custom layout file
+- Open custom layout file (using ABC notation, Rodec Markup, Roland FR-18, ...)
 
 
 
