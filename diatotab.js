@@ -1923,6 +1923,11 @@ function AbcInputIntern() {
 					InComment = true;
 					ABChtml += HtmlChar + "<span  style='color:Teal'>";
 				}
+				//Detect false begin of multi-note at repeats
+				else if (!InComment && !InRemark && !InChord && !InDec && (Line.substr(j, 3) == "|[1" || Line.substr(j, 3) == "|[2")) {
+					ABChtml += Line.substr(j, 3);
+					j += 2;
+				}
 				//Detect begin of multi-note
 				else if (!InComment && !InRemark && !InChord && !InDec && !inNoteMulti && Line[j] == "[" && Line.substr(j, 2) != "[|") {
 					//End previous note color
