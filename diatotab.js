@@ -31,20 +31,25 @@ function AddInstruments() {
 	Instrument.value    = "M_2";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
+	
+	Instrument = document.createElement("option");
+	Instrument.text     = "Diatonic Accordion / Melodeon 3 row fourth apart";
+	Instrument.value    = "M_3";
+	Instruments.add(Instrument);
 
+	Instrument = document.createElement("option");
+	Instrument.text     = "Diatonic Accordion / Melodeon 2.5 row fourth apart, club row";
+	Instrument.value    = "M_CLUB";
+	Instruments.add(Instrument);
+	
 	Instrument = document.createElement("option");
 	Instrument.text     = "Diatonic Accordion / Melodeon 2.5 row fourth apart, helper row";
 	Instrument.value    = "M_25";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text     = "Diatonic Accordion / Melodeon 2.5 row club";
-	Instrument.value    = "M_CLUB";
-	Instruments.add(Instrument);
-	
-	Instrument = document.createElement("option");
-	Instrument.text     = "Diatonic Accordion / Melodeon 3 row fourth apart";
-	Instrument.value    = "M_3";
+	Instrument.text     = "Diatonic Accordion / Melodeon 3 row fourth apart, helper row";
+	Instrument.value    = "M_35";
 	Instruments.add(Instrument);
 
 	Instrument = document.createElement("option");
@@ -165,6 +170,18 @@ function AddVariantsTunings() {
 				Variants.add(Variant);
 				
 				var Variant = document.createElement("option");
+				Variant.text       = "23 button, 3th button start, 1/1' accidentals";
+				Variant.value      = "23^";
+				Variant.dataSource = "";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23 button, 3th button start, 1/1' low notes";
+				Variant.value      = "23";
+				Variant.dataSource = "";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
 				Variant.text       = "21 button, 4th button start, 1/1' accidentals";
 				Variant.value      = "21^>";
 				Variant.dataSource = "";
@@ -215,21 +232,22 @@ function AddVariantsTunings() {
 				Variants.add(Variant);
 				
 				var Variant = document.createElement("option");
-				Variant.text       = "21+5 button, 12 bass, Saltarelle";
+				Variant.text       = "21+5 button, 12 bass, Saltarelle (4th start)";
 				Variant.value      = "21+5_Saltarelle";
 				Variant.dataSource = "http://forum.melodeon.net/files/site/DG21plus5saltarelle.gif";
 				Variants.add(Variant);
 				
 				var Variant = document.createElement("option");
-				Variant.text       = "23+4 button, 12 bass, Saltarelle";
+				Variant.text       = "23+4 button, 12 bass, Saltarelle (4th start)";
 				Variant.value      = "23+4_Saltarelle";
 				Variant.dataSource = "http://forum.melodeon.net/files/site/DG23plus4saltarelle.gif";
 				Variants.add(Variant);
 				
-				/*var Variant = document.createElement("option");
-				Variant.text       = "21+9 button, 12 bass, Rick";
-				Variant.value      = "21+9_Rick";
-				Variants.add(Variant);*/
+				var Variant = document.createElement("option");
+				Variant.text       = "21+5 button, 12 bass, Young (4th start)";
+				Variant.value      = "21+5_young";
+				Variant.dataSource = "https://www.paulyoungfolk.co.uk/layouts";
+				Variants.add(Variant);
 			}
 			
 			//Add 2row tunings
@@ -325,6 +343,83 @@ function AddVariantsTunings() {
 			}
 		
 			break;
+			
+		case "M_35":
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 18 bass, Corgeron";
+				Variant.value      = "33corgeron";
+				Variant.dataSource = "https://dia.to/sites/default/files/plans/trois-rangs_33_8_corgeron-sol-do.pdf";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+11 button, 16 bass, Gaillard";
+				Variant.value      = "34gaillard";
+				Variant.dataSource = "https://dia.to/sites/default/files/plans/trois_rangs_33_18_sol-do-_gaillard_0.pdf";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 18 bass, Le Tron / Laloy";
+				Variant.value      = "33letron";
+				Variant.dataSource = "https://dia.to/sites/default/files/plans/trois_rangs_33_18_sol-do-_ltl_0.pdf";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 18 bass, Heim 1";
+				Variant.value      = "33heima";
+				Variant.dataSource = "https://dia.to/sites/default/files/plans/trois-rangs_33_8_heim-sol-do.pdf";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "21+9 button, 12 bass, Asbest";
+				Variant.value      = "30asbest";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 18 bass, Bottasso";
+				Variant.value      = "33bottasso";
+				Variant.dataSource = "https://dia.to/sites/default/files/plans/trois_rangs_33_18_sol-do-_bottasso.pdf";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 18 bass, Heim 2";
+				Variant.value      = "33heimb";
+				Variant.dataSource = "Chordia Android app by diatotrad.fr";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+11 button, 18 bass, Milleret / Pignol";
+				Variant.value      = "34milleret";
+				Variant.dataSource = "https://dia.to/sites/default/files/plans/milleret-pignol.pdf";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 18 bass, Young";
+				Variant.value      = "33young";
+				Variant.dataSource = "https://www.paulyoungfolk.co.uk/layouts";
+				Variants.add(Variant);
+			}
+			
+			//Add 2row tunings
+			AddTunings2Row();
+			break;
+
 		case "H_1":
 			show_options_mel  = false;
 			show_options_harm = true;
@@ -499,13 +594,19 @@ function GetRow3FirstInvButtonNumber(Instrument, Variant, StartFromZero) {
 	return ButtonNumber;
 }
 
+function Is4thButtonStart(Variant) {
+	if (Variant.includes(">") || Variant.includes("Saltarelle") || Variant.includes("21+5_young"))
+		return true;
+	return false;
+}
+
 function GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero) {
 	//Check not applicable to the instrument
 	if (Instrument != "M_2" && Instrument != "M_25" && Instrument != "M_3")
 		return -1;
 	
 	//If this is a 4th button start instrument
-	if (Variant.includes(">") || Variant.includes("23") || Variant.includes("Saltarelle")) { //TODO: Function for this
+	if (Is4thButtonStart(Variant)) {
 		if (StartFromZero)
 			return 5;
 		else
@@ -522,7 +623,7 @@ function ShowHideVariantOptions() {
 	let Variant    = document.getElementById("variant").value;
 	
 	//Give option to start numbering at 0 for 4th button starts
-	let ShowZero = Variant.includes(">") || Variant.includes("23") || Variant.includes("Saltarelle");
+	let ShowZero = Is4thButtonStart(Variant);
 	showElement("startzero", ShowZero);
 	let StartFromZero = ShowZero && document.getElementById("zero").checked;
 	
@@ -770,6 +871,7 @@ function GetAbcjsParamsFromControls() {
 		case "M_25":
 		case "M_CLUB":
 		case "M_3":
+		case "M_35":
 			//Split tuning
 			let TuningArray = Tuning.split("/");
 			
@@ -805,8 +907,6 @@ function GetAbcjsParamsFromControls() {
 					TuningArray[2] = "27Saltarelle";
 				else if (Variant == "21+5_Castagnari")
 					TuningArray[2] = "26Castagnari";
-				else if (Variant == "21+9_Rick")
-					TuningArray[2] = "Rick";
 				else if (Variant == "21+4_Club")
 					TuningArray[2] = "25Club";
 				else if (Variant == "23+4_Club")
@@ -817,6 +917,8 @@ function GetAbcjsParamsFromControls() {
 					TuningArray[2] = "31Club";
 				else if (Variant == "23+10_Club")
 					TuningArray[2] = "33Club";
+				else if (Variant == "21+5_young")
+					TuningArray[2] = "26young";
 			}
 			else if (Instrument == "M_3") {
 				//Set number of buttons for each row
@@ -835,6 +937,10 @@ function GetAbcjsParamsFromControls() {
 					TuningArray[1] = "11" + TuningArray[1];
 					TuningArray[2] = "10" + TuningArray[2];
 				}
+			}
+			else if (Instrument == "M_35") {
+				if (Variant.length)
+					TuningArray[2] = Variant;
 			}
 			
 			//Add button inversion options
@@ -2302,6 +2408,21 @@ function ButtonArrayConvert(RawArray, Options) {
 	return aRow;
 }
 
+function ButtonArrayAddPullNaturals(aArrayPush, aArrayPull) {
+	for (var i = 0; i < aArrayPush.length; ++i) {
+		if (aArrayPush[i].length == 0 || aArrayPull[i].length == 0)
+			continue;
+
+		if (aArrayPush[i][0] == '_' || aArrayPush[i][0] == '^') {
+			if (aArrayPull[i][0] != '_' && aArrayPull[i][0] != '^') {
+				if (aArrayPush[i][1].toUpperCase() == aArrayPull[i][0].toUpperCase())
+					aArrayPull[i] = '=' + aArrayPull[i];
+			}
+		}
+	}
+	return aArrayPull;
+}
+
 function GetNoteOctave(Note) {
 	let Lower  = Note.split(",").length - 1;
 	let Higher = Note.split("'").length - 1;
@@ -2510,7 +2631,7 @@ function ButtonArrayToKey(aRow, Key) {
 			aRow[n] = aRow[n].replaceAll('"^', '"');
 		}
 		//If no sharp/flat, but not within key, add = for natural
-		else if (!Acc && !InKey) {
+		else if (!Acc && !InKey && aRow[n].indexOf('=') < 0) {
 			aRow[n] = aRow[n].replaceAll('"', '"=');
 			aRow[n] = aRow[n].substr(0, 1) + aRow[n].substr(2);
 		}
@@ -2700,7 +2821,7 @@ function GetChordNotes(ChordName) {
 	return aChordNotes;
 }
 
-function GenChord(ChordName, aButtonNotes, Options) {
+function GenChord(ChordName, aButtonNotes, Options, BassOnly = false) {
 	//Convert chord to display name
 	if (Options.Dflat)
 		ChordName = ChordName.replaceAll('C#', 'Db');
@@ -2767,7 +2888,7 @@ function GenChord(ChordName, aButtonNotes, Options) {
 	
 	//Generate ABC string for chord and notes
 	var ABC = '';
-	if (aBass.length || aOther.length) {
+	if (aBass.length || (aOther.length && !BassOnly)) {
 		//Add bass
 		StrippedChordName = StrippedChordName.replaceAll("b", "♭");
 		let BassName = StrippedChordName;
@@ -2788,24 +2909,26 @@ function GenChord(ChordName, aButtonNotes, Options) {
 		if (aBass.length == 0)
 			ABC += "z";
 		
-		//Add chords
-		ChordName = ChordName.replaceAll("b", "♭");
-		ChordName = ChordName.toLowerCase();
-		ABC += '"' + ChordName + '"';
-		
-		//Add chord notes
-		let Added = false;
-		for (let i = 0; i < aOther.length; ++i) {
-			if (!Added) {
-				Added = true;
-				ABC += "[";
+		if (!BassOnly) {
+			//Add chords
+			ChordName = ChordName.replaceAll("b", "♭");
+			ChordName = ChordName.toLowerCase();
+			ABC += '"' + ChordName + '"';
+			
+			//Add chord notes
+			let Added = false;
+			for (let i = 0; i < aOther.length; ++i) {
+				if (!Added) {
+					Added = true;
+					ABC += "[";
+				}
+				ABC += aOther[i];
 			}
-			ABC += aOther[i];
+			if (Added)
+				ABC += "]";
+			else
+				ABC += "z";
 		}
-		if (Added)
-			ABC += "]";
-		else
-			ABC += "z";
 		
 		ABC += "|";
 	}
@@ -2826,7 +2949,7 @@ function FindRowKeys(Instrument, Tuning) {
 		let Row1Key = KeyTranspose("C", TransposeSteps);
 		aRowKey.push(Row1Key);
 	}
-	else if (Instrument == "M_2" || Instrument == "M_25" || Instrument == "M_CLUB") {
+	else if (Instrument == "M_2" || Instrument == "M_25" || Instrument == "M_CLUB" || Instrument == "M_35") {
 		let Row1Key = KeyTranspose("G", TransposeSteps);
 		let Row2Key = KeyTranspose("C", TransposeSteps);
 		aRowKey.push(Row1Key);
@@ -2961,6 +3084,7 @@ function ExampleLoadIntern(Index) {
 				let convOptions = GetSharpFlatConverts(Row1Key, Row1Key);
 				aRowPush = ButtonArrayConvert(aRawPush, convOptions);
 				aRowPull = ButtonArrayConvert(aRawPull, convOptions);
+				aRowPull = ButtonArrayAddPullNaturals(aRowPush, aRowPull);
 				aRowPush = ButtonArrayAddNames(aRowPush, ">");
 				aRowPull = ButtonArrayAddNames(aRowPull, "<");
 				aRowPush = ButtonArrayToKey(aRowPush, Row1Key);
@@ -3020,6 +3144,7 @@ function ExampleLoadIntern(Index) {
 				//Format inner row
 				aRow2Push = ButtonArrayConvert(aRawRow2Push, convOptions);
 				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, convOptions);
+				aRow2Pull = ButtonArrayAddPullNaturals(aRow2Push, aRow2Pull);
 				aRow2Push = ButtonArrayAddNames(aRow2Push, ">:");
 				aRow2Pull = ButtonArrayAddNames(aRow2Pull, "<:");
 				aRow2Push = ButtonArrayToKey(aRow2Push, Row2Key);
@@ -3028,6 +3153,7 @@ function ExampleLoadIntern(Index) {
 				//Format outer row
 				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
 				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
+				aRow1Pull = ButtonArrayAddPullNaturals(aRow1Push, aRow1Pull);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
 				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
@@ -3111,7 +3237,7 @@ function ExampleLoadIntern(Index) {
 				}
 			}
 			//Three row melodeons
-			else if (Instruments.value == "M_25" || Instruments.value == "M_CLUB" || Instruments.value == "M_3") {
+			else if (Instruments.value == "M_25" || Instruments.value == "M_CLUB" || Instruments.value == "M_3" || Instruments.value == "M_35") {
 				//Get treble buttons from ABCjs
 				let aRawRow3Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row3;
 				let aRawRow3Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row3;
@@ -3127,6 +3253,9 @@ function ExampleLoadIntern(Index) {
 				let aRawChordRow1Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
 				let aRawChordRow2Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
 				let aRawChordRow2Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
+				let BassRow3ChordLess  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow3ChordLess;
+				let aRawChordRow3Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow3Push;
+				let aRawChordRow3Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow3Pull;
 				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
@@ -3147,6 +3276,7 @@ function ExampleLoadIntern(Index) {
 				if (Instruments.value == "M_3") {
 					aRow3Push = ButtonArrayConvert(aRawRow3Push, convOptions);
 					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, convOptions);
+					aRow3Pull = ButtonArrayAddPullNaturals(aRow3Push, aRow3Pull);
 					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
 					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
 					aRow3Push = ButtonArrayToKey(aRow3Push, Row3Key);
@@ -3155,6 +3285,7 @@ function ExampleLoadIntern(Index) {
 				else {
 					aRow3Push = ButtonArrayConvert(aRawRow3Push, convOptions);
 					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, convOptions);
+					aRow3Pull = ButtonArrayAddPullNaturals(aRow3Push, aRow3Pull);
 					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
 					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
 				}
@@ -3162,6 +3293,7 @@ function ExampleLoadIntern(Index) {
 				
 				aRow2Push = ButtonArrayConvert(aRawRow2Push, convOptions);
 				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, convOptions);
+				aRow2Pull = ButtonArrayAddPullNaturals(aRow2Push, aRow2Pull);
 				aRow2Push = ButtonArrayAddNames(aRow2Push, ">:");
 				aRow2Pull = ButtonArrayAddNames(aRow2Pull, "<:");
 				aRow2Push = ButtonArrayToKey(aRow2Push, Row2Key);
@@ -3170,6 +3302,7 @@ function ExampleLoadIntern(Index) {
 				
 				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
 				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
+				aRow1Pull = ButtonArrayAddPullNaturals(aRow1Push, aRow1Pull);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
 				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
@@ -3246,28 +3379,37 @@ function ExampleLoadIntern(Index) {
 				aLines.push('P:Bass Outer Row');
 				var Line = "]";
 				for (let i = 0; i < aRawChordRow1Push.length; ++i) {
-					let Ann = ".";
-					if (i > 0)
-						Ann = ":";
+					let Ann = "";
 					Line += GenChord(aRawChordRow1Push[i] + '>' + Ann, aRawPush, convOptions);
 					Line += GenChord(aRawChordRow1Pull[i] + '<' + Ann, aRawPull, convOptions);
 				}
 				aLines.push(Line);
-				aLines.push('P:Bass Inner Row');
+				if (!aRawChordRow3Push.length)
+					aLines.push('P:Bass Inner Row');
+				else
+					aLines.push('P:Bass Middle Row');
 				Line = "]";
 				for (let i = 0; i < aRawChordRow2Push.length; ++i) {
-					let Ann = ".";
-					if (i > 0)
-						Ann = ":";
+					let Ann = "";
 					Line += GenChord(aRawChordRow2Push[i] + '>' + Ann, aRawPush, convOptions);
 					Line += GenChord(aRawChordRow2Pull[i] + '<' + Ann, aRawPull, convOptions);
 				}
 				aLines.push(Line);
+				if (aRawChordRow3Push.length) {
+					aLines.push('P:Bass Inner Row');
+					Line = "]";
+					for (let i = 0; i < aRawChordRow3Push.length; ++i) {
+						let Ann = "";
+						Line += GenChord(aRawChordRow3Push[i] + '>' + Ann, aRawPush, convOptions, BassRow3ChordLess);
+						Line += GenChord(aRawChordRow3Pull[i] + '<' + Ann, aRawPull, convOptions, BassRow3ChordLess);
+					}
+					aLines.push(Line);
+				}
 				
 				//Add ABC for bass cross-rows
 				let Len = aRawChordCrossPush.length;
 				if (aRawChordCrossPull.length > Len)
-					Len = aPullCrossChord.length;
+					Len = aRawChordCrossPull.length;
 				if (Len > 0) {
 					aLines.push('P:Bass Cross Row');
 					Line = "]";
@@ -3300,6 +3442,7 @@ function ExampleLoadIntern(Index) {
 				let convOptions = GetSharpFlatConverts(Row1Key, Row1Key);
 				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
 				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
+				aRow1Pull = ButtonArrayAddPullNaturals(aRow1Push, aRow1Pull);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
 				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
@@ -3308,6 +3451,7 @@ function ExampleLoadIntern(Index) {
 				//Process bends
 				aBendsPush = ButtonArrayConvert(aRawBendsPush, convOptions);
 				aBendsPull = ButtonArrayConvert(aRawBendsPull, convOptions);
+				aBendsPull = ButtonArrayAddPullNaturals(aBendsPush, aBendsPull);
 				aBendsPush = ButtonArrayAddNames(aBendsPush, ">,");
 				aBendsPull = ButtonArrayAddNames(aBendsPull, "<,");
 
