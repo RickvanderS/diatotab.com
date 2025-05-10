@@ -350,6 +350,7 @@ function AddVariantsTunings() {
 				Variant.text       = "23+10 button, 18 bass, Corgeron";
 				Variant.value      = "33corgeron";
 				Variant.dataSource = "https://dia.to/sites/default/files/plans/trois-rangs_33_8_corgeron-sol-do.pdf";
+				Variant.selected   = 'selected';
 				Variants.add(Variant);
 			}
 			
