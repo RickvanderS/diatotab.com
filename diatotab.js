@@ -380,8 +380,8 @@ function AddVariantsTunings() {
 			
 			{
 				var Variant = document.createElement("option");
-				Variant.text       = "21+9 button, 12 bass, Asbest";
-				Variant.value      = "30asbest";
+				Variant.text       = "21+9 button, 12 bass, Rick";
+				Variant.value      = "30rick";
 				Variants.add(Variant);
 			}
 			
