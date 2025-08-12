@@ -3193,6 +3193,7 @@ function ExampleLoadIntern(Index) {
 				
 				//Add G row to ABC
 				aLines.push('P: Treble Outer Row ' + Row1Key.replaceAll("b", "♭"));
+				aLines.push('%%keywarn 0');
 				aLines.push('K: ' + Row1Key);
 				aLines.push(LayoutTrebleRow1);
 				
@@ -3366,6 +3367,7 @@ function ExampleLoadIntern(Index) {
 				
 				//Add C row to ABC
 				aLines.push('P: Treble Middle Row ' + Row2Key.replaceAll("b", "♭"));
+				aLines.push('%%keywarn 0');
 				aLines.push('K: ' + Row2Key);
 				aLines.push(LayoutTrebleRow2);
 				
