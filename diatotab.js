@@ -262,25 +262,25 @@ function AddVariantsTunings() {
 				Variants.add(Variant);
 				
 				var Variant = document.createElement("option");
-				Variant.text       = "23+4 button, 8 bass, Hohner Club";
+				Variant.text       = "23+4 button, 8 bass, Hohner Club (4th start)";
 				Variant.value      = "23+4_Club";
 				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
 				Variants.add(Variant);
 				
 				var Variant = document.createElement("option");
-				Variant.text       = "23+7 button, 8 bass, Hohner Club";
+				Variant.text       = "23+7 button, 8 bass, Hohner Club (4th start)";
 				Variant.value      = "23+7_Club";
 				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
 				Variants.add(Variant);
 				
 				var Variant = document.createElement("option");
-				Variant.text       = "23+8 button, 8 bass, Hohner Club";
+				Variant.text       = "23+8 button, 8 bass, Hohner Club (4th start)";
 				Variant.value      = "23+8_Club";
 				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
 				Variants.add(Variant);
 				
 				var Variant = document.createElement("option");
-				Variant.text       = "23+10 button, 8 bass, Hohner Club";
+				Variant.text       = "23+10 button, 8 bass, Hohner Club (4th start)";
 				Variant.value      = "23+10_Club";
 				Variant.dataSource = "http://www.delaguerre.com/delaguerre/pedagogy/club/layout.html";
 				Variant.selected   = "selected";
@@ -597,8 +597,18 @@ function GetRow3FirstInvButtonNumber(Instrument, Variant, StartFromZero) {
 }
 
 function Is4thButtonStart(Variant) {
-	if (Variant.includes(">") || Variant.includes("Saltarelle") || Variant.includes("21+5_young"))
+	//Detect 4th button start symbol
+	if (Variant.includes(">"))
 		return true;
+	
+	//Detect club with 4th button start
+	if (Variant.includes("23+") && Variant.includes("_Club"))
+		return true;
+	
+	//Lookup 2.5 rows with 4th button start
+	if (Variant.includes("Saltarelle") || Variant.includes("21+5_young"))
+		return true;
+	
 	return false;
 }
 
