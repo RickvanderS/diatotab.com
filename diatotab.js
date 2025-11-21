@@ -90,7 +90,9 @@ function AddInstruments() {
 			case "nl":
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Trekharmonica / Diatonische Accordeon");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Diatonische Mondharmonica");
-				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "vier versprongen");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "kwart verschil");
+				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
+				Obj.textContent = Obj.textContent.replaceAll("row"                             , "rij");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club rij");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "hulprij");
 				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        , "Geen tabulatuur, alleen noten");
@@ -98,18 +100,22 @@ function AddInstruments() {
 			case "de":
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Diatonisches Akkordeon / Ziehharmonika");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Mundharmonika");
-				//Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "Vierteldifferenz");
+				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
+				Obj.textContent = Obj.textContent.replaceAll("row"                             , "Reihe");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club reihe");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Hilfsreihe");
-				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        ,"Keine Tabulatur, nur Noten");
+				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        , "Keine Tabulatur, nur Noten");
 				break;
 			case "fr":
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Accordéon Diatonique");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Harmonica Diatonique");
-				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "quatrième à part");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "différence de trimestre");
+				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
+				Obj.textContent = Obj.textContent.replaceAll("row"                             , "rangées");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "Rangée d'clubs");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Rangée d'assistance");
-				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        ,"Pas de tablatures, seulement des notes");
+				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        , "Pas de tablatures, seulement des notes");
 				break;
 		}
 	}
@@ -903,6 +909,23 @@ function AddReeds() {
 	Reed.text  = "Off (bass only)";
 	Reed.value = 129;
 	Reeds.add(Reed);
+	
+	//Translate strings to set language
+	for (var i = 0; i < Reeds.length; i++) {
+		let Obj = Reeds.children[i];
+		
+		switch (document.documentElement.lang) {
+			case "nl":
+				Obj.textContent = Obj.textContent.replaceAll("Off (bass only)", "Uit (alleen bas)");
+				break;
+			case "de":
+				Obj.textContent = Obj.textContent.replaceAll("Off (bass only)", "Aus (nur Bass)");
+				break;
+			case "fr":
+				Obj.textContent = Obj.textContent.replaceAll("Off (bass only)", "Désactivé (basse uniquement)");
+				break;
+		}
+	}
 }
 
 var CursorControl = function() {
