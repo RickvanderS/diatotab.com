@@ -6,115 +6,135 @@
 	<meta name="description" content="Create tablature and sheet music for diatonic accordion / melodeon and harmonica. Do this directly online in your webbrowser using ABC notation.">
 	<title>Diatotab, Diatonic Accordion / Melodeon Tablature Generator</title>
 	<link rel="icon" href="favicon.ico">
-	<link rel="stylesheet" href="styles.css?v=20250321">
+	<link rel="stylesheet" href="styles.css?v=20251122">
 	<link rel="stylesheet" href="abcjs-audio.css">
-	<script src="diatotab.js?v=20250930"></script>
+	<script src="diatotab.js?v=20251121"></script>
 	<script src="FileSaver.js"></script>
 	<script src="abcjs-basic-min.js?v=20250812"></script><!---->
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
 </head>
 <body>
 	<div class="container">
-		<h1>Dia To Tab</h1>
-		<div class="intro">
+		<div class="title">
 			<div>
-				<p>
-					Create tablature and sheet music for <a target="_blank" href=https://en.wikipedia.org/wiki/Diatonic_button_accordion>diatonic accordion / melodeon</a> and <a target="_blank" href=https://en.wikipedia.org/wiki/Harmonica>diatonic harmonica</a>. 
-					The tunes are entered in ABC notation, specify your instrument, keyboard layout and key it is tuned to.
-				</p>
-				<p>
-					Many ABC tunes are available on <a target="_blank" href=https://folktunefinder.com>folktunefinder.com</a> and <a target="_blank" href="https://thesession.org">thesession.org</a>. More information about ABC notation can be found at <a target="_blank" href=https://abcnotation.com>abcnotation.com</a>. There are some simple music examples available on this site as well to get you started.
-				</p>
-				<a href="#tool">Skip explanation and scroll to the tool</a>
+				<h1>Dia To Tab</h1>
 			</div>
-			<img style="margin-left:25px; width:300px; height:127px;" src="logo.png" alt="Diatotab logo">
+			<div>
+			</div>
+			<div class="dropdown">
+				<button data-trans="BUT_LANG" onclick="myFunction()" class="dropbtn"><img class='lang' src="lang/en.png">English</button>
+				<div id="myDropdown" class="dropdown-content">
+					<a href="lang/en.php"><img class="lang" src="lang/en.png">English</a>
+					<a href="lang/nl.php"><img class="lang" src="lang/nl.png">Nederlands</a>
+					<a href="lang/de.php"><img class="lang" src="lang/de.png">Deutsch</a>
+					<a href="lang/fr.php"><img class="lang" src="lang/fr.png">Fran&ccedil;ais</a>
+				</div>
+			</div>
 		</div>
 		
-		<h2>Additional functionality</h2>
-		<p>
+		<div class="intro">
+			<div>
+				<p data-trans="INTRO1">
+					Create tablature and sheet music for <a target='_blank' href='https://en.wikipedia.org/wiki/Diatonic_button_accordion'>diatonic accordion / melodeon</a> and <a target='_blank' href='https://en.wikipedia.org/wiki/Harmonica'>diatonic harmonica</a>. 
+					The tunes are entered in ABC notation, specify your instrument, keyboard layout and key it is tuned to.
+				</p>
+				<p data-trans="INTRO2">
+					Many ABC tunes are available on <a target='_blank' href='https://folktunefinder.com'>folktunefinder.com</a> and <a target='_blank' href='https://thesession.org'>thesession.org</a>. More information about ABC notation can be found at <a target='_blank' href='https://abcnotation.com'>abcnotation.com</a>. There are some simple music examples available on this site as well to get you started.
+				</p>
+				<a data-trans="SKIP" href="#tool">Skip explanation and scroll to the tool</a>
+			</div>
+			<div>
+
+
+			<img style="margin-left:25px; width:300px; height:127px;" src="logo.png" alt="Diatotab logo">
+			</div>
+		</div>
+		
+		<h2 data-trans="FUNC_HEAD">Additional functionality</h2>
+		<p data-trans="FUNC1">
 			Although the primary purpose of the tool is to generate tablature, there is other functionality that might come in handy.
 		</p>
-			<h3>Transposition</h3>
-			<p>
+			<h3 data-trans="TRANS_HEAD">Transposition</h3>
+			<p data-trans="TRANS1">
 				By the very nature of diatonic instruments, not all keys can be played. Therefore a transposition tool is built-in.
 			</p>
-			<p>
+			<p data-trans="TRANS2">
 				If the key of the input ABC does not match you instrument, use the transpose control, for example to transpose from G/C to C/F set this value to 5 (half steps).
 				Whenever a number is entered, the transposition is applied directly to the output. Click the 'Transpose ABC' button to apply the transposition to the input ABC.
 			</p>
 			
-			<h3>ABC notation syntax highlighting</h3>
-			<p>
+			<h3 data-trans="SYNTAX_HEAD">ABC notation syntax highlighting</h3>
+			<p data-trans="SYNTAX1">
 				To make the ABC input easier to read, colors are added automatically to the input. Most importantly chords get different colors than treble notes and the treble note colors alternate.
 			</p>
 
-			<h3>Reading the dots</h3>
-			<p>
+			<h3 data-trans="DOTS_HEAD">Reading the dots</h3>
+			<p data-trans="DOTS1">
 				If you are trying to read the dots directly and no longer rely on tablature, it is possible to hide the tablature and display alternative note heads for notes played on the inner row(s) of the instrument. This resolves any ambiguity when reading the dots. As an intermediate step you can display note names instead of button numbers.
 			</p>
-			<p>
-				Under the ABC example button, you can load the instrument layout, this will show the names of the dots and their mappings to instrument button numbers. It will also show where the left hand bass chords are played on the right hand treble side, useful for session play and improvisation.
+			<p data-trans="DOTS2">
+				Under the "Examples" button, you can load the instrument layout, this will show the names of the dots and their mappings to instrument button numbers. It will also show where the left hand bass chords are played on the right hand treble side, useful for session play and improvisation.
 			</p>
 			
-			<h3>Playing by ear</h3>
-			<p>
+			<h3 data-trans="EAR_HEAD">Playing by ear</h3>
+			<p data-trans="EAR1">
 				For players that play by ear rather than tablature or dots, the tool allows you to playback the ABC tune. You can configure the amount of voices (reeds per note) of the instrument and the amount of tremolo with which the instrument is tuned. You can choose to play only the melody or bass chords and control their relative volume if played simultaneously. Use the fade in/out control to make it should more staccato or legato.
 			</p>
 			
-			<h3>Transcribe from instrument keyboard</h3>
+			<h3 data-trans="KEY_HEAD">Transcribe from instrument keyboard</h3>
 			<div class="intro">
 			<div>
-			<p>
+			<p data-trans="KEY1">
 				If you can play a tune on the instrument from memory and want to transcribe it, you can use the computer keyboard as if it is the instrument keyboard. To do this, enable the 'instrument keyboard' checkbox, when enabled you can type notes in abc notation instead of the normal keyboard characters, rhythm is not taken into account. The default is push direction, hold down (left) ALT to change to pull direction. To temporarily type normal computer characters, hold down CTRL.
 			</p>
 			</div>
 			<img style="margin-left:25px; width:406px; height:135px;" src="PcKeyboard.png" alt="Computer keyboard numbering">
 			</div>
 			
-			<h3>Melodeon acquisition disorder (MAD) cure</h3>
-			<p>
+			<h3 data-trans="MAD_HEAD">Melodeon acquisition disorder (MAD) cure</h3>
+			<p data-trans="MAD1">
 				Have you ever wondered how another keyboard layout would affect the difficulty of the tunes you are playing? Just select another layout and see instantly what it does to the tablature, no need to buy another melodeon. Several two and three row layouts are supported, including some non-standard layouts like 'Le&nbsp;Tron', 'Heim' and 'Milleret/Pignol'.
 			</p>
 		
-		<h2>Two and three row melodeons</h2>
-			<p>
+		<h2 data-trans="ROW_HEAD">Two and three row melodeons</h2>
+			<p data-trans="ROW1">
 				There are some special layout options for melodeons with more than one row. For layouts with accidentals on the first button of each row, the push and pull notes of these buttons can be flipped. Same holds for 5', to configure the layout for 'Dutch reversal'. For melodeons with 4th button start, rather than the more common 3th button start, you can choose to start button numbering on 0 instead of 1, this is to make the tablature more similar to 3th button starts.
 			</p>
-			<p>
+			<p data-trans="ROW2">
 				For multi row layouts there are often multiple possibilities to play the same tune. The algorithm tries to find the easiest way, but you might not agree with the result. The push/pull direction is derived from the bass chord (written in ABC notation between " "). For chords that can be played in both directions you can add annotations to overrule the direction. In addition, annotations can be added to force the treble row number.<br>
 			</p>
-			<h3>Push/pull annotations</h3>
-			<p>
+			<h3 data-trans="DIR_HEAD">Push/pull annotations</h3>
+			<p data-trans="DIR1">
 				Example for G/C melodeon where the <b>G</b> chord can be played in both push and pull.<br>
 				<b>&gt;</b> means push direction, write <b>"G&gt;"</b> to set G chord to push.<br>
 				<b>&lt;</b> means pull direction, write <b>"G&lt;"</b> to set G chord to pull.<br>
 			</p>
-			<h3>Row number annotations</h3>
-			<p>
+			<h3 data-trans="ANN_HEAD">Row number annotations</h3>
+			<p data-trans="ANN1">
 				Example for G/C melodeon where the <b>a</b> note can be played on both the outer and the inner row (both in pull).<br>
 				<b>.</b> means row 1 or outer row, write <b>"G."a</b> to play it with 11 (in pull).<br>
 				<b>:</b> means row 2 or inner row, write <b>"G:"a</b> to play it with 9' (in pull).<br>
 			</p>
-			<p>
+			<p data-trans="ANN2">
 				For three rows, the row number annotations are extended. The example below is for a G/C/F.<br>
 				<b>,</b> means row 3, write <b>"G,"a</b> to play it with 7" (in push).<br>
 			</p>
 		
-		<h2 id="tool">Instrument and options</h2>
+		<h2 data-trans="HEAD_OPT" id="tool">Instrument and options</h2>
 		<div class="blockborder">
-			<label for="instrument" class="listheader">Instrument</label>
+			<label data-trans="HEAD_INST" for="instrument" class="listheader">Instrument</label>
 			<div class="listtrim">
 				<select class="list" id="instrument" size="5" onchange="AddVariantsTunings();CreateEditor();"></select>
 			</div>
 		</div>
 		<div class="blockborder" id="variantdiv">
-			<label for="variant" class="listheader">Keyboard Layout</label>
+			<label data-trans="HEAD_LAY" for="variant" class="listheader">Keyboard Layout</label>
 			<div  class="listtrim">
 				<select class="list" id="variant" size="5" onchange="ShowHideVariantOptions();CreateEditor();"></select>
 			</div>
 		</div>
 		<div class="blockborder" id="tuningdiv">
-			<label for="tuning" class="listheader">Tuning</label>
+			<label data-trans="HEAD_TUNE" for="tuning" class="listheader">Tuning</label>
 			<div  class="listtrim">
 				<select class="list" id="tuning" size="5" onchange="CreateEditor()"></select>
 			</div>
@@ -122,69 +142,69 @@
 		<div id="invdiv" class="block">
 			<div id="startzero">
 				<input type="checkbox" id="zero"  onchange="CreateEditor();">
-				<label for="zero">Start numbering at 0</label>
+				<label data-trans="OPT_START0" for="zero">Start numbering at 0</label>
 			</div>
 			<div id="inv1div">
 				<input type="checkbox" id="inv1"  onchange="CreateEditor()">
-				<label for="inv1" id="inv1_lab">Button 1 push/pull reverse</label>
+				<label data-trans="OPT_INV" for="inv1" id="inv1_lab">Button&nbsp;&nbsp;reverse</label>
 			</div>
 			<div id="inv1adiv">
 				<input type="checkbox" id="inv1a" onchange="CreateEditor()">
-				<label for="inv1a" id="inv1a_lab">Button 1' push/pull reverse</label>
+				<label data-trans="OPT_INV" for="inv1a" id="inv1a_lab">Button&nbsp;&nbsp;reverse</label>
 			</div>
 			<div id="inv1bdiv">
 				<input type="checkbox" id="inv1b" onchange="CreateEditor()">
-				<label for="inv1b" id="inv1b_lab">Button 1" push/pull reverse</label>
+				<label data-trans="OPT_INV" for="inv1b" id="inv1b_lab">Button&nbsp;&nbsp;reverse</label>
 			</div>
 			<div id="inv5adiv">
 				<input type="checkbox" id="inv5a" onchange="CreateEditor()">
-				<label for="inv5a" id="inv5a_lab">Button 5' push/pull reverse</label>
+				<label data-trans="OPT_INV" for="inv5a" id="inv5a_lab">Button&nbsp;&nbsp;reverse</label>
 				<input type="checkbox" id="inv5a_all" onchange="CreateEditor()">
-				<label for="inv5a_all" id="inv5a_all_lab">Entire row</label>
+				<label data-trans="OPT_INVROW" for="inv5a_all" id="inv5a_all_lab">Entire row&nbsp;&nbsp;</label>
 			</div>
 		</div>
 		<div id="optdiv" class="block">
 			<div id="opt_single">
-				<label class="drop" for="single_tabstyle">&nbsp;Tablature style</label>
-				<select class="drop" id="single_tabstyle" onchange="CreateEditor()">
-					<option value="1">One line</option>
-					<option value="2" selected="selected">Two lines (push and pull)</option>
-					<option value="0">No tablature, notes only</option>
+				<label data-trans="OPT_TAB" class="drop" for="single_tabstyle">&nbsp;Tablature style</label>
+				<select                      class="drop" id="single_tabstyle" onchange="CreateEditor()">
+					<option data-trans="OPT_TAB1" value="1">One line</option>
+					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push and pull)</option>
+					<option data-trans="OPT_TAB1" value="0">No tablature, notes only</option>
 				</select><br>
-				<input  id="single_notenames" type="checkbox" onchange="CreateEditor()">
-				<label for="single_notenames">Show note names instead of button numbers</label><br>
+				<input                         id="single_notenames" type="checkbox" onchange="CreateEditor()">
+				<label data-trans="OPT_NAMES" for="single_notenames">Show note names instead of button numbers</label><br>
 			</div>
 			<div id="opt_harm">
-				<label class="drop" for="harm_tabstyle">&nbsp;Tablature style</label>
-				<select class="drop" id="harm_tabstyle" onchange="CreateEditor()">
-					<option value="1" selected="selected">One line</option>
-					<option value="2">Two lines (brow and draw)</option>
-					<option value="0">No tablature, notes only</option>
+				<label data-trans="OPT_TAB" class="drop" for="harm_tabstyle">&nbsp;Tablature style</label>
+				<select                      class="drop" id="harm_tabstyle" onchange="CreateEditor()">
+					<option data-trans="OPT_TAB1"     value="1" selected="selected">One line</option>
+					<option data-trans="OPT_HARMTAB2" value="2">Two lines (blow and draw)</option>
+					<option data-trans="OPT_TAB0"     value="0">No tablature, notes only</option>
 				</select><br>
-				<input  id="harm_notenames" type="checkbox" onchange="CreateEditor()">
-				<label for="harm_notenames">Show note names instead of hole numbers</label><br>
-				<input  id="harm_changenotehead" type="checkbox" onchange="CreateEditor()" checked>
-				<label for="harm_changenotehead">Use alternative note heads for bends</label><br>
+				<input                         id="harm_notenames" type="checkbox" onchange="CreateEditor()">
+				<label data-trans="OPT_NAMES" for="harm_notenames">Show note names instead of hole numbers</label><br>
+				<input                          id="harm_changenotehead" type="checkbox" onchange="CreateEditor()" checked>
+				<label data-trans="OPT_HARHEAD" for="harm_changenotehead">Use alternative note heads for bends</label><br>
 			</div>
 			<div id="opt_mel">
-				<label class="drop" for="tabstyle">&nbsp;Tablature style</label>
+				<label data-trans="OPT_TAB" class="drop" for="tabstyle">&nbsp;Tablature style</label>
 				<select class="drop" id="tabstyle" onchange="CreateEditor()">
-					<option value="1"                    >One line</option>
-					<option value="2" selected="selected">Two lines (push and pull)</option>
-					<option value="3"                    >Line for every instrument row</option>
-					<option value="0"                    >No tablature, notes only</option>
+					<option data-trans="OPT_TAB1" value="1"                    >One line</option>
+					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push and pull)</option>
+					<option data-trans="OPT_TAB3" value="3"                    >Line for every instrument row</option>
+					<option data-trans="OPT_TAB0" value="0"                    >No tablature, notes only</option>
 				</select><br>
-				<input  id="notenames" type="checkbox" onchange="CreateEditor()">
-				<label for="notenames">Show note names instead of button numbers</label><br>
-				<input  id="innerstyle" type="checkbox" onchange="CreateEditor()">
-				<label for="innerstyle" id="innerstyle_lab">Use * instead of ' for row 2</label><br>
-				<input  id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
-				<label for="changenotehead">Use alternative note heads for inner rows</label><br>
-				<label class="drop" for="tabmode">&nbsp;Tablature algorithm</label>
-				<select class="drop" id="tabmode" onchange="CreateEditor()">
-					<option value="0" selected="selected">Normal</option>
-					<option value="1"                    >Show all remaining possibilities</option>
-					<option value="2"                    >Show all possibilities</option>
+				<input                         id="notenames" type="checkbox" onchange="CreateEditor()">
+				<label data-trans="OPT_NAMES" for="notenames">Show note names instead of button numbers</label><br>
+				<input                        id="innerstyle" type="checkbox" onchange="CreateEditor()">
+				<label data-trans="OPT_ROW2" for="innerstyle" id="innerstyle_lab">Use * instead of ' for row 2</label><br>
+				<input                        id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
+				<label data-trans="OPT_HEAD" for="changenotehead">Use alternative note heads for inner rows</label><br>
+				<label data-trans="OPT_ALG" class="drop" for="tabmode">&nbsp;Tablature algorithm</label>
+				<select                      class="drop" id="tabmode" onchange="CreateEditor()">
+					<option data-trans="OPT_ALG0" value="0" selected="selected">Normal</option>
+					<option data-trans="OPT_ALG1" value="1"                    >Show all remaining possibilities</option>
+					<option data-trans="OPT_ALG2" value="2"                    >Show all possibilities</option>
 				</select><br>
 			</div>
 		</div>
@@ -194,22 +214,22 @@
 	<div class="float-container">
 		<div id="abctop" class="float-child-abc">
 			<div id="abcheader" style="box-sizing:border-box;">
-				<h2>ABC Editor</h2>
+				<h2 data-trans="HEAD_EDIT">ABC Editor</h2>
 				<div class="block">
-					<button onclick="ExampleShow()">Examples</button>
-					<button onclick="AbcOpenFileBrowser()">Open</button>
-					<button onclick="AbcSaveFile()">Save</button>
+					<button data-trans="BUT_EXA"  onclick="ExampleShow()">Examples</button>
+					<button data-trans="BUT_OPEN" onclick="AbcOpenFileBrowser()">Open</button>
+					<button data-trans="BUT_SAVE" onclick="AbcSaveFile()">Save</button>
 					<input id="OpenFile" type="file" onchange="AbcOpenFile()" style="display: none">
 				</div>
 				<div class="block" id="instrkey_div">
 					<input  id="instrkey" type="checkbox">
-					<label for="instrkey" id="instrkey_lab">Instrument keyboard</label><br>
+					<label data-trans="INP_KEYB" for="instrkey" id="instrkey_lab">Instrument keyboard</label><br>
 				</div>
 				<div class="blockright">
-					<label for="transpose">Transpose</label>
+					<label data-trans="INP_TRANS" for="transpose">Transpose</label>
 					<input type="number" id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
-					<button  onclick="TransposeAbc()">Transpose ABC</button>
-					<button onclick="Print()">Print</button>
+					<button data-trans="BUT_TRANS" onclick="TransposeAbc()">Transpose ABC</button>
+					<button data-trans="BUT_PRINT" onclick="Print()">Print</button>
 				</div>
 				<div class="blockend"></div>
 			</div>
@@ -275,22 +295,22 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 			</div>
 			<div id="abcfooter" class="blockend">
 				<div id="warnings"></div>
-				<h2>Playback</h2>
+				<h2 data-trans="HEAD_PLAY">Playback</h2>
 				<div class="block">
 					
 					<table>
-						<tr><td><label for="reeds">Voices </label></td><td><select id="reeds" style="width:100%;" onchange="CreateEditor()"></select>                                      </td></tr>
-						<tr><td><label for="cents">Tremolo</label></td><td><input  id="cents" type="range" min="0" max="30"  value="5" class="slider" onchange="CreateEditor(false, true)"></td></tr>
+						<tr><td><label data-trans="PLAY_VOICE" for="reeds">Voices </label></td><td><select id="reeds" style="width:100%;" onchange="CreateEditor()"></select>                                      </td></tr>
+						<tr><td><label data-trans="PLAY_TREM"  for="cents">Tremolo</label></td><td><input  id="cents" type="range" min="0" max="30"  value="5" class="slider" onchange="CreateEditor(false, true)"></td></tr>
 					</table>
 				</div>
 				<div class="block">
 					<table>
-						<tr><td><label for="bassvol">Bass volume</label></td><td><input id="bassvol" type="range" min="0" max="150" value="100" class="slider" onchange="CreateEditor()">           </td></tr>
-						<tr><td><label for="fade"   >Fade in/out</label></td><td><input id="fade"    type="range" min="1" max="250" value="50"  class="slider" onchange="CreateEditor(false, true)"></td></tr>
+						<tr><td><label data-trans="PLAY_BASS" for="bassvol">Bass volume</label></td><td><input id="bassvol" type="range" min="0" max="150" value="100" class="slider" onchange="CreateEditor()">           </td></tr>
+						<tr><td><label data-trans="PLAY_FADE" for="fade"   >Fade in/out</label></td><td><input id="fade"    type="range" min="1" max="250" value="50"  class="slider" onchange="CreateEditor(false, true)"></td></tr>
 					</table>
 				</div>
 				<div class="blockright">
-					<button onclick="DownloadWav()">Download</button>
+					<button data-trans="BUT_DOWNLOAD" onclick="DownloadWav()">Download</button>
 				</div>
 				<div class="blockend"></div>
 				<input type="hidden" id="repeat" value="false">
@@ -298,27 +318,32 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 			</div>
 		</div>
 		<div id="tabtop" class="float-child-tab">
-			<h2  id="tabheader">Tablature</h2>
+			<h2 data-trans="HEAD_TAB" id="tabheader">Tablature</h2>
 			<div id="paper" class="paper"></div>
 		</div>
 		<div class="blockend"></div>
 	</div>
 	<div id="footer" class="footer">
-		The application runs client side using a fork of <a target="_blank" href='https://www.abcjs.net'>abcjs</a>, no data is send to the server.<br>Created by Rick van der Sluijs, <a href="#" id="link" onmouseover="setLink()" onmousedown="setLink()" onclick="setLink()" onfocusout="clearLink()">mail</a> me for questions or bug reports. Github source code repositories: <a target="_blank" href='https://github.com/RickvanderS/abcjs-melodeon-tab'>abcjs fork</a>, <a target="_blank" href='https://github.com/RickvanderS/diatotab.com'>website</a>.
+		<p data-trans="FOOT_DATA" class='footer'>
+			The application runs in the web browser, no data is send to the server.
+		</p>
+		<p data-trans="FOOT_CREATE" class='footer'>
+			Developed by Rick van der Sluijs, based on <a target='_blank' href='https://www.abcjs.net'>abcjs</a>. <a href='#' id='link' onmouseover='setLink()' onmousedown='setLink()' onclick='setLink()' onfocusout='clearLink()'>Email</a> me for questions or bug reports. Github source code repositories: <a target='_blank' href='https://github.com/RickvanderS/abcjs-melodeon-tab'>abcjs fork</a>, <a target='_blank' href='https://github.com/RickvanderS/diatotab.com'>website</a>.
+		</p>
 	</div>
 	
 	<div class="overlay-container" id="example" onclick="ExampleClose()">
 		<div class="overlay" onclick="event.stopPropagation()">
-			<h3>Instrument Layout</h3>
-			<a href="" onclick="return ExampleLoad(0)">Diatonic scale order</a><br>
-			<a href="" onclick="return ExampleLoad(1)">Button order</a><br>
-			<h3>Example Tunes</h3>
+			<h3 data-trans="HEAD_EXLAY">Instrument Layout</h3>
+			<a data-trans="EX_DIA" href="" onclick="return ExampleLoad(0)">Diatonic scale order</a><br>
+			<a data-trans="EX_BUT" href="" onclick="return ExampleLoad(1)">Button order</a><br>
+			<h3 data-trans="HEAD_EXTUN">Example Tunes</h3>
 			<a href="" onclick="return ExampleLoad(2)">Andro</a><br>
 			<a href="" onclick="return ExampleLoad(3)">Kerfank 1870/Den Andro</a><br>
 			<a href="" onclick="return ExampleLoad(4)">Mon Père Avait un Gars Lonla</a><br>
 			<a href="" onclick="return ExampleLoad(5)">What Shall We Do With the Drunken Sailor?</a><br>
 			<br>
-			<b><a href="" onclick="return ExampleClose()">Close</a></b><br>
+			<b><a data-trans="EX_CLOSE" href="" onclick="return ExampleClose()">Close</a></b><br>
 			<br>
 		</div>
 	</div>

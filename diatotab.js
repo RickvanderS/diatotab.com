@@ -1,3 +1,23 @@
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+} 
+
 function removeOptions(selectElement) {
 	var i, L = selectElement.options.length - 1;
 	for (i = L; i >= 0; i--) {
@@ -22,33 +42,33 @@ function AddInstruments() {
 	let Instrument;
 	
 	Instrument = document.createElement("option");
-	Instrument.text  = "Diatonic Accordion / Melodeon 1 row";
+	Instrument.text  = "Melodeon / Diatonic Accordion 1 row";
 	Instrument.value = "M_1";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text     = "Diatonic Accordion / Melodeon 2 row fourth apart";
+	Instrument.text     = "Melodeon / Diatonic Accordion 2 row, fourth apart";
 	Instrument.value    = "M_2";
 	Instrument.selected = 'selected';
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text     = "Diatonic Accordion / Melodeon 3 row fourth apart";
+	Instrument.text     = "Melodeon / Diatonic Accordion 3 row, fourth apart";
 	Instrument.value    = "M_3";
 	Instruments.add(Instrument);
 
 	Instrument = document.createElement("option");
-	Instrument.text     = "Diatonic Accordion / Melodeon 2.5 row fourth apart, club row";
+	Instrument.text     = "Melodeon / Diatonic Accordion 2.5 row, fourth apart, club row";
 	Instrument.value    = "M_CLUB";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text     = "Diatonic Accordion / Melodeon 2.5 row fourth apart, helper row";
+	Instrument.text     = "Melodeon / Diatonic Accordion 2.5 row, fourth apart, helper row";
 	Instrument.value    = "M_25";
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
-	Instrument.text     = "Diatonic Accordion / Melodeon 3 row fourth apart, helper row";
+	Instrument.text     = "Melodeon / Diatonic Accordion 3 row, fourth apart, helper row";
 	Instrument.value    = "M_35";
 	Instruments.add(Instrument);
 
@@ -61,6 +81,38 @@ function AddInstruments() {
 	Instrument.text  = "No tablature, notes only";
 	Instrument.value = "NONE";
 	Instruments.add(Instrument);
+	
+	//Translate strings to set language
+	for (var i = 0; i < Instruments.length; i++) {
+		let Obj = Instruments.children[i];
+		
+		switch (document.documentElement.lang) {
+			case "nl":
+				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Trekharmonica / Diatonische Accordeon");
+				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Diatonische Mondharmonica");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "vier versprongen");
+				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club rij");
+				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "hulprij");
+				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        , "Geen tabulatuur, alleen noten");
+				break;
+			case "de":
+				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Diatonisches Akkordeon / Ziehharmonika");
+				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Mundharmonika");
+				//Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "");
+				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club reihe");
+				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Hilfsreihe");
+				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        ,"Keine Tabulatur, nur Noten");
+				break;
+			case "fr":
+				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Accordéon Diatonique");
+				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Harmonica Diatonique");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "quatrième à part");
+				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "Rangée d'clubs");
+				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Rangée d'assistance");
+				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        ,"Pas de tablatures, seulement des notes");
+				break;
+		}
+	}
 	
 	AddVariantsTunings();
 }
@@ -380,7 +432,7 @@ function AddVariantsTunings() {
 			
 			{
 				var Variant = document.createElement("option");
-				Variant.text       = "21+9 button, 12 bass, Rick";
+				Variant.text       = "21+9 button, 12 bass, van der Sluijs";
 				Variant.value      = "30rick";
 				Variant.dataSource = "";
 				Variants.add(Variant);
@@ -507,6 +559,41 @@ function AddVariantsTunings() {
 			if (Tunings.children[i].value.substr(0, Len) == RestoreTuning.substr(0, Len)) {
 				Tunings.children[i].selected = 'selected';
 			}
+		}
+	}
+	
+	//Translate variant strings to set language
+	for (var i = 0; i < Variants.length; i++) {
+		let Obj = Variants.children[i];
+		
+		switch (document.documentElement.lang) {
+			case "nl":
+				Obj.textContent = Obj.textContent.replaceAll("button"     , "knop");
+				Obj.textContent = Obj.textContent.replaceAll("3th"        , "3e");
+				Obj.textContent = Obj.textContent.replaceAll("4th"        , "4e");
+				Obj.textContent = Obj.textContent.replaceAll("start"      , "start");
+				Obj.textContent = Obj.textContent.replaceAll("accidentals", "kruis/mol");
+				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "lage noten");
+				Obj.textContent = Obj.textContent.replaceAll("bass"       , "bas");
+				break;
+			case "de":
+				Obj.textContent = Obj.textContent.replaceAll("button"     , "Knopf");
+				Obj.textContent = Obj.textContent.replaceAll("3th"        , "3.");
+				Obj.textContent = Obj.textContent.replaceAll("4th"        , "4.");
+				Obj.textContent = Obj.textContent.replaceAll("start"      , "Start");
+				Obj.textContent = Obj.textContent.replaceAll("accidentals", "Kreuz/Be");
+				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "tiefe Töne");
+				Obj.textContent = Obj.textContent.replaceAll("bass"       , "Bass");
+				break;
+			case "fr":
+				Obj.textContent = Obj.textContent.replaceAll("button"     , "bouton");
+				Obj.textContent = Obj.textContent.replaceAll("3th"        , "3ème");
+				Obj.textContent = Obj.textContent.replaceAll("4th"        , "4ème");
+				Obj.textContent = Obj.textContent.replaceAll("start"      , "début");
+				Obj.textContent = Obj.textContent.replaceAll("accidentals", "altérations");
+				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "notes graves");
+				Obj.textContent = Obj.textContent.replaceAll("bass"       , "basse");
+				break;
 		}
 	}
 	
@@ -656,6 +743,19 @@ function ShowHideVariantOptions() {
 	showElement("instrkey_div", ShowInstrumentKeyboard);
 }
 
+function ReplaceBetweenNonBreakingSpaces(Input, Replace) {
+	let Pre      = Input;
+	let PreIndex = Pre.indexOf("\u00A0");
+	    Pre      = Pre.substr(0, PreIndex+1);
+	
+	let Post      = Input.substr(PreIndex+1);
+	let PostIndex = Post.indexOf("\u00A0");
+	    Post      = Post.substr(PostIndex);
+	
+	let Output = Pre + Replace + Post;
+	return Output;
+}
+
 function VariantOptionsUpdateLabels() {
 	//Get inputs
 	let Instrument    = document.getElementById("instrument").value;
@@ -684,7 +784,9 @@ function VariantOptionsUpdateLabels() {
 		let aNotes = ButtonArrayConvert([Tablature.push_row1[ButtonNumber], Tablature.pull_row1[ButtonNumber]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
-		document.getElementById("inv1_lab").innerText = "Button " + ButtonNumber + " " + Push + "/" + Pull + " reverse";
+		let Text = ButtonNumber + " " + Push + "/" + Pull;
+		let Obj = document.getElementById("inv1_lab");
+		Obj.innerText = ReplaceBetweenNonBreakingSpaces(Obj.innerText, Text);
 	}
 	
 	//Label 0'/1' reverse
@@ -693,7 +795,9 @@ function VariantOptionsUpdateLabels() {
 		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonNumber], Tablature.pull_row2[ButtonNumber]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
-		document.getElementById("inv1a_lab").innerText = "Button " + ButtonNumber + Row2Marker + " " + Push + "/" + Pull + " reverse";
+		let Text = ButtonNumber + Row2Marker + " " + Push + "/" + Pull;
+		let Obj = document.getElementById("inv1a_lab");
+		Obj.innerText = ReplaceBetweenNonBreakingSpaces(Obj.innerText, Text);
 	}
 	
 	//Label 0"/1" reverse
@@ -702,7 +806,9 @@ function VariantOptionsUpdateLabels() {
 		let aNotes = ButtonArrayConvert([Tablature.push_row3[ButtonNumber], Tablature.pull_row3[ButtonNumber]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
-		document.getElementById("inv1b_lab").innerText = "Button " + ButtonNumber + '"' + " " + Push + "/" + Pull + " reverse";
+		let Text = ButtonNumber + '"' + " " + Push + "/" + Pull;
+		let Obj = document.getElementById("inv1b_lab");
+		Obj.innerText = ReplaceBetweenNonBreakingSpaces(Obj.innerText, Text);
 	}
 
 	//Label 5'/6' reverse
@@ -711,7 +817,9 @@ function VariantOptionsUpdateLabels() {
 		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonNumber], Tablature.pull_row2[ButtonNumber]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
-		document.getElementById("inv5a_lab").innerText = "Button " + ButtonNumber + Row2Marker + " " + Push + "/" + Pull + " reverse";
+		let Text = ButtonNumber + Row2Marker + " " + Push + "/" + Pull;
+		let Obj = document.getElementById("inv5a_lab");
+		Obj.innerText = ReplaceBetweenNonBreakingSpaces(Obj.innerText, Text);
 		
 		document.getElementById("inv5a_all").disabled = !document.getElementById("inv5a").checked;
 		Push = ConvertAbcNoteToFriendlyName(aNotes[0], true);
@@ -721,7 +829,9 @@ function VariantOptionsUpdateLabels() {
 			Push = Pull;
 			Pull = Tmp;
 		}
-		document.getElementById("inv5a_all_lab").innerText = "Entire row " + Push + "/" + Pull;
+		let Text2 = Push + "/" + Pull;
+		let Obj2 = document.getElementById("inv5a_all_lab");
+		Obj2.innerText = ReplaceBetweenNonBreakingSpaces(Obj2.innerText, Text2);
 	}
 	
 	//Disable checkboxes not applicable to the tablature style
