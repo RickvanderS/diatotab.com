@@ -581,6 +581,7 @@ function AddVariantsTunings() {
 				Obj.textContent = Obj.textContent.replaceAll("accidentals", "kruis/mol");
 				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "lage noten");
 				Obj.textContent = Obj.textContent.replaceAll("bass"       , "bas");
+				Obj.textContent = Obj.textContent.replaceAll("hole"       , "gat");
 				break;
 			case "de":
 				Obj.textContent = Obj.textContent.replaceAll("button"     , "Knopf");
@@ -590,6 +591,7 @@ function AddVariantsTunings() {
 				Obj.textContent = Obj.textContent.replaceAll("accidentals", "Kreuz/Be");
 				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "tiefe Töne");
 				Obj.textContent = Obj.textContent.replaceAll("bass"       , "Bass");
+				Obj.textContent = Obj.textContent.replaceAll("hole"       , "Loch");
 				break;
 			case "fr":
 				Obj.textContent = Obj.textContent.replaceAll("button"     , "bouton");
@@ -599,6 +601,7 @@ function AddVariantsTunings() {
 				Obj.textContent = Obj.textContent.replaceAll("accidentals", "altérations");
 				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "notes graves");
 				Obj.textContent = Obj.textContent.replaceAll("bass"       , "basse");
+				Obj.textContent = Obj.textContent.replaceAll("hole"       , "trou");
 				break;
 		}
 	}
@@ -762,15 +765,42 @@ function ReplaceBetweenNonBreakingSpaces(Input, Replace) {
 	return Output;
 }
 
+function GetRowMarker(RowNumber) {
+	let RowMarker = document.getElementById("rowlabels").value.substr(RowNumber - 1, 1);
+	if (RowMarker ==  "" || RowMarker == " ") {
+		switch (RowNumber) {
+			case 1:
+				return "";
+			case 2:
+				return "'";
+			case 3:
+				return '"';
+		}
+	}
+	return RowMarker;
+}
+
+function GetRow1Marker() {
+	return GetRowMarker(1);
+}
+
+function GetRow2Marker() {
+	return GetRowMarker(2);
+}
+
+function GetRow3Marker() {
+	return GetRowMarker(3);
+}
+
 function VariantOptionsUpdateLabels() {
 	//Get inputs
 	let Instrument    = document.getElementById("instrument").value;
 	let Variant       = document.getElementById("variant").value;
 	let Tuning        = document.getElementById("tuning").value;
 	let StartFromZero = isShown("startzero") && document.getElementById("zero").checked;
-	let Row2Marker    = "'";
-	if (document.getElementById("innerstyle").checked)
-		Row2Marker    = "*";
+	let Row1Marker    = GetRow1Marker();
+	let Row2Marker    = GetRow2Marker();
+	let Row3Marker    = GetRow3Marker();
 	
 	//Need a valid tablature from abcjs to display note names in labels
 	let Tablature;
@@ -790,7 +820,7 @@ function VariantOptionsUpdateLabels() {
 		let aNotes = ButtonArrayConvert([Tablature.push_row1[ButtonNumber], Tablature.pull_row1[ButtonNumber]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
-		let Text = ButtonNumber + " " + Push + "/" + Pull;
+		let Text = ButtonNumber + Row1Marker + " " + Push + "/" + Pull;
 		let Obj = document.getElementById("inv1_lab");
 		Obj.innerText = ReplaceBetweenNonBreakingSpaces(Obj.innerText, Text);
 	}
@@ -812,7 +842,7 @@ function VariantOptionsUpdateLabels() {
 		let aNotes = ButtonArrayConvert([Tablature.push_row3[ButtonNumber], Tablature.pull_row3[ButtonNumber]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
-		let Text = ButtonNumber + '"' + " " + Push + "/" + Pull;
+		let Text = ButtonNumber + Row3Marker + " " + Push + "/" + Pull;
 		let Obj = document.getElementById("inv1b_lab");
 		Obj.innerText = ReplaceBetweenNonBreakingSpaces(Obj.innerText, Text);
 	}
@@ -849,7 +879,7 @@ function VariantOptionsUpdateLabels() {
 		document.getElementById("harm_notenames").disabled = tabstyle == "0";
 		
 		tabstyle = document.getElementById("tabstyle").value;
-		document.getElementById("innerstyle").disabled = tabstyle == "0" || tabstyle == "3";
+		document.getElementById("rowlabels").disabled = tabstyle == "0" || tabstyle == "3";
 		document.getElementById("notenames").disabled = tabstyle == "0";
 	}
 }
@@ -1128,9 +1158,9 @@ function GetAbcjsParamsFromControls() {
 				showall              = true;
 				showall_ignorechords = true;
 			}
-			let Row2Marker = null;
-			if (document.getElementById("innerstyle").checked)
-				Row2Marker = "*";
+			let Row1Marker = GetRow1Marker();
+			let Row2Marker = GetRow2Marker();
+			let Row3Marker = GetRow3Marker();
 			
 			abcjsParams.tablature = [{
 				instrument          : 'diatonic',
@@ -1140,7 +1170,9 @@ function GetAbcjsParamsFromControls() {
 				tabformat           :        document.getElementById("notenames"     ).checked ? 1 : 0,
 				changenoteheads     :        document.getElementById("changenotehead").checked,
 				startzero           : StartFromZero,
+				Row1Marker          : Row1Marker,
 				Row2Marker          : Row2Marker,
+				Row3Marker          : Row3Marker,
 				showall             : showall,
 				showall_ignorechords: showall_ignorechords
 			}];
@@ -1275,7 +1307,7 @@ let UpdateTitle = false;
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv1a", "inv1b", "inv5a", "inv5a_all", "tabmode", "tabstyle", "notenames", "innerstyle", "changenotehead", "single_tabstyle", "single_notenames", "harm_tabstyle", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
+let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv1a", "inv1b", "inv5a", "inv5a_all", "tabmode", "tabstyle", "notenames", "rowlabels", "changenotehead", "single_tabstyle", "single_notenames", "harm_tabstyle", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
 	//Test for first time load

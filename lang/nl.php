@@ -2,7 +2,7 @@
 	//Translation lookup for Dutch
 	$aTranslations = [
 		"BUT_LANG"     => "<img class='lang' src='nl.png'>Nederlands",
-		"INTRO1"       => "Maak tablatuur en bladmuziek voor <a target='_blank' href='https://nl.wikipedia.org/wiki/Trekzak'>trekharmonica / trekzak / diatonische accordeon</a> en <a target='_blank' href='https://nl.wikipedia.org/wiki/Mondharmonica'>diatonische mondharmonica</a>. De melodieën kunnen worden ingevoerd als in ABC-notatie, specificeer je instrument, toetsenbordindeling en de toonsoort waarin het is gestemd.",
+		"INTRO1"       => "Maak tablatuur en bladmuziek voor <a target='_blank' href='https://nl.wikipedia.org/wiki/Trekzak'>trekharmonica / trekzak / diatonische accordeon</a> en <a target='_blank' href='https://nl.wikipedia.org/wiki/Mondharmonica'>diatonische mondharmonica</a>. De melodieën kunnen worden ingevoerd in ABC-notatie, specificeer je instrument, toetsenbordindeling en de toonsoort waarin het is gestemd.",
 		"INTRO2"       => "Veel ABC-melodieën zijn beschikbaar op <a target='_blank' href='https://folktunefinder.com'>folktunefinder.com</a> en <a target='_blank' href='https://thesession.org'>thesession.org</a>. Meer informatie over ABC-notatie is te vinden op <a target='_blank' href='https://abcnotation.com'>abcnotation.com</a>. Op deze site staan ook enkele eenvoudige melodie voorbeelden om mee te beginnen.",
 		"SKIP"         => "Sla uitleg over en ga naar de applicatie",
 		"FUNC_HEAD"    => "Extra functionaliteit",
@@ -45,7 +45,7 @@
 		"OPT_NAMES"    => "Toon nootnamen in plaats van knopnummers",
 		"OPT_HARHEAD"  => "Gebruik alternatieve nootkoppen voor buigingen",
 		"OPT_HEAD"     => "Gebruik alternatieve nootkoppen voor binnenste rijen",
-		"OPT_ROW2"     => "Gebruik * in plaats van ' voor rij 2",
+		"OPT_ROWLAB"   => "Rij label stijl",
 		"OPT_ALG"      => "Tablatuur algoritme",
 		"OPT_ALG0"     => "Normaal",
 		"OPT_ALG1"     => "Alle resterende mogelijkheden",

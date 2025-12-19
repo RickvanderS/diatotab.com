@@ -45,7 +45,7 @@
 		"OPT_NAMES"    => "Nom des notes plutôt que les numéros de boutons",
 		"OPT_HARHEAD"  => "Têtes de notes différentes pour les bends",
 		"OPT_HEAD"     => "Différentes têtes de notes par rangée",
-		"OPT_ROW2"     => "Choisir * plutôt que ' pour la 2ème rangée",
+		"OPT_ROWLAB"   => "Style d'étiquetage des rangée",
 		"OPT_ALG"      => "Calcul de la tablature",
 		"OPT_ALG0"     => "Normal",
 		"OPT_ALG1"     => "Boutons possibles",

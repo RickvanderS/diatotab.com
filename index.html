@@ -8,9 +8,9 @@
 	<link rel="icon" href="favicon.ico">
 	<link rel="stylesheet" href="styles.css?v=20251122">
 	<link rel="stylesheet" href="abcjs-audio.css">
-	<script src="diatotab.js?v=20251121"></script>
+	<script src="diatotab.js?v=20251219"></script>
 	<script src="FileSaver.js"></script>
-	<script src="abcjs-basic-min.js?v=20250812"></script><!---->
+	<script src="abcjs-basic-min.js?v=20251219"></script><!---->
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
 </head>
 <body>
@@ -196,8 +196,15 @@
 				</select><br>
 				<input                         id="notenames" type="checkbox" onchange="CreateEditor()">
 				<label data-trans="OPT_NAMES" for="notenames">Show note names instead of button numbers</label><br>
-				<input                        id="innerstyle" type="checkbox" onchange="CreateEditor()">
-				<label data-trans="OPT_ROW2" for="innerstyle" id="innerstyle_lab">Use * instead of ' for row 2</label><br>
+				<label data-trans="OPT_ROWLAB" class="drop" for="rowlabels" id="rowlabels_lab">&nbsp;Row label style</label>
+				<select class="drop" id="rowlabels" onchange="CreateEditor()">
+					<option value=" '&quot;" selected="selected">1 2' 3&quot;</option>
+					<option value=" *&quot;"                    >1 2* 3&quot;</option>
+					<option value=" '^"                         >1 2' 3^</option>
+					<option value=" *^"                         >1 2* 3^</option>
+					<option value=" ²³"                         >1 2² 3³</option>
+					<option value="¹²³"                         >1¹ 2² 3³</option>
+				</select><br>
 				<input                        id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
 				<label data-trans="OPT_HEAD" for="changenotehead">Use alternative note heads for inner rows</label><br>
 				<label data-trans="OPT_ALG" class="drop" for="tabmode">&nbsp;Tablature algorithm</label>

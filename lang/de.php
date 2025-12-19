@@ -45,7 +45,7 @@
 		"OPT_NAMES"    => "Notennamen statt Knopfnummern anzeigen",
 		"OPT_HARHEAD"  => "Verwende alternative Notenköpfe für Bending ",
 		"OPT_HEAD"     => "Verwende alternative Notenköpfe für innere Reihen",
-		"OPT_ROW2"     => "Verwende * statt ' für Reihe 2",
+		"OPT_ROWLAB"   => "Reihe beschriftungsstil",
 		"OPT_ALG"      => "Tabulatur Algorithmus",
 		"OPT_ALG0"     => "Normal",
 		"OPT_ALG1"     => "Zeige alle verbleibenden Möglichkeiten",
