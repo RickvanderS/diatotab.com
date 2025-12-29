@@ -157,6 +157,7 @@ select.drop {
 label.drop {
   display: inline-block;
   min-width: 145px;
+  margin-left: 4px;
 }
 
 h4 {

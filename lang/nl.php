@@ -36,7 +36,7 @@
 		"OPT_START0"   => "Nummering starten bij 0",
 		"OPT_INV"      => "Knop&nbsp;&nbsp;omdraaien",
 		"OPT_INVROW"   => "Hele rij&nbsp;&nbsp;",
-		"OPT_TAB"      => "&nbsp;Tablatuurstijl",
+		"OPT_TAB"      => "Tablatuurstijl",
 		"OPT_TAB0"     => "Geen tablatuur, alleen noten",
 		"OPT_TAB1"     => "Eén regel",
 		"OPT_TAB2"     => "Twee regels (duw en trek)",

@@ -36,7 +36,7 @@
 		"OPT_START0"   => "Commencer la numérotation à 0",
 		"OPT_INV"      => "Inverser bouton&nbsp;&nbsp;",
 		"OPT_INVROW"   => "Toute la rangée&nbsp;&nbsp;",
-		"OPT_TAB"      => "&nbsp;Type de tablature",
+		"OPT_TAB"      => "Type de tablature",
 		"OPT_TAB0"     => "La partition seule",
 		"OPT_TAB1"     => "Une ligne",
 		"OPT_TAB2"     => "Deux lignes (P & T)",

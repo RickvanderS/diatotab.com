@@ -36,7 +36,7 @@
 		"OPT_START0"   => "Nummerierung bei 0 beginnen",
 		"OPT_INV"      => "Taste&nbsp;&nbsp;umkehren",
 		"OPT_INVROW"   => "Ganze Reihe&nbsp;&nbsp;",
-		"OPT_TAB"      => "&nbsp;Tabulaturstil",
+		"OPT_TAB"      => "Tabulaturstil",
 		"OPT_TAB0"     => "Keine Tabulatur, nur Noten",
 		"OPT_TAB1"     => "Eine Zeile",
 		"OPT_TAB2"     => "Zwei Zeilen (Drücken und ziehen)",
