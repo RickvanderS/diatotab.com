@@ -792,6 +792,27 @@ function GetRow3Marker() {
 	return GetRowMarker(3);
 }
 
+function GetPushPullMarker(ElementIdPrefix, PullNotPush) {
+	let PushPullMarker = document.getElementById(ElementIdPrefix + "pushpulllabels").value.substr(PullNotPush, 1);
+	if (PushPullMarker ==  "" || PushPullMarker == " ") {
+		switch (PullNotPush) {
+			case 0:
+				return "";
+			case 1:
+				return "-";
+		}
+	}
+	return PushPullMarker;
+}
+
+function GetPushMarker(ElementIdPrefix = "") {
+	return GetPushPullMarker(ElementIdPrefix, 0);
+}
+
+function GetPullMarker(ElementIdPrefix = "") {
+	return GetPushPullMarker(ElementIdPrefix, 1);
+}
+
 function VariantOptionsUpdateLabels() {
 	//Get inputs
 	let Instrument    = document.getElementById("instrument").value;
@@ -873,14 +894,17 @@ function VariantOptionsUpdateLabels() {
 	//Disable checkboxes not applicable to the tablature style
 	{
 		let tabstyle = document.getElementById("single_tabstyle").value;
-		document.getElementById("single_notenames").disabled = tabstyle == "0";
+		document.getElementById("single_notenames"     ).disabled = tabstyle == "0";
+		document.getElementById("single_pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
 		
 		tabstyle = document.getElementById("harm_tabstyle").value;
-		document.getElementById("harm_notenames").disabled = tabstyle == "0";
+		document.getElementById("harm_notenames"     ).disabled = tabstyle == "0";
+		document.getElementById("harm_pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
 		
 		tabstyle = document.getElementById("tabstyle").value;
-		document.getElementById("rowlabels").disabled = tabstyle == "0" || tabstyle == "3";
-		document.getElementById("notenames").disabled = tabstyle == "0";
+		document.getElementById("pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
+		document.getElementById("rowlabels"     ).disabled = tabstyle == "0" || tabstyle == "3";
+		document.getElementById("notenames"     ).disabled = tabstyle == "0";
 	}
 }
 
@@ -1029,9 +1053,13 @@ function GetAbcjsParamsFromControls() {
 	let Tuning     = document.getElementById("tuning").value;
 	Tuning = Tuning.replaceAll("♭", "b");
 	switch (Instrument) {
-		case "M_1":
+		case "M_1": {
 			if (Variant == "7")
 				Tuning = "7" + Tuning;
+			
+			//Tablature options
+			let PullMarker = GetPullMarker("single_");
+			let PushMarker = GetPushMarker("single_");
 
 			abcjsParams.tablature = [{
 				instrument: 'diatonic',
@@ -1039,14 +1067,16 @@ function GetAbcjsParamsFromControls() {
 				tuning    : [Tuning],
 				tabstyle  : Number(document.getElementById("single_tabstyle" ).value),
 				tabformat :        document.getElementById("single_notenames").checked ? 1 : 0,
+				PullMarker: PullMarker,
+				PushMarker: PushMarker,
 			}];
 			break;
-
+		}
 		case "M_2":
 		case "M_25":
 		case "M_CLUB":
 		case "M_3":
-		case "M_35":
+		case "M_35": {
 			//Split tuning
 			let TuningArray = Tuning.split("/");
 			
@@ -1161,6 +1191,8 @@ function GetAbcjsParamsFromControls() {
 			let Row1Marker = GetRow1Marker();
 			let Row2Marker = GetRow2Marker();
 			let Row3Marker = GetRow3Marker();
+			let PullMarker = GetPullMarker();
+			let PushMarker = GetPushMarker();
 			
 			abcjsParams.tablature = [{
 				instrument          : 'diatonic',
@@ -1173,20 +1205,30 @@ function GetAbcjsParamsFromControls() {
 				Row1Marker          : Row1Marker,
 				Row2Marker          : Row2Marker,
 				Row3Marker          : Row3Marker,
+				PullMarker          : PullMarker,
+				PushMarker          : PushMarker,
 				showall             : showall,
 				showall_ignorechords: showall_ignorechords
 			}];
 			break;
-		case "H_1":
+		}
+		case "H_1": {
+			//Tablature options
+			let PullMarker = GetPullMarker("harm_");
+			let PushMarker = GetPushMarker("harm_");
+			
 			abcjsParams.tablature = [{
 				instrument     : 'diatonic',
 				label          : '',
 				tuning         : Array(Tuning + "~"), //Add ~ to indicate harmonica
 				tabstyle       : Number(document.getElementById("harm_tabstyle"      ).value),
 				tabformat      :        document.getElementById("harm_notenames"     ).checked ? 1 : 0,
-				changenoteheads:        document.getElementById("harm_changenotehead").checked
+				changenoteheads:        document.getElementById("harm_changenotehead").checked,
+				PullMarker     : PullMarker,
+				PushMarker     : PushMarker,
 			}];
 			break;
+		}
 		default:
 			abcjsParams.tablature = [];
 	}
