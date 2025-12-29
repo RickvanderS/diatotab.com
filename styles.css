@@ -149,15 +149,33 @@ div.overlay {
    width:            400px;
 }
 
-select.drop {
-  padding: 0px 0px 0px 5px;
-  min-width: 215px;
-}
-
 label.drop {
   display: inline-block;
   min-width: 145px;
   margin-left: 4px;
+}
+label.drop:lang(nl) {
+  min-width: 150px;
+}
+label.drop:lang(de) {
+  min-width: 190px;
+}
+label.drop:lang(fr) {
+  min-width: 205px;
+}
+
+select.drop {
+  padding: 0px 0px 0px 5px;
+  min-width: 170px;
+}
+select.drop:lang(nl) {
+  min-width: 200px;
+}
+select.drop:lang(de) {
+  min-width: 185px;
+}
+select.drop:lang(fr) {
+  min-width: 160px;
 }
 
 h4 {

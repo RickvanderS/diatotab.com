@@ -90,31 +90,31 @@ function AddInstruments() {
 			case "nl":
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Trekharmonica / Diatonische Accordeon");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Diatonische Mondharmonica");
-				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "kwart verschil");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "kwart afstand");
 				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
-				Obj.textContent = Obj.textContent.replaceAll("row"                             , "rij");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club rij");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "hulprij");
+				Obj.textContent = Obj.textContent.replaceAll("row"                             , "rij");
 				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        , "Geen tabulatuur, alleen noten");
 				break;
 			case "de":
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Diatonisches Akkordeon / Ziehharmonika");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Mundharmonika");
-				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "Vierteldifferenz");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "Quart abstand");
 				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
-				Obj.textContent = Obj.textContent.replaceAll("row"                             , "Reihe");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club reihe");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Hilfsreihe");
+				Obj.textContent = Obj.textContent.replaceAll("row"                             , "Reihe");
 				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        , "Keine Tabulatur, nur Noten");
 				break;
 			case "fr":
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Accordéon Diatonique");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Harmonica Diatonique");
-				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "différence de trimestre");
+				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "dséparés d'une quarte");
 				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
-				Obj.textContent = Obj.textContent.replaceAll("row"                             , "rangées");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "Rangée d'clubs");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Rangée d'assistance");
+				Obj.textContent = Obj.textContent.replaceAll("row"                             , "rangées");
 				Obj.textContent = Obj.textContent.replaceAll("No tablature, notes only"        , "Pas de tablatures, seulement des notes");
 				break;
 		}

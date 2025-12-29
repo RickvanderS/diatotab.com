@@ -6,9 +6,9 @@
 	<meta name="description" content="Create tablature and sheet music for diatonic accordion / melodeon and harmonica. Do this directly online in your webbrowser using ABC notation.">
 	<title>Diatotab, Diatonic Accordion / Melodeon Tablature Generator</title>
 	<link rel="icon" href="favicon.ico">
-	<link rel="stylesheet" href="styles.css?v=20251229">
+	<link rel="stylesheet" href="styles.css?v=20251229-2">
 	<link rel="stylesheet" href="abcjs-audio.css">
-	<script src="diatotab.js?v=20251228"></script>
+	<script src="diatotab.js?v=20251229"></script>
 	<script src="FileSaver.js"></script>
 	<script src="abcjs-basic-min.js?v=20251229-2"></script><!---->
 	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
@@ -164,7 +164,7 @@
 				<label data-trans="OPT_TAB" class="drop" for="single_tabstyle">Tablature style</label>
 				<select                     class="drop"  id="single_tabstyle" onchange="CreateEditor()">
 					<option data-trans="OPT_TAB1" value="1">One line</option>
-					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push and pull)</option>
+					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push &amp; pull)</option>
 					<option data-trans="OPT_TAB1" value="0">No tablature, notes only</option>
 				</select><br>
 				<label data-trans="OPT_PPLAB" class="drop" for="single_pushpulllabels">Push/pull symbols</label>
@@ -180,7 +180,7 @@
 				<label data-trans="OPT_TAB" class="drop" for="harm_tabstyle">Tablature style</label>
 				<select                     class="drop"  id="harm_tabstyle" onchange="CreateEditor()">
 					<option data-trans="OPT_TAB1"     value="1" selected="selected">One line</option>
-					<option data-trans="OPT_HARMTAB2" value="2">Two lines (blow and draw)</option>
+					<option data-trans="OPT_HARMTAB2" value="2">Two lines (blow & draw)</option>
 					<option data-trans="OPT_TAB0"     value="0">No tablature, notes only</option>
 				</select><br>
 				<label data-trans="OPT_BDLAB" class="drop" for="harm_pushpulllabels">Blow/draw symbols</label>
@@ -198,8 +198,8 @@
 				<label data-trans="OPT_TAB" class="drop" for="tabstyle">Tablature style</label>
 				<select                     class="drop"  id="tabstyle" onchange="CreateEditor()">
 					<option data-trans="OPT_TAB1" value="1"                    >One line</option>
-					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push and pull)</option>
-					<option data-trans="OPT_TAB3" value="3"                    >Line for every instrument row</option>
+					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push &amp; pull)</option>
+					<option data-trans="OPT_TAB3" value="3"                    >Line per instrument row</option>
 					<option data-trans="OPT_TAB0" value="0"                    >No tablature, notes only</option>
 				</select><br>
 				<label data-trans="OPT_PPLAB" class="drop" for="pushpulllabels">Push/pull symbols</label>
@@ -228,8 +228,8 @@
 				<label data-trans="OPT_ALG" class="drop" for="tabmode">Tablature algorithm</label>
 				<select                     class="drop"  id="tabmode" onchange="CreateEditor()">
 					<option data-trans="OPT_ALG0" value="0" selected="selected">Normal</option>
-					<option data-trans="OPT_ALG1" value="1"                    >Show all remaining possibilities</option>
-					<option data-trans="OPT_ALG2" value="2"                    >Show all possibilities</option>
+					<option data-trans="OPT_ALG1" value="1"                    >Chord buttons</option>
+					<option data-trans="OPT_ALG2" value="2"                    >All buttons</option>
 				</select><br>
 			</div>
 		</div>
