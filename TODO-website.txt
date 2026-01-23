@@ -5,8 +5,10 @@ Improvements:
 - Help button with overlay text to explain playback controls
 - Better syntax highlighting around |[
 - Better syntax highlighting for %% meta comment
+- Add line numbers to the editor
 New features:
 - Open custom layout file (using ABC notation, Rodec Markup, Roland FR-18, ...)
+- ABCjs error line numbers or off
 
 
 
