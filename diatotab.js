@@ -53,6 +53,11 @@ function AddInstruments() {
 	Instruments.add(Instrument);
 	
 	Instrument = document.createElement("option");
+	Instrument.text     = "Melodeon / Diatonic Accordion 2 row, semitone apart";
+	Instrument.value    = "M_2S";
+	Instruments.add(Instrument);
+	
+	Instrument = document.createElement("option");
 	Instrument.text     = "Melodeon / Diatonic Accordion 3 row, fourth apart";
 	Instrument.value    = "M_3";
 	Instruments.add(Instrument);
@@ -145,6 +150,23 @@ function AddTunings2Row() {
 	
 	var Tuning = document.createElement("option");
 	Tuning.text = "D/G";
+	Tunings.add(Tuning);
+}
+
+function AddTunings2RowSemitone() {
+	let Tunings = document.getElementById("tuning");
+	
+	var Tuning = document.createElement("option");
+	Tuning.text     = "B/C";
+	Tuning.selected = 'selected';
+	Tunings.add(Tuning);
+	
+	var Tuning = document.createElement("option");
+	Tuning.text = "C/C#";
+	Tunings.add(Tuning);
+	
+	var Tuning = document.createElement("option");
+	Tuning.text = "C#/D";
 	Tunings.add(Tuning);
 }
 
@@ -266,6 +288,49 @@ function AddVariantsTunings() {
 			
 			//Add 2row tunings
 			AddTunings2Row();
+			break;
+			
+		case "M_2S":
+			//Add 2row variants
+			{
+				var Variant = document.createElement("option");
+				Variant.text       = "21 button, 3th button start, modern basses";
+				Variant.value      = "21";
+				Variant.dataSource = "https://forum.melodeon.net/files/site/BC21modernbass.gif";
+				Variant.selected   = 'selected';
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21 button, 3th button start, traditional basses";
+				Variant.value      = "21%";
+				Variant.dataSource = "https://forum.melodeon.net/files/site/BC21tradbass.gif";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "21 button, 3th button start, Hohner basses";
+				Variant.value      = "21$";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23 button, 4th button start, modern basses";
+				Variant.value      = "23";
+				Variant.dataSource = "https://forum.melodeon.net/files/site/BC23modernbass.gif";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23 button, 4th button start, traditional basses";
+				Variant.value      = "23%";
+				Variant.dataSource = "https://forum.melodeon.net/files/site/BC23tradbass.gif";
+				Variants.add(Variant);
+				
+				var Variant = document.createElement("option");
+				Variant.text       = "23 button, 4th button start, Hohner basses";
+				Variant.value      = "23$";
+				Variants.add(Variant);
+			}
+			
+			//Add 2row semitone tunings
+			AddTunings2RowSemitone();
 			break;
 		case "M_25":
 			//Add 2.5row variants
@@ -692,13 +757,17 @@ function GetRow3FirstInvButtonNumber(Instrument, Variant, StartFromZero) {
 	return ButtonNumber;
 }
 
-function Is4thButtonStart(Variant) {
+function Is4thButtonStart(Instrument, Variant) {
 	//Detect 4th button start symbol
 	if (Variant.includes(">"))
 		return true;
 	
 	//Detect club with 4th button start
 	if (Variant.includes("23+") && Variant.includes("_Club"))
+		return true;
+	
+	//Detect semitone with 4th button start
+	if (Instrument == "M_2S" && Variant.includes("23"))
 		return true;
 	
 	//Lookup 2.5 rows with 4th button start
@@ -714,7 +783,7 @@ function GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero) {
 		return -1;
 	
 	//If this is a 4th button start instrument
-	if (Is4thButtonStart(Variant)) {
+	if (Is4thButtonStart(Instrument, Variant)) {
 		if (StartFromZero)
 			return 5;
 		else
@@ -731,7 +800,7 @@ function ShowHideVariantOptions() {
 	let Variant    = document.getElementById("variant").value;
 	
 	//Give option to start numbering at 0 for 4th button starts
-	let ShowZero = Is4thButtonStart(Variant);
+	let ShowZero = Is4thButtonStart(Instrument, Variant);
 	showElement("startzero", ShowZero);
 	let StartFromZero = ShowZero && document.getElementById("zero").checked;
 	
@@ -1073,6 +1142,7 @@ function GetAbcjsParamsFromControls() {
 			break;
 		}
 		case "M_2":
+		case "M_2S":
 		case "M_25":
 		case "M_CLUB":
 		case "M_3":
@@ -1081,7 +1151,7 @@ function GetAbcjsParamsFromControls() {
 			let TuningArray = Tuning.split("/");
 			
 			//Instrument specific readouts
-			if (Instrument == "M_2") {
+			if (Instrument == "M_2" || Instrument == "M_2S") {
 				//Get chin accidentals
 				if (Variant.includes("^")) {
 					TuningArray[0] += "^";
@@ -1098,6 +1168,16 @@ function GetAbcjsParamsFromControls() {
 				if (Variant.includes("23")) {
 					TuningArray[0] = "12" + TuningArray[0];
 					TuningArray[1] = "11" + TuningArray[1];
+				}
+				
+				//Alternative basses
+				if (Variant.includes("$")) {
+					TuningArray[0] += "$";
+					TuningArray[1] += "$";
+				}
+				if (Variant.includes("%")) {
+					TuningArray[0] += "%";
+					TuningArray[1] += "%";
 				}
 			}
 			else if (Instrument == "M_25" || Instrument == "M_CLUB") {
@@ -1880,7 +1960,7 @@ function AbcKeyDown(event) {
 				
 				//Prefer to write it as an in key note
 				let Note     = "";
-				let KeyIndex = FindCicrleKeyIndex(Key);
+				let KeyIndex = FindCircleKeyIndex(Key);
 				if (IsInKey(KeyIndex, aNotes[Button]))
 					Note = aNotes[Button];
 				else {
@@ -2494,16 +2574,13 @@ function ExampleClose() {
 	return false;
 }
 
-function FindCicrleKeyIndex(Key) {
+function FindCircleKeyIndex(Key) {
 	//Find key in the circle of fifths
-	let i = 0;
-	for (; i < 12; ++i) {
-		if (GetCircleFifths(i).KeyFlat == Key || GetCircleFifths(i).KeySharp == Key)
-			break;
+	for (let KeyIndex = -7; KeyIndex <= 7; ++KeyIndex) {
+		if (GetCircleFifths(KeyIndex).Key == Key)
+			return KeyIndex;
 	}
-	if (i == 12)
-		return 0;
-	return i;
+	return 0;
 }
 
 function ConvertFlatSharp(NoteName, Options) {
@@ -2551,17 +2628,46 @@ function ConvertFlatSharp(NoteName, Options) {
 	return NoteName;
 }
 
+function ConvertChordFlatSharp(ChordName, Options) {
+	//Convert chord to display name
+	if (Options.Dflat)
+		ChordName = ChordName.replaceAll('C#', 'Db');
+	else
+		ChordName = ChordName.replaceAll('Db', 'C#');
+	if (Options.Eflat)
+		ChordName = ChordName.replaceAll('D#', 'Eb');
+	else
+		ChordName = ChordName.replaceAll('Eb', 'D#');
+	if (Options.Gflat)
+		ChordName = ChordName.replaceAll('F#', 'Gb');
+	else
+		ChordName = ChordName.replaceAll('Gb', 'F#');
+	if (Options.Aflat)
+		ChordName = ChordName.replaceAll('G#', 'Ab');
+	else
+		ChordName = ChordName.replaceAll('Ab', 'G#');
+	if (Options.Bflat)
+		ChordName = ChordName.replaceAll('A#', 'Bb');
+	else
+		ChordName = ChordName.replaceAll('Bb', 'A#');
+	return ChordName;
+}
+
 function GetSharpFlatConverts(LowKey, HighKey) {
-	let KeyIndex1 = FindCicrleKeyIndex(LowKey);
-	let KeyIndex2 = FindCicrleKeyIndex(HighKey);
-	if (KeyIndex2 - KeyIndex1 > 6)
-		KeyIndex2 -= 12;
+	let KeyIndex1 = FindCircleKeyIndex(LowKey);
+	let KeyIndex2 = FindCircleKeyIndex(HighKey);
+	if (KeyIndex1 > KeyIndex2) {
+		let Tmp = KeyIndex2;
+		KeyIndex2 = KeyIndex1;
+		KeyIndex1 = Tmp;
+	}
+	
 	let Dflat = null;
 	let Eflat = null;
 	let Gflat = null;
 	let Aflat = null;
 	let Bflat = null;
-	for (Index = KeyIndex1; Index <= KeyIndex2 + 10; ++Index) {
+	for (let Index = KeyIndex1; Index <= KeyIndex2 + 10; ++Index) {
 		let KeyIndex = Index;
 		if (Index > KeyIndex2) {
 			var Diff2 = Index - KeyIndex2;
@@ -2570,24 +2676,8 @@ function GetSharpFlatConverts(LowKey, HighKey) {
 			else
 				KeyIndex = KeyIndex2 + Diff2 / 2;
 		}
-		if (KeyIndex < 0)
-			KeyIndex += 12;
-		let TestKey = GetCircleFifths(KeyIndex).KeyFlat;
 		
-		if (KeyIndex <= 6) {
-			//In key sharps
-			if (IsInKey(KeyIndex, "^C") && Dflat == null)
-				Dflat = false;
-			if (IsInKey(KeyIndex, "^D") && Eflat == null)
-				Eflat = false;
-			if (IsInKey(KeyIndex, "^F") && Gflat == null)
-				Gflat = false;
-			if (IsInKey(KeyIndex, "^G") && Aflat == null)
-				Aflat = false;
-			if (IsInKey(KeyIndex, "^A") && Bflat == null)
-				Bflat = false;
-		}
-		else {
+		if (KeyIndex < 0) {
 			//In key flats
 			if (IsInKey(KeyIndex, "_D") && Dflat == null)
 				Dflat = true;
@@ -2600,7 +2690,19 @@ function GetSharpFlatConverts(LowKey, HighKey) {
 			if (IsInKey(KeyIndex, "_B") && Bflat == null)
 				Bflat = true;
 		}
-		
+		else {
+			//In key sharps
+			if (IsInKey(KeyIndex, "^C") && Dflat == null)
+				Dflat = false;
+			if (IsInKey(KeyIndex, "^D") && Eflat == null)
+				Eflat = false;
+			if (IsInKey(KeyIndex, "^F") && Gflat == null)
+				Gflat = false;
+			if (IsInKey(KeyIndex, "^G") && Aflat == null)
+				Aflat = false;
+			if (IsInKey(KeyIndex, "^A") && Bflat == null)
+				Bflat = false;
+		}
 	}
 	
 	return {
@@ -2618,6 +2720,8 @@ function ButtonArrayConvert(RawArray, Options) {
 		if (RawArray[i] != "") {
 			let Note = RawArray[i];
 			Note = ConvertFlatSharp(Note, Options);
+			if (Note[0] != "^" && Note[0] != "_")
+				Note = "=" + Note;
 
 			aRow.push(Note);
 		}
@@ -2625,39 +2729,6 @@ function ButtonArrayConvert(RawArray, Options) {
 			aRow.push("");
 	}
 	return aRow;
-}
-
-function ButtonArrayAddPullAcc(aArrayPush, aArrayPull) {
-	for (var i = 0; i < aArrayPush.length; ++i) {
-		if (aArrayPush[i].length == 0 || aArrayPull[i].length == 0)
-			continue;
-		
-		let IndexPush = aArrayPush[i].slice(1).indexOf('"');
-		if (IndexPush < 0)
-			IndexPush = 0;
-		else
-			IndexPush = IndexPush + 2;
-		let IndexPull = aArrayPull[i].slice(1).indexOf('"');
-		if (IndexPull < 0)
-			IndexPull = 0;
-		else
-			IndexPull = IndexPull + 2;
-		
-		let AccPush = aArrayPush[i][IndexPush];
-		let AccPull = aArrayPull[i][IndexPull];
-
-		if (AccPush == '_' || AccPush == '^' || AccPush == '=') {
-			if (AccPull != '_' && AccPull != '^' && AccPull != '=') {
-				if (aArrayPush[i][IndexPush+1].toUpperCase() == aArrayPull[i][IndexPull].toUpperCase()) {
-					if (AccPush != '=')
-						aArrayPull[i] = aArrayPull[i].slice(0, IndexPull) + '=' + aArrayPull[i].slice(IndexPull);
-					else
-						aArrayPull[i] = aArrayPull[i].slice(0, IndexPull) + '_' + aArrayPull[i].slice(IndexPull); //TODO: _ or ^ from key
-				}
-			}
-		}
-	}
-	return aArrayPull;
 }
 
 function GetNoteOctave(Note) {
@@ -2731,109 +2802,308 @@ function ButtonArrayAddNames(aRow, Annotations) {
 	return aRow;
 }
 
-function GetCircleFifths(Index) {
-	Index = Index % 12;
-	if (Index < 0)
-		Index += 12;
-	switch (Index) {
+function GetCircleFifths(KeyIndex) {
+	//Ensure within 7 flats or 7 sharps range
+	if (KeyIndex < -8)
+		KeyIndex = KeyIndex % 12 - 12;
+	if (KeyIndex < -8)
+		KeyIndex += 12;
+	if (KeyIndex > 12)
+		KeyIndex = KeyIndex % 12;
+	
+	//Lookup the key and 1st note
+	switch (KeyIndex) {
+		case -8:
+			return {
+				Key  : "",
+				Note : "_F",
+			};
+		case -7:
+			return {
+				Key  : "Cb",
+				Note : "_C",
+			};
+		case -6:
+			return {
+				Key  : "Gb",
+				Note : "_G",
+			};
+		case -5:
+			return {
+				Key  : "Db",
+				Note : "_D",
+			};
+		case -4:
+			return {
+				Key  : "Ab",
+				Note : "_A",
+			};
+		case -3:
+			return {
+				Key  : "Eb",
+				Note : "_E",
+			};
+		case -2:
+			return {
+				Key  : "Bb",
+				Note : "_B",
+			};
+		case -1:
+			return {
+				Key  : "F",
+				Note : "F",
+			};
 		case 0:
 			return {
-				KeyFlat  : "C",
-				KeySharp : "C",
-				NoteFlat : "C",
-				NoteSharp: "C",
+				Key  : "C",
+				Note : "C",
 			};
 		case 1:
 			return {
-				KeyFlat  : "G",
-				KeySharp : "G",
-				NoteFlat : "G",
-				NoteSharp: "G",
+				Key  : "G",
+				Note : "G",
 			};
 		case 2:
 			return {
-				KeyFlat  : "D",
-				KeySharp : "D",
-				NoteFlat : "D",
-				NoteSharp: "D",
+				Key  : "D",
+				Note : "D",
 			};
 		case 3:
 			return {
-				KeyFlat  : "A",
-				KeySharp : "A",
-				NoteFlat : "A",
-				NoteSharp: "A",
+				Key  : "A",
+				Note : "A",
 			};
 		case 4:
 			return {
-				KeyFlat  : "E",
-				KeySharp : "E",
-				NoteFlat : "E",
-				NoteSharp: "E",
+				Key  : "E",
+				Note : "E",
 			};
 		case 5:
 			return {
-				KeyFlat  : "B",
-				KeySharp : "B",
-				NoteFlat : "B",
-				NoteSharp: "B",
+				Key  : "B",
+				Note : "B",
 			};
 		case 6:
 			return {
-				KeyFlat  : "Gb",
-				KeySharp : "F#",
-				NoteFlat : "_G",
-				NoteSharp: "^F",
+				Key  : "F#",
+				Note : "^F",
 			};
 		case 7:
 			return {
-				KeyFlat  : "Db",
-				KeySharp : "C#",
-				NoteFlat : "_D",
-				NoteSharp: "^C",
+				Key  : "C#",
+				Note : "^C",
 			};
 		case 8:
 			return {
-				KeyFlat  : "Ab",
-				KeySharp : "G#",
-				NoteFlat : "_A",
-				NoteSharp: "^G",
+				Key  : "",
+				Note : "^G",
 			};
 		case 9:
 			return {
-				KeyFlat  : "Eb",
-				KeySharp : "D#",
-				NoteFlat : "_E",
-				NoteSharp: "^D",
+				Key  : "",
+				Note : "^D",
 			};
 		case 10:
 			return {
-				KeyFlat  : "Bb",
-				KeySharp : "A#",
-				NoteFlat : "_B",
-				NoteSharp: "^A",
+				Key  : "",
+				Note : "^A",
 			};
 		case 11:
 			return {
-				KeyFlat  : "F",
-				KeySharp : "F",
-				NoteFlat : "F",
-				NoteSharp: "F",
+				Key  : "",
+				Note : "^E",
+			};
+		case 12:
+			return {
+				Key  : "",
+				Note : "^B",
 			};
 	}
+	return {
+		Key  : "",
+		Note : "",
+	};
 }
 
-function IsInKey(CircleIndex, Note) {
-	let InKey = false;
+function NoteToFlat(NoteName) {
+	if      (NoteName.startsWith('_C'))
+		NoteName = NoteName.replaceAll('_C', '_C');
+	else if (NoteName.startsWith('C'))
+		NoteName = NoteName.replaceAll('C', '');
+	else if (NoteName.startsWith('^C'))
+		NoteName = NoteName.replaceAll('^C', '_D');
+	else if (NoteName.startsWith('_D'))
+		NoteName = NoteName.replaceAll('_D', '_D');
+	else if (NoteName.startsWith('D'))
+		NoteName = NoteName.replaceAll('D', '');
+	else if (NoteName.startsWith('^D'))
+		NoteName = NoteName.replaceAll('^D', '_E');
+	else if (NoteName.startsWith('_E'))
+		NoteName = NoteName.replaceAll('_E', '_E');
+	else if (NoteName.startsWith('E'))
+		NoteName = NoteName.replaceAll('E', '_F');
+	else if (NoteName.startsWith('^E'))
+		NoteName = NoteName.replaceAll('^E', '');
+	else if (NoteName.startsWith('_F'))
+		NoteName = NoteName.replaceAll('_F', '_F');
+	else if (NoteName.startsWith('F'))
+		NoteName = NoteName.replaceAll('F', '');
+	else if (NoteName.startsWith('^F'))
+		NoteName = NoteName.replaceAll('^F', '_G');
+	else if (NoteName.startsWith('_G'))
+		NoteName = NoteName.replaceAll('_G', '_G');
+	else if (NoteName.startsWith('G'))
+		NoteName = NoteName.replaceAll('G', '');
+	else if (NoteName.startsWith('^G'))
+		NoteName = NoteName.replaceAll('^G', '_A');
+	else if (NoteName.startsWith('_A'))
+		NoteName = NoteName.replaceAll('_A', '_A');
+	else if (NoteName.startsWith('A'))
+		NoteName = NoteName.replaceAll('A', '');
+	else if (NoteName.startsWith('^A'))
+		NoteName = NoteName.replaceAll('^A', '_B');
+	else if (NoteName.startsWith('_B'))
+		NoteName = NoteName.replaceAll('_B', '_B');
+	else if (NoteName.startsWith('B'))
+		NoteName = NoteName.replaceAll('B', '_C');
+	else if (NoteName.startsWith('^B'))
+		NoteName = NoteName.replaceAll('^B', '');
+	return NoteName;
+}
+
+function NoteToNatural(NoteName) {
+	if      (NoteName.startsWith('_C'))
+		NoteName = NoteName.replaceAll('_C', 'B');
+	else if (NoteName.startsWith('C'))
+		NoteName = NoteName.replaceAll('C', 'C');
+	else if (NoteName.startsWith('^C'))
+		NoteName = NoteName.replaceAll('^C', '');
+	else if (NoteName.startsWith('_D'))
+		NoteName = NoteName.replaceAll('_D', '');
+	else if (NoteName.startsWith('D'))
+		NoteName = NoteName.replaceAll('D', 'D');
+	else if (NoteName.startsWith('^D'))
+		NoteName = NoteName.replaceAll('^D', '');
+	else if (NoteName.startsWith('_E'))
+		NoteName = NoteName.replaceAll('_E', '');
+	else if (NoteName.startsWith('E'))
+		NoteName = NoteName.replaceAll('E', 'E');
+	else if (NoteName.startsWith('^E'))
+		NoteName = NoteName.replaceAll('^E', 'F');
+	else if (NoteName.startsWith('_F'))
+		NoteName = NoteName.replaceAll('_F', 'E');
+	else if (NoteName.startsWith('F'))
+		NoteName = NoteName.replaceAll('F', 'F');
+	else if (NoteName.startsWith('^F'))
+		NoteName = NoteName.replaceAll('^F', '');
+	else if (NoteName.startsWith('_G'))
+		NoteName = NoteName.replaceAll('_G', '');
+	else if (NoteName.startsWith('G'))
+		NoteName = NoteName.replaceAll('G', 'G');
+	else if (NoteName.startsWith('^G'))
+		NoteName = NoteName.replaceAll('^G', '');
+	else if (NoteName.startsWith('_A'))
+		NoteName = NoteName.replaceAll('_A', '');
+	else if (NoteName.startsWith('A'))
+		NoteName = NoteName.replaceAll('A', 'A');
+	else if (NoteName.startsWith('^A'))
+		NoteName = NoteName.replaceAll('^A', '');
+	else if (NoteName.startsWith('_B'))
+		NoteName = NoteName.replaceAll('_B', '');
+	else if (NoteName.startsWith('B'))
+		NoteName = NoteName.replaceAll('B', 'B');
+	else if (NoteName.startsWith('^B'))
+		NoteName = NoteName.replaceAll('^B', 'C');
+	return NoteName;
+}
+
+function NoteToSharp(NoteName) {
+	if      (NoteName.startsWith('_C'))
+		NoteName = NoteName.replaceAll('_C', '');
+	else if (NoteName.startsWith('C'))
+		NoteName = NoteName.replaceAll('C', '^B');
+	else if (NoteName.startsWith('^C'))
+		NoteName = NoteName.replaceAll('^C', '^C');
+	else if (NoteName.startsWith('_D'))
+		NoteName = NoteName.replaceAll('_D', '^C');
+	else if (NoteName.startsWith('D'))
+		NoteName = NoteName.replaceAll('D', '');
+	else if (NoteName.startsWith('^D'))
+		NoteName = NoteName.replaceAll('^D', '^D');
+	else if (NoteName.startsWith('_E'))
+		NoteName = NoteName.replaceAll('_E', '^D');
+	else if (NoteName.startsWith('E'))
+		NoteName = NoteName.replaceAll('E', '');
+	else if (NoteName.startsWith('^E'))
+		NoteName = NoteName.replaceAll('^E', '^E');
+	else if (NoteName.startsWith('_F'))
+		NoteName = NoteName.replaceAll('_F', '');
+	else if (NoteName.startsWith('F'))
+		NoteName = NoteName.replaceAll('F', '^E');
+	else if (NoteName.startsWith('^F'))
+		NoteName = NoteName.replaceAll('^F', '^F');
+	else if (NoteName.startsWith('_G'))
+		NoteName = NoteName.replaceAll('_G', '^F');
+	else if (NoteName.startsWith('G'))
+		NoteName = NoteName.replaceAll('G', '');
+	else if (NoteName.startsWith('^G'))
+		NoteName = NoteName.replaceAll('^G', '^G');
+	else if (NoteName.startsWith('_A'))
+		NoteName = NoteName.replaceAll('_A', '^G');
+	else if (NoteName.startsWith('A'))
+		NoteName = NoteName.replaceAll('A', '');
+	else if (NoteName.startsWith('^A'))
+		NoteName = NoteName.replaceAll('^A', '^A');
+	else if (NoteName.startsWith('_B'))
+		NoteName = NoteName.replaceAll('_B', '^A');
+	else if (NoteName.startsWith('B'))
+		NoteName = NoteName.replaceAll('B', '');
+	else if (NoteName.startsWith('^B'))
+		NoteName = NoteName.replaceAll('^B', '^B');
+	return NoteName;
+}
+
+function IsInKey(CircleIndex, Note, IncludeAlternatives) {
+	//Remove chord notation before the note if present
+	Note = GetNote(Note);
+	
+	//Remove natural marker before the note if present
+	if (Note.startsWith("="))
+		Note = Note.substr(1);
+	
+	//Convert to upper case since this is how the circle of fifths defines the notes
+	Note = Note.toUpperCase();
+	
+	//Load all allowed notations
+	let NoteFlat    = "";
+	let NoteNatural = "";
+	let NoteSharp   = "";
+	if (IncludeAlternatives) {
+		NoteFlat    = NoteToFlat   (Note);
+		NoteNatural = NoteToNatural(Note);
+		NoteSharp   = NoteToSharp  (Note);
+	}
+	else {
+		NoteNatural = Note;
+	}
+	
+	//Search the key for exactly this note
 	for (let k = CircleIndex - 1; k <= CircleIndex+5; ++k) {
 		let CircleEntry = GetCircleFifths(k);
-		if (Note.startsWith(CircleEntry.NoteFlat) || Note.startsWith(CircleEntry.NoteSharp) || Note.startsWith(CircleEntry.NoteFlat.toLowerCase()) || Note.startsWith(CircleEntry.NoteSharp.toLowerCase())) {
-			InKey = true;
-			break;
-		}
+		
+		//If a match found, this note is in key
+		if (NoteFlat   .startsWith(CircleEntry.Note))
+			return true;
+		if (NoteNatural.startsWith(CircleEntry.Note))
+			return true;
+		if (NoteSharp  .startsWith(CircleEntry.Note))
+			return true;
 	}
-	return InKey;
+	
+	//Not found therefore not in key
+	return false;
 }
+
 
 function GetNote(ChordNote) {
 	let Note = ChordNote.substr(ChordNote.lastIndexOf('"') + 1);
@@ -2846,52 +3116,67 @@ function KeyTranspose(Key, TransposeSteps) {
 	return newAbc.substr(3);
 }
 
-function ButtonArrayToKey(aRow, Key) {
+function PushPullButtonArrayToKey(aPushRow, aPullRow, Key) {
 	//Find key in the circle of fifths
-	let KeyIndex = FindCicrleKeyIndex(Key);
+	let KeyIndex = FindCircleKeyIndex(Key);
 	
 	//For all buttons in the row
-	for (let n = 0; n < aRow.length; ++n) {
-		if (aRow[n].length == 0)
+	for (let n = 0; n < aPushRow.length; ++n) {
+		if (aPushRow[n].length == 0)
 			continue;
-		let Note = GetNote(aRow[n]);
 		
-		//Remove _ and ^ from buttons if within range in the circle of fifths
-		let InKey = IsInKey(KeyIndex, Note);
+		//Check push note is in key
+		let PushNote  = GetNote(aPushRow[n]);
+		let PushInKey = IsInKey(KeyIndex, PushNote);
 		
-		//Check sharp/flat specified
-		let Acc = Note.includes('_') || Note.includes('^');
-		
-		//If sharp/flat within key specified, it can be removed
-		if (Acc && InKey) {
-			aRow[n] = aRow[n].replaceAll('_', '');
-			aRow[n] = aRow[n].replaceAll('^', '');
+		//If -, _ or ^ agrees with the key, remove them
+		if (PushInKey) {
+			//Remove natural/flat/sharp
+			aPushRow[n] = aPushRow[n].replaceAll('=', '');
+			aPushRow[n] = aPushRow[n].replaceAll('_', '');
+			aPushRow[n] = aPushRow[n].replaceAll('^', '');
 		}
-		//If no sharp/flat, but not within key, add = for natural
-		else if (!Acc && !InKey && aRow[n].indexOf('=') < 0) {
-			let Index = aRow[n].slice(1).indexOf('"');
-			if (Index < 0)
-				Index = 0;
-			else
-				Index = Index + 2;
-			aRow[n] = aRow[n].slice(0, Index) + '=' + aRow[n].slice(Index);
+		
+		//Check pull note is in key
+		let PullNote  = GetNote(aPullRow[n]);
+		let PullInKey = IsInKey(KeyIndex, PullNote);
+		
+		//If push notes has accidental modifiers
+		if (aPushRow[n].includes('=') || aPushRow[n].includes('_') || aPushRow[n].includes('^')) {
+			let PushIndex = PushNote.search(/[=_^]/g, '');
+			let PullIndex = PullNote.search(/[=_^]/g, '');
+			PushNote = PushNote.substr(PushIndex+1).toLowerCase();
+			PullNote = PullNote.substr(PullIndex+1).toLowerCase();
+			if (PushNote == PullNote)
+				PullInKey = false;
+		}
+		
+		//If -, _ or ^ agrees with the key and not changed by push note, remove them
+		if (PullInKey) {
+			//Remove natural/flat/sharp
+			aPullRow[n] = aPullRow[n].replaceAll('=', '');
+			aPullRow[n] = aPullRow[n].replaceAll('_', '');
+			aPullRow[n] = aPullRow[n].replaceAll('^', '');
 		}
 	}
-	
-	return aRow;
 }
 
-function SplitOutOfKey(aRowPush, aRowPull, aRowPushButtons, aRowPullButtons) {
+function SplitOutOfKey(Key, aRowPush, aRowPull, aRowPushButtons, aRowPullButtons) {
+	//Find key in the circle of fifths
+	let KeyIndex = FindCircleKeyIndex(Key);
+	
 	for (let i = 0; i < aRowPush.length; ++i) {
 		var OutOfKey = false;
-		if (aRowPush[i].indexOf("^") >= 0 || aRowPush[i].indexOf("+") >= 0 || aRowPush[i].indexOf("=") >= 0)
+		if (!IsInKey(KeyIndex, aRowPush[i], true))
 			OutOfKey = true;
-		if (aRowPull[i].indexOf("^") >= 0 || aRowPull[i].indexOf("+") >= 0 || aRowPull[i].indexOf("=") >= 0)
+		if (!IsInKey(KeyIndex, aRowPull[i], true))
 			OutOfKey = true;
 		
 		if (OutOfKey) {
-			aRowPushButtons.push(aRowPush[i]);
-			aRowPullButtons.push(aRowPull[i]);
+			if (aRowPush[i] != "" || aRowPull[i] != "") {
+				aRowPushButtons.push(aRowPush[i]);
+				aRowPullButtons.push(aRowPull[i]);
+			}
 			aRowPush.splice(i, 1);
 			aRowPull.splice(i, 1);
 			i--;
@@ -3064,26 +3349,7 @@ function GetChordNotes(ChordName) {
 
 function GenChord(ChordName, aButtonNotes, Options, BassOnly = false) {
 	//Convert chord to display name
-	if (Options.Dflat)
-		ChordName = ChordName.replaceAll('C#', 'Db');
-	else
-		ChordName = ChordName.replaceAll('Db', 'C#');
-	if (Options.Eflat)
-		ChordName = ChordName.replaceAll('D#', 'Eb');
-	else
-		ChordName = ChordName.replaceAll('Eb', 'D#');
-	if (Options.Gflat)
-		ChordName = ChordName.replaceAll('F#', 'Gb');
-	else
-		ChordName = ChordName.replaceAll('Gb', 'F#');
-	if (Options.Aflat)
-		ChordName = ChordName.replaceAll('G#', 'Ab');
-	else
-		ChordName = ChordName.replaceAll('Ab', 'G#');
-	if (Options.Bflat)
-		ChordName = ChordName.replaceAll('A#', 'Bb');
-	else
-		ChordName = ChordName.replaceAll('Bb', 'A#');
+	ChordName = ConvertChordFlatSharp(ChordName, Options);
 	
 	//Get notes in the chord, low octave sharp
 	let StrippedChordName = ChordName;
@@ -3202,8 +3468,16 @@ function FindRowKeys(Instrument, Tuning) {
 		let Row1Key = KeyTranspose("C", TransposeSteps);
 		aRowKey.push(Row1Key);
 	}
+	//Two row fourth apart (plus helper row)
 	else if (Instrument == "M_2" || Instrument == "M_25" || Instrument == "M_CLUB" || Instrument == "M_35") {
 		let Row1Key = KeyTranspose("G", TransposeSteps);
+		let Row2Key = KeyTranspose("C", TransposeSteps);
+		aRowKey.push(Row1Key);
+		aRowKey.push(Row2Key);
+	}
+	//Two row semitone apart
+	else if (Instrument == "M_2S") {
+		let Row1Key = KeyTranspose("B", TransposeSteps);
 		let Row2Key = KeyTranspose("C", TransposeSteps);
 		aRowKey.push(Row1Key);
 		aRowKey.push(Row2Key);
@@ -3242,6 +3516,19 @@ function LookupTransposeSteps(Instrument, Tuning) {
 				return  9;
 		}
 	}
+	//Semitone apart
+	else if (Instrument == "M_2S") {
+		//From B/C to selected
+		switch (Tuning) {
+			case "B/C":
+				return 0;
+			case "C/C#":
+				return 1;
+			case "C#/D":
+				return 2;
+		}
+	}
+	//Fourth apart
 	else {
 		//From G/C to selected
 		switch (Tuning) {
@@ -3333,34 +3620,41 @@ function ExampleLoadIntern(Index) {
 				let aRawChordRowPush = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
 				let aRawChordRowPull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
 				
+				//Find row keys and convert flats and sharps
 				let Row1Key = FindRowKeys(Instruments.value, Tunings.value)[0];
 				let convOptions = GetSharpFlatConverts(Row1Key, Row1Key);
+				Row1Key = ConvertChordFlatSharp(Row1Key, convOptions);
+				
+				//Add chord notation
 				aRowPush = ButtonArrayConvert(aRawPush, convOptions);
 				aRowPull = ButtonArrayConvert(aRawPull, convOptions);
 				aRowPush = ButtonArrayAddNames(aRowPush, ">");
 				aRowPull = ButtonArrayAddNames(aRowPull, "<");
-				aRowPush = ButtonArrayToKey(aRowPush, Row1Key);
-				aRowPull = ButtonArrayToKey(aRowPull, Row1Key);
-				aRowPull = ButtonArrayAddPullAcc(aRowPush, aRowPull);
 				
-				//Add row to ABC
+				//Remove flat, natural and sharp indicators that are redundant
+				PushPullButtonArrayToKey(aRowPush, aRowPull, Row1Key);
+				
+				//Format ABC layout per row
 				let LayoutTrebleRow = "";
 				if (Index == 0) { //Diatonic scale order
-					//Sort by note order
+					//Sort in key notes by scale order
 					let aRow = aRowPush.concat(aRowPull);
 					aRow.sort(ChordNoteCompare);
 					
-					//Create note order
+					//Create ABC in note order
 					LayoutTrebleRow = ButtonArraysToAbc(aRow, new Array());
 				}
 				else if (Index == 1) { //Button order, first push then pull
+					//Create ABC for buttons
 					LayoutTrebleRow = ButtonArraysToAbc(aRowPush, aRowPull);
 				}
 				
+				//Add treble row to ABC
 				aLines.push('P: Treble');
 				aLines.push('K: ' + Row1Key);
 				aLines.push(LayoutTrebleRow);
 				
+				//Add ABC for bass rows
 				aLines.push('K: C style=x');
 				aLines.push('L: 1');
 				aLines.push('P:Bass');
@@ -3371,7 +3665,7 @@ function ExampleLoadIntern(Index) {
 				}
 				aLines.push(Line);
 			}
-			else if (Instruments.value == "M_2") { //Dual row melodeons
+			else if (Instruments.value == "M_2" || Instruments.value == "M_2S") { //Dual row melodeons
 				//Get treble buttons from ABCjs
 				let aRawRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row2;
 				let aRawRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row2;
@@ -3388,63 +3682,78 @@ function ExampleLoadIntern(Index) {
 				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
-				//Figure out flats and sharps
+				//Find row keys and convert flats and sharps
 				let aRowKeys = FindRowKeys(Instruments.value, Tunings.value);
 				let Row1Key = aRowKeys[0];
 				let Row2Key = aRowKeys[1];
 				let convOptions = GetSharpFlatConverts(Row1Key, Row2Key);
+				if (Instruments.value == "M_2S") {
+					convOptions.Aflat = false;
+					convOptions.Bflat = false;
+					convOptions.Dflat = false;
+					convOptions.Eflat = false;
+					convOptions.Gflat = false;
+				}
+				Row1Key = ConvertChordFlatSharp(Row1Key, convOptions);
+				Row2Key = ConvertChordFlatSharp(Row2Key, convOptions);
 				
-				//Format inner row
+				//Add chord notation to inside row
 				aRow2Push = ButtonArrayConvert(aRawRow2Push, convOptions);
 				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, convOptions);
 				aRow2Push = ButtonArrayAddNames(aRow2Push, ">:");
 				aRow2Pull = ButtonArrayAddNames(aRow2Pull, "<:");
-				aRow2Push = ButtonArrayToKey(aRow2Push, Row2Key);
-				aRow2Pull = ButtonArrayToKey(aRow2Pull, Row2Key);
-				aRow2Pull = ButtonArrayAddPullAcc(aRow2Push, aRow2Pull);
 				
-				//Format outer row
+				//Add chord notation to outside row
 				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
 				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
-				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
-				aRow1Pull = ButtonArrayToKey(aRow1Pull, Row1Key);
-				aRow1Pull = ButtonArrayAddPullAcc(aRow1Push, aRow1Pull);
 				
+				//Format ABC layout per row
 				let LayoutTrebleRow2 = "";
 				let LayoutTrebleRow1 = "";
 				if (Index == 0) { //Diatonic scale order
 					//Split buttons with out of key notes
-					let aRow1PushButtons = new Array();
-					let aRow1PullButtons = new Array();
 					let aRow2PushButtons = new Array();
 					let aRow2PullButtons = new Array();
-					SplitOutOfKey(aRow1Push, aRow1Pull, aRow1PushButtons, aRow1PullButtons);
-					SplitOutOfKey(aRow2Push, aRow2Pull, aRow2PushButtons, aRow2PullButtons);
+					let aRow1PushButtons = new Array();
+					let aRow1PullButtons = new Array();
+					SplitOutOfKey(Row2Key, aRow2Push, aRow2Pull, aRow2PushButtons, aRow2PullButtons);
+					SplitOutOfKey(Row1Key, aRow1Push, aRow1Pull, aRow1PushButtons, aRow1PullButtons);
 					
-					//Sort by note order
+					//Sort in key notes by scale order
 					let aRow2 = aRow2Push.concat(aRow2Pull);
 					aRow2.sort(ChordNoteCompare);
 					let aRow1 = aRow1Push.concat(aRow1Pull);
 					aRow1.sort(ChordNoteCompare);
 					
-					//Create buttons + note order
+					//Remove flat, natural and sharp indicators that are redundant
+					PushPullButtonArrayToKey(aRow2PushButtons, aRow2PullButtons, Row2Key);
+					PushPullButtonArrayToKey(aRow2           , aRow2           , Row2Key);
+					PushPullButtonArrayToKey(aRow1PushButtons, aRow1PullButtons, Row1Key);
+					PushPullButtonArrayToKey(aRow1           , aRow1           , Row1Key);
+					
+					//Create ABC for out of key buttons + note order
 					LayoutTrebleRow2 = ButtonArraysToAbc(aRow2PushButtons, aRow2PullButtons) + ButtonArraysToAbc(aRow2, new Array());
 					LayoutTrebleRow1 = ButtonArraysToAbc(aRow1PushButtons, aRow1PullButtons) + ButtonArraysToAbc(aRow1, new Array());
 				}
 				else if (Index == 1) { //Button order, first push then pull
+					//Remove flat, natural and sharp indicators that are redundant
+					PushPullButtonArrayToKey(aRow2Push, aRow2Pull, Row2Key);
+					PushPullButtonArrayToKey(aRow1Push, aRow1Pull, Row1Key);
+					
+					//Create ABC for buttons
 					LayoutTrebleRow2 = ButtonArraysToAbc(aRow2Push, aRow2Pull);
 					LayoutTrebleRow1 = ButtonArraysToAbc(aRow1Push, aRow1Pull);
 				}
 				
-				//Add C row to ABC
-				aLines.push('P: Treble Inner Row ' + Row2Key.replaceAll("b", "♭"));
+				//Add inside row to ABC
+				aLines.push('P: Treble Inside Row ' + Row2Key.replaceAll("b", "♭"));
 				aLines.push('K: ' + Row2Key);
 				aLines.push(LayoutTrebleRow2);
 				
-				//Add G row to ABC
-				aLines.push('P: Treble Outer Row ' + Row1Key.replaceAll("b", "♭"));
+				//Add outside row to ABC
+				aLines.push('P: Treble Outside Row ' + Row1Key.replaceAll("b", "♭"));
 				aLines.push('%%keywarn 0');
 				aLines.push('K: ' + Row1Key);
 				aLines.push(LayoutTrebleRow1);
@@ -3452,7 +3761,7 @@ function ExampleLoadIntern(Index) {
 				//Add ABC for bass rows
 				aLines.push('K: C style=x');
 				aLines.push('L: 1');
-				aLines.push('P:Bass Outer Row');
+				aLines.push('P:Bass Outside Row');
 				var Line = "]";
 				for (let i = 0; i < aRawChordRow1Push.length; ++i) {
 					let Ann = ".";
@@ -3462,7 +3771,7 @@ function ExampleLoadIntern(Index) {
 					Line += GenChord(aRawChordRow1Pull[i] + '<' + Ann, aRawPull, convOptions);
 				}
 				aLines.push(Line);
-				aLines.push('P:Bass Inner Row');
+				aLines.push('P:Bass Inside Row');
 				Line = "]";
 				for (let i = 0; i < aRawChordRow2Push.length; ++i) {
 					let Ann = ".";
@@ -3513,7 +3822,7 @@ function ExampleLoadIntern(Index) {
 				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
 				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
 				
-				//Figure out flats and sharps
+				//Find row keys and convert flats and sharps
 				let aRowKeys = FindRowKeys(Instruments.value, Tunings.value);
 				let Row1Key = aRowKeys[0];
 				let Row2Key = aRowKeys[1];
@@ -3527,81 +3836,85 @@ function ExampleLoadIntern(Index) {
 					convOptions = GetSharpFlatConverts(Row1Key, Row2Key);
 				}
 				
-				if (Instruments.value == "M_3") {
-					aRow3Push = ButtonArrayConvert(aRawRow3Push, convOptions);
-					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, convOptions);
-					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
-					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
-					aRow3Push = ButtonArrayToKey(aRow3Push, Row3Key);
-					aRow3Pull = ButtonArrayToKey(aRow3Pull, Row3Key);
-					aRow3Pull = ButtonArrayAddPullAcc(aRow3Push, aRow3Pull);
-				}
-				else {
-					aRow3Push = ButtonArrayConvert(aRawRow3Push, convOptions);
-					aRow3Pull = ButtonArrayConvert(aRawRow3Pull, convOptions);
-					aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
-					aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
-					aRow3Pull = ButtonArrayAddPullAcc(aRow3Push, aRow3Pull);
-				}
+				//Add chord notation to inside row
+				aRow3Push = ButtonArrayConvert(aRawRow3Push, convOptions);
+				aRow3Pull = ButtonArrayConvert(aRawRow3Pull, convOptions);
+				aRow3Push = ButtonArrayAddNames(aRow3Push, ">,");
+				aRow3Pull = ButtonArrayAddNames(aRow3Pull, "<,");
 				
-				
+				//Add chord notation to middle row
 				aRow2Push = ButtonArrayConvert(aRawRow2Push, convOptions);
 				aRow2Pull = ButtonArrayConvert(aRawRow2Pull, convOptions);
 				aRow2Push = ButtonArrayAddNames(aRow2Push, ">:");
 				aRow2Pull = ButtonArrayAddNames(aRow2Pull, "<:");
-				aRow2Push = ButtonArrayToKey(aRow2Push, Row2Key);
-				aRow2Pull = ButtonArrayToKey(aRow2Pull, Row2Key);
-				aRow2Pull = ButtonArrayAddPullAcc(aRow2Push, aRow2Pull);
-
+				
+				//Add chord notation to outside row
 				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
 				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
-				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
-				aRow1Pull = ButtonArrayToKey(aRow1Pull, Row1Key);
-				aRow1Pull = ButtonArrayAddPullAcc(aRow1Push, aRow1Pull);
 				
+				//Format ABC layout per row
 				let LayoutTrebleRow3 = "";
 				let LayoutTrebleRow2 = "";
 				let LayoutTrebleRow1 = "";
 				if (Index == 0) { //Diatonic scale order
 					if (Row3Key == "") {
-						//Row 3 always in button order
+						//Remove flat, natural and sharp indicators that are redundant
+						PushPullButtonArrayToKey(aRow3Push, aRow3Pull, Row3Key);
+						
+						//Helper row 3 is always in button order
 						LayoutTrebleRow3 = ButtonArraysToAbc(aRow3Push, aRow3Pull);
 					}
 					else {
 						//Split buttons with out of key notes
 						let aRow3PushButtons = new Array();
 						let aRow3PullButtons = new Array();
-						SplitOutOfKey(aRow3Push, aRow3Pull, aRow3PushButtons, aRow3PullButtons);
+						SplitOutOfKey(Row3Key, aRow3Push, aRow3Pull, aRow3PushButtons, aRow3PullButtons);
 						
-						//Sort by note order
+						//Sort in key notes by scale order
 						let aRow3 = aRow3Push.concat(aRow3Pull);
 						aRow3.sort(ChordNoteCompare);
 						
-						//Create buttons + note order
+						//Remove flat, natural and sharp indicators that are redundant
+						PushPullButtonArrayToKey(aRow3PushButtons, aRow3PullButtons, Row3Key);
+						PushPullButtonArrayToKey(aRow3           , aRow3           , Row3Key);
+						
+						//Create ABC for out of key buttons + note order
 						LayoutTrebleRow3 = ButtonArraysToAbc(aRow3PushButtons, aRow3PullButtons) + ButtonArraysToAbc(aRow3, new Array());
 					}
 					
 					//Split buttons with out of key notes
-					let aRow1PushButtons = new Array();
-					let aRow1PullButtons = new Array();
 					let aRow2PushButtons = new Array();
 					let aRow2PullButtons = new Array();
-					SplitOutOfKey(aRow1Push, aRow1Pull, aRow1PushButtons, aRow1PullButtons);
-					SplitOutOfKey(aRow2Push, aRow2Pull, aRow2PushButtons, aRow2PullButtons);
+					let aRow1PushButtons = new Array();
+					let aRow1PullButtons = new Array();
+					SplitOutOfKey(Row2Key, aRow2Push, aRow2Pull, aRow2PushButtons, aRow2PullButtons);
+					SplitOutOfKey(Row1Key, aRow1Push, aRow1Pull, aRow1PushButtons, aRow1PullButtons);
 					
-					//Sort by note order
+					//Sort in key notes by scale order
 					let aRow2 = aRow2Push.concat(aRow2Pull);
 					aRow2.sort(ChordNoteCompare);
 					let aRow1 = aRow1Push.concat(aRow1Pull);
 					aRow1.sort(ChordNoteCompare);
 					
-					//Create buttons + note order
+					//Remove flat, natural and sharp indicators that are redundant
+					PushPullButtonArrayToKey(aRow2PushButtons, aRow2PullButtons, Row2Key);
+					PushPullButtonArrayToKey(aRow2           , aRow2           , Row2Key);
+					PushPullButtonArrayToKey(aRow1PushButtons, aRow1PullButtons, Row1Key);
+					PushPullButtonArrayToKey(aRow1           , aRow1           , Row1Key);
+					
+					//Create ABC for out of key buttons + note order
 					LayoutTrebleRow2 = ButtonArraysToAbc(aRow2PushButtons, aRow2PullButtons) + ButtonArraysToAbc(aRow2, new Array());
 					LayoutTrebleRow1 = ButtonArraysToAbc(aRow1PushButtons, aRow1PullButtons) + ButtonArraysToAbc(aRow1, new Array());
 				}
 				else if (Index == 1) { //Button order, first push then pull
+					//Remove flat, natural and sharp indicators that are redundant
+					PushPullButtonArrayToKey(aRow3Push, aRow3Pull, Row3Key);
+					PushPullButtonArrayToKey(aRow2Push, aRow2Pull, Row2Key);
+					PushPullButtonArrayToKey(aRow1Push, aRow1Pull, Row1Key);
+
+					//Create ABC for buttons
 					LayoutTrebleRow3 = ButtonArraysToAbc(aRow3Push, aRow3Pull);
 					LayoutTrebleRow2 = ButtonArraysToAbc(aRow2Push, aRow2Pull);
 					LayoutTrebleRow1 = ButtonArraysToAbc(aRow1Push, aRow1Pull);
@@ -3609,7 +3922,7 @@ function ExampleLoadIntern(Index) {
 				
 				//Add acc row to ABC
 				aLines.push('[]');
-				aLines.push('P: Treble Inner Row');
+				aLines.push('P: Treble Inside Row');
 				if (Row3Key != "") {
 					aLines[aLines.length - 1] += " " + Row3Key.replaceAll("b", "♭");
 					aLines.push('K: ' + Row3Key);
@@ -3623,14 +3936,14 @@ function ExampleLoadIntern(Index) {
 				aLines.push(LayoutTrebleRow2);
 				
 				//Add G row to ABC
-				aLines.push('P: Treble Outer Row '  + Row1Key.replaceAll("b", "♭"));
+				aLines.push('P: Treble Outside Row '  + Row1Key.replaceAll("b", "♭"));
 				aLines.push('K: ' + Row1Key);
 				aLines.push(LayoutTrebleRow1);
 				
 				//Add ABC for bass rows
 				aLines.push('K: C style=x');
 				aLines.push('L: 1');
-				aLines.push('P:Bass Outer Row');
+				aLines.push('P:Bass Outside Row');
 				var Line = "]";
 				for (let i = 0; i < aRawChordRow1Push.length; ++i) {
 					let Ann = "";
@@ -3639,7 +3952,7 @@ function ExampleLoadIntern(Index) {
 				}
 				aLines.push(Line);
 				if (!aRawChordRow3Push.length)
-					aLines.push('P:Bass Inner Row');
+					aLines.push('P:Bass Inside Row');
 				else
 					aLines.push('P:Bass Middle Row');
 				Line = "]";
@@ -3650,7 +3963,7 @@ function ExampleLoadIntern(Index) {
 				}
 				aLines.push(Line);
 				if (aRawChordRow3Push.length) {
-					aLines.push('P:Bass Inner Row');
+					aLines.push('P:Bass Inside Row');
 					Line = "]";
 					for (let i = 0; i < aRawChordRow3Push.length; ++i) {
 						let Ann = "";
@@ -3691,33 +4004,39 @@ function ExampleLoadIntern(Index) {
 				let aRawBendsPush = aRawRow3Push.concat(aRawRow2Push);
 				let aRawBendsPull = aRawRow3Pull.concat(aRawRow2Pull);
 				
-				//Process holes
+				//Find row keys and convert flats and sharps
 				let Row1Key = FindRowKeys(Instruments.value, Tunings.value)[0];
 				let convOptions = GetSharpFlatConverts(Row1Key, Row1Key);
+				Row1Key = ConvertChordFlatSharp(Row1Key, convOptions);
+				
+				//Add chord notation to the row
 				aRow1Push = ButtonArrayConvert(aRawRow1Push, convOptions);
 				aRow1Pull = ButtonArrayConvert(aRawRow1Pull, convOptions);
 				aRow1Push = ButtonArrayAddNames(aRow1Push, ">.");
 				aRow1Pull = ButtonArrayAddNames(aRow1Pull, "<.");
-				aRow1Push = ButtonArrayToKey(aRow1Push, Row1Key);
-				aRow1Pull = ButtonArrayToKey(aRow1Pull, Row1Key);
-				aRow1Pull = ButtonArrayAddPullAcc(aRow1Push, aRow1Pull);
 				
-				//Process bends
+				//Add chord notation to the bend
 				aBendsPush = ButtonArrayConvert(aRawBendsPush, convOptions);
 				aBendsPull = ButtonArrayConvert(aRawBendsPull, convOptions);
 				aBendsPush = ButtonArrayAddNames(aBendsPush, ">,");
 				aBendsPull = ButtonArrayAddNames(aBendsPull, "<,");
-				aBendsPull = ButtonArrayAddPullAcc(aBendsPush, aBendsPull);
+				
+				//Remove flat, natural and sharp indicators that are redundant
+				PushPullButtonArrayToKey(aRow1Push , aRow1Pull , Row1Key);
+				PushPullButtonArrayToKey(aBendsPush, aBendsPull, Row1Key);
 
 				//Holes in scale or instrument order
 				let LayoutRow1 = "";
 				if (Index == 0) { //Diatonic scale order
-					//Sort by note order
+					//Sort notes by scale order
 					let aRow1 = aRow1Push.concat(aRow1Pull);
 					aRow1.sort(ChordNoteCompare);
+					
+					//Create ABC in note order
 					LayoutRow1 = ButtonArraysToAbc(aRow1, new Array());
 				}
 				else if (Index == 1) { //Hole order, first blow then draw
+					//Create ABC in button order
 					LayoutRow1 = ButtonArraysToAbc(aRow1Push , aRow1Pull );
 				}
 				
