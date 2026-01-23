@@ -96,6 +96,7 @@ function AddInstruments() {
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Trekharmonica / Diatonische Accordeon");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Diatonische Mondharmonica");
 				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "kwart afstand");
+				Obj.textContent = Obj.textContent.replaceAll("semitone apart"                  , "halve toon afstand");
 				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club rij");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "hulprij");
@@ -106,6 +107,7 @@ function AddInstruments() {
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Diatonisches Akkordeon / Ziehharmonika");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Mundharmonika");
 				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "Quart abstand");
+				Obj.textContent = Obj.textContent.replaceAll("semitone apart"                  , "Halbton abstand");
 				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "club reihe");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Hilfsreihe");
@@ -116,6 +118,7 @@ function AddInstruments() {
 				Obj.textContent = Obj.textContent.replaceAll("Melodeon / Diatonic Accordion"   , "Accordéon Diatonique");
 				Obj.textContent = Obj.textContent.replaceAll("Diatonic Harmonica / French Harp", "Harmonica Diatonique");
 				Obj.textContent = Obj.textContent.replaceAll("fourth apart"                    , "dséparés d'une quarte");
+				Obj.textContent = Obj.textContent.replaceAll("semitone apart"                  , "dséparés d'une demi-ton");
 				Obj.textContent = Obj.textContent.replaceAll("2.5"                             , "2,5");
 				Obj.textContent = Obj.textContent.replaceAll("club row"                        , "Rangée d'clubs");
 				Obj.textContent = Obj.textContent.replaceAll("helper row"                      , "Rangée d'assistance");
@@ -639,34 +642,43 @@ function AddVariantsTunings() {
 		
 		switch (document.documentElement.lang) {
 			case "nl":
-				Obj.textContent = Obj.textContent.replaceAll("button"     , "knop");
-				Obj.textContent = Obj.textContent.replaceAll("3th"        , "3e");
-				Obj.textContent = Obj.textContent.replaceAll("4th"        , "4e");
-				Obj.textContent = Obj.textContent.replaceAll("start"      , "start");
-				Obj.textContent = Obj.textContent.replaceAll("accidentals", "kruis/mol");
-				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "lage noten");
-				Obj.textContent = Obj.textContent.replaceAll("bass"       , "bas");
-				Obj.textContent = Obj.textContent.replaceAll("hole"       , "gat");
+				Obj.textContent = Obj.textContent.replaceAll("button"            , "knop");
+				Obj.textContent = Obj.textContent.replaceAll("3th"               , "3e");
+				Obj.textContent = Obj.textContent.replaceAll("4th"               , "4e");
+				Obj.textContent = Obj.textContent.replaceAll("start"             , "start");
+				Obj.textContent = Obj.textContent.replaceAll("accidentals"       , "kruis/mol");
+				Obj.textContent = Obj.textContent.replaceAll("low notes"         , "lage noten");
+				Obj.textContent = Obj.textContent.replaceAll("traditional basses", "traditionele basssen");
+				Obj.textContent = Obj.textContent.replaceAll("modern basses"     , "moderne basssen");
+				Obj.textContent = Obj.textContent.replaceAll("Hohner basses"     , "Hohner basssen");
+				Obj.textContent = Obj.textContent.replaceAll("bass"              , "bas");
+				Obj.textContent = Obj.textContent.replaceAll("hole"              , "gat");
 				break;
 			case "de":
-				Obj.textContent = Obj.textContent.replaceAll("button"     , "Knopf");
-				Obj.textContent = Obj.textContent.replaceAll("3th"        , "3.");
-				Obj.textContent = Obj.textContent.replaceAll("4th"        , "4.");
-				Obj.textContent = Obj.textContent.replaceAll("start"      , "Start");
-				Obj.textContent = Obj.textContent.replaceAll("accidentals", "Kreuz/Be");
-				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "tiefe Töne");
-				Obj.textContent = Obj.textContent.replaceAll("bass"       , "Bass");
-				Obj.textContent = Obj.textContent.replaceAll("hole"       , "Loch");
+				Obj.textContent = Obj.textContent.replaceAll("button"            , "Knopf");
+				Obj.textContent = Obj.textContent.replaceAll("3th"               , "3.");
+				Obj.textContent = Obj.textContent.replaceAll("4th"               , "4.");
+				Obj.textContent = Obj.textContent.replaceAll("start"             , "Start");
+				Obj.textContent = Obj.textContent.replaceAll("accidentals"       , "Kreuz/Be");
+				Obj.textContent = Obj.textContent.replaceAll("low notes"         , "tiefe Töne");
+				Obj.textContent = Obj.textContent.replaceAll("traditional basses", "traditionelle Bässe");
+				Obj.textContent = Obj.textContent.replaceAll("modern basses"     , "moderne Bässe");
+				Obj.textContent = Obj.textContent.replaceAll("Hohner basses"     , "Hohner Bässe");
+				Obj.textContent = Obj.textContent.replaceAll("bass"              , "Bass");
+				Obj.textContent = Obj.textContent.replaceAll("hole"              , "Loch");
 				break;
 			case "fr":
-				Obj.textContent = Obj.textContent.replaceAll("button"     , "bouton");
-				Obj.textContent = Obj.textContent.replaceAll("3th"        , "3ème");
-				Obj.textContent = Obj.textContent.replaceAll("4th"        , "4ème");
-				Obj.textContent = Obj.textContent.replaceAll("start"      , "début");
-				Obj.textContent = Obj.textContent.replaceAll("accidentals", "altérations");
-				Obj.textContent = Obj.textContent.replaceAll("low notes"  , "notes graves");
-				Obj.textContent = Obj.textContent.replaceAll("bass"       , "basse");
-				Obj.textContent = Obj.textContent.replaceAll("hole"       , "trou");
+				Obj.textContent = Obj.textContent.replaceAll("button"            , "bouton");
+				Obj.textContent = Obj.textContent.replaceAll("3th"               , "3ème");
+				Obj.textContent = Obj.textContent.replaceAll("4th"               , "4ème");
+				Obj.textContent = Obj.textContent.replaceAll("start"             , "début");
+				Obj.textContent = Obj.textContent.replaceAll("accidentals"       , "altérations");
+				Obj.textContent = Obj.textContent.replaceAll("low notes"         , "notes graves");
+				Obj.textContent = Obj.textContent.replaceAll("traditional basses", "basss traditionnelles");
+				Obj.textContent = Obj.textContent.replaceAll("modern basses"     , "basss modernes");
+				Obj.textContent = Obj.textContent.replaceAll("Hohner basses"     , "basss Hohner");
+				Obj.textContent = Obj.textContent.replaceAll("bass"              , "basse");
+				Obj.textContent = Obj.textContent.replaceAll("hole"              , "trou");
 				break;
 		}
 	}
