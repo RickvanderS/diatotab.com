@@ -1,6 +1,5 @@
 Bugs:
 - Paste problems, desync between syntax and editor
-- PDF filename in firefox when using print button
 Improvements:
 - Help button with overlay text to explain playback controls
 - Better syntax highlighting around |[

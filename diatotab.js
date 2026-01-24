@@ -1591,11 +1591,26 @@ function clearLink() {
 	Link.href = "#";
 }
 
+//Add beforeprint handler to render the print on CTRL+P
+window.addEventListener("beforeprint", PreparePrint);
+
+///Print function used by click on "Print" button
 function Print() {
+	//Render the print here and not in beforeprint handler to make Firefox handle the print as a user invoked print
+	//This ensure print to PDF has page title as default filename
+	PreparePrint();
+	
+	//Remove beforeprint handler, the print is already prepared
+	window.removeEventListener("beforeprint", PreparePrint);
+	
+	//Show print dialog
 	window.print();
+	
+	//Re-add the beforeprint handler, this ensure the print is prepared when CTRL+P is used
+	window.addEventListener("beforeprint", PreparePrint);
 }
 
-window.addEventListener("beforeprint", (event) => {
+function PreparePrint() {
 	//Get instrument parameters and the ABC input
 	let abcjsParams = GetAbcjsParamsFromControls();
 	let Abc         = document.getElementById("abc").value;
@@ -1617,7 +1632,7 @@ window.addEventListener("beforeprint", (event) => {
 	//Restore normal rendering
 	CreateEditor(true);
 	window.scrollTo(ScrollX, ScrollY);
-});
+}
 
 let aAbcUndo = new Array();
 
