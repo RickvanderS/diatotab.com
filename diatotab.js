@@ -1,21 +1,19 @@
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
+/// Show/hide language choice dropdown
+function ClickLanguage() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
+	if (!event.target.matches('.dropbtn')) {
+		var dropdowns = document.getElementsByClassName("dropdown-content");
+		var i;
+		for (i = 0; i < dropdowns.length; i++) {
+			var openDropdown = dropdowns[i];
+			if (openDropdown.classList.contains('show'))
+				openDropdown.classList.remove('show');
+		}
+	}
 } 
 
 function removeOptions(selectElement) {
@@ -717,6 +715,9 @@ function ConvertAbcNoteToFriendlyName(AbcNote, MakeUpperCase) {
 		RetNote = RetNote.replace("#", "♯");
 	}
 	
+	//Remove natural markers
+	RetNote = RetNote.replaceAll("=", "");
+	
 	return RetNote;
 }
 
@@ -783,7 +784,7 @@ function Is4thButtonStart(Instrument, Variant) {
 		return true;
 	
 	//Lookup 2.5 rows with 4th button start
-	if (Variant.includes("Saltarelle") || Variant.includes("21+5_young"))
+	if (Variant.includes("Saltarelle") || Variant.includes("21+5_young") || Variant.includes("gaillard") || Variant.includes("milleret") || Variant.includes("pignol"))
 		return true;
 	
 	return false;
@@ -809,14 +810,15 @@ function GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero) {
 function ShowHideVariantOptions() {
 	//Get selected instrument and variant
 	let Instrument = document.getElementById("instrument").value;
-	let Variant    = document.getElementById("variant").value;
+	let Variant    = document.getElementById("variant"   ).value;
 	
 	//Give option to start numbering at 0 for 4th button starts
-	let ShowZero = Is4thButtonStart(Instrument, Variant);
-	showElement("startzero", ShowZero);
-	let StartFromZero = ShowZero && document.getElementById("zero").checked;
+	let Start4 = Is4thButtonStart(Instrument, Variant);
+	let Row25  = Instrument == "M_25" || Instrument == "M_CLUB" || Instrument == "M_35";
+	AllowButtonNumbering(Start4, Row25);
 	
 	//Show/hide button push/pull reverse
+	let StartFromZero = GetOptNumStart() == 0;
 	let ShowInvAccidentatals1 = GetRow1FirstInvButtonNumber (Instrument, Variant, StartFromZero) >= 0;
 	let ShowInvAccidentatals2 = GetRow2FirstInvButtonNumber (Instrument, Variant, StartFromZero) >= 0;
 	let ShowInvAccidentatals3 = GetRow3FirstInvButtonNumber (Instrument, Variant, StartFromZero) >= 0;
@@ -846,6 +848,80 @@ function ReplaceBetweenNonBreakingSpaces(Input, Replace) {
 	return Output;
 }
 
+let aButtonNumbering = new Array();
+
+function CopyButtonNumbering() {
+	let ButtonNumbering = document.getElementById('buttonnumbering');
+
+	for (let i = 0; i < ButtonNumbering.length; i++) {
+		let Pair = {
+			Value : ButtonNumbering[i].value,
+			Text  : ButtonNumbering[i].text ,
+		};
+		aButtonNumbering.push(Pair);
+	}
+}
+
+function AllowButtonNumbering(Start4, Row25) {
+	let ButtonNumbering = document.getElementById('buttonnumbering');
+	let SelectedValue = ButtonNumbering.value;
+	
+	//Clear all existing items
+	ButtonNumbering.options.length = 0;
+	
+	let SelectionExists = false;
+	for (let i = 0; i < aButtonNumbering.length; i++) { 
+		let Add = false;
+		if (aButtonNumbering[i].Value.substr(0, 1) == "1")
+			Add = true;
+		if (aButtonNumbering[i].Value.substr(1, 1) == "1")
+			Add = true;
+		if (aButtonNumbering[i].Value.substr(1, 1) == "0" && Start4)
+			Add = true;
+		if (aButtonNumbering[i].Value.substr(2, 1) == "2" && !Row25)
+			Add = false;
+		
+		if (Add) {
+			var option = document.createElement("option");
+			option.value = aButtonNumbering[i].Value;
+			option.text  = aButtonNumbering[i].Text;
+			if (option.value == SelectedValue)
+				SelectionExists = true;
+			ButtonNumbering.add(option); 
+		}
+	}
+	
+	//Restore original selection if possible
+	if (SelectionExists)
+		ButtonNumbering.value = SelectedValue;
+}
+
+function GetButtonNumbering() {
+	let ButtonNumbering;
+	if (isShown("opt_single"))
+		ButtonNumbering = document.getElementById("single_notenames").checked ? "111" : "011";
+	else if (isShown("opt_harm"))
+		ButtonNumbering = document.getElementById("harm_notenames"  ).checked ? "111" : "011";
+	else if (isShown("opt_mel"))
+		ButtonNumbering = document.getElementById("buttonnumbering").value;
+	return ButtonNumbering;
+}
+
+function GetOptNumFormat() {
+	let NumFormat = parseInt(GetButtonNumbering().substr(0, 1));
+	return NumFormat;
+}
+
+function GetOptNumStart() {
+	let NumStart = parseInt(GetButtonNumbering().substr(1, 1));
+	return NumStart;
+}
+
+function GetOptNumAlign() {
+	let NumAlign = parseInt(GetButtonNumbering().substr(2, 1));
+	return NumAlign;
+}
+
 function GetRowMarker(RowNumber) {
 	let RowMarker = document.getElementById("rowlabels").value.substr(RowNumber - 1, 1);
 	if (RowMarker ==  "" || RowMarker == " ") {
@@ -861,19 +937,42 @@ function GetRowMarker(RowNumber) {
 	return RowMarker;
 }
 
-function GetRow1Marker() {
+function GetOptRow1Marker() {
 	return GetRowMarker(1);
 }
 
-function GetRow2Marker() {
+function GetOptRow2Marker() {
 	return GetRowMarker(2);
 }
 
-function GetRow3Marker() {
+function GetOptRow3Marker() {
 	return GetRowMarker(3);
 }
 
-function GetPushPullMarker(ElementIdPrefix, PullNotPush) {
+function GetElementIdPrefix() {
+	let ElementIdPrefix = "";
+	if (isShown("opt_single"))
+		ElementIdPrefix = "single_";
+	else if (isShown("opt_harm"))
+		ElementIdPrefix = "harm_";
+	return ElementIdPrefix;
+}
+
+function GetOptTabStyle() {
+	let ElementIdPrefix = GetElementIdPrefix();
+	let TabStyle = parseInt(document.getElementById(ElementIdPrefix + "tabstyle").value);
+	return TabStyle;
+}
+
+function GetOptChangeNoteHeads() {
+	let ElementIdPrefix = GetElementIdPrefix();
+	let ChangeNoteHeads = document.getElementById(ElementIdPrefix + "changenotehead").checked;
+	return ChangeNoteHeads;
+}
+
+function GetPushPullMarker(PullNotPush) {
+	let ElementIdPrefix = GetElementIdPrefix();
+	
 	let PushPullMarker = document.getElementById(ElementIdPrefix + "pushpulllabels").value.substr(PullNotPush, 1);
 	if (PushPullMarker ==  "" || PushPullMarker == " ") {
 		switch (PullNotPush) {
@@ -886,12 +985,12 @@ function GetPushPullMarker(ElementIdPrefix, PullNotPush) {
 	return PushPullMarker;
 }
 
-function GetPushMarker(ElementIdPrefix = "") {
-	return GetPushPullMarker(ElementIdPrefix, 0);
+function GetOptPushMarker() {
+	return GetPushPullMarker(0);
 }
 
-function GetPullMarker(ElementIdPrefix = "") {
-	return GetPushPullMarker(ElementIdPrefix, 1);
+function GetOptPullMarker() {
+	return GetPushPullMarker(1);
 }
 
 function VariantOptionsUpdateLabels() {
@@ -899,10 +998,10 @@ function VariantOptionsUpdateLabels() {
 	let Instrument    = document.getElementById("instrument").value;
 	let Variant       = document.getElementById("variant").value;
 	let Tuning        = document.getElementById("tuning").value;
-	let StartFromZero = isShown("startzero") && document.getElementById("zero").checked;
-	let Row1Marker    = GetRow1Marker();
-	let Row2Marker    = GetRow2Marker();
-	let Row3Marker    = GetRow3Marker();
+	let StartFromZero = GetOptNumStart() == 0;
+	let Row1Marker    = GetOptRow1Marker();
+	let Row2Marker    = GetOptRow2Marker();
+	let Row3Marker    = GetOptRow3Marker();
 	
 	//Need a valid tablature from abcjs to display note names in labels
 	let Tablature;
@@ -919,7 +1018,8 @@ function VariantOptionsUpdateLabels() {
 	//Label 0/1/2 reverse
 	if (isShown("inv1div")) {
 		let ButtonNumber = GetRow1FirstInvButtonNumber(Instrument, Variant, StartFromZero);
-		let aNotes = ButtonArrayConvert([Tablature.push_row1[ButtonNumber], Tablature.pull_row1[ButtonNumber]], convOptions);
+		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let aNotes = ButtonArrayConvert([Tablature.push_row1[ButtonIndex], Tablature.pull_row1[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
 		let Text = ButtonNumber + Row1Marker + " " + Push + "/" + Pull;
@@ -930,7 +1030,8 @@ function VariantOptionsUpdateLabels() {
 	//Label 0'/1' reverse
 	if (isShown("inv1adiv")) {
 		let ButtonNumber = GetRow2FirstInvButtonNumber(Instrument, Variant, StartFromZero);
-		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonNumber], Tablature.pull_row2[ButtonNumber]], convOptions);
+		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonIndex], Tablature.pull_row2[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
 		let Text = ButtonNumber + Row2Marker + " " + Push + "/" + Pull;
@@ -941,7 +1042,8 @@ function VariantOptionsUpdateLabels() {
 	//Label 0"/1" reverse
 	if (isShown("inv1bdiv")) {
 		let ButtonNumber = GetRow3FirstInvButtonNumber(Instrument, Variant, StartFromZero);
-		let aNotes = ButtonArrayConvert([Tablature.push_row3[ButtonNumber], Tablature.pull_row3[ButtonNumber]], convOptions);
+		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let aNotes = ButtonArrayConvert([Tablature.push_row3[ButtonIndex], Tablature.pull_row3[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
 		let Text = ButtonNumber + Row3Marker + " " + Push + "/" + Pull;
@@ -952,7 +1054,8 @@ function VariantOptionsUpdateLabels() {
 	//Label 5'/6' reverse
 	if (isShown("inv5adiv")) {
 		let ButtonNumber = GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero);
-		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonNumber], Tablature.pull_row2[ButtonNumber]], convOptions);
+		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonIndex], Tablature.pull_row2[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
 		let Text = ButtonNumber + Row2Marker + " " + Push + "/" + Pull;
@@ -983,9 +1086,9 @@ function VariantOptionsUpdateLabels() {
 		document.getElementById("harm_pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
 		
 		tabstyle = document.getElementById("tabstyle").value;
-		document.getElementById("pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
-		document.getElementById("rowlabels"     ).disabled = tabstyle == "0" || tabstyle == "3";
-		document.getElementById("notenames"     ).disabled = tabstyle == "0";
+		document.getElementById("pushpulllabels" ).disabled = tabstyle == "0" || tabstyle == "2";
+		document.getElementById("rowlabels"      ).disabled = tabstyle == "0" || tabstyle == "3";
+		document.getElementById("buttonnumbering").disabled = tabstyle == "0";
 	}
 }
 
@@ -1138,18 +1241,14 @@ function GetAbcjsParamsFromControls() {
 			if (Variant == "7")
 				Tuning = "7" + Tuning;
 			
-			//Tablature options
-			let PullMarker = GetPullMarker("single_");
-			let PushMarker = GetPushMarker("single_");
-
 			abcjsParams.tablature = [{
 				instrument: 'diatonic',
 				label     : '',
 				tuning    : [Tuning],
-				tabstyle  : Number(document.getElementById("single_tabstyle" ).value),
-				tabformat :        document.getElementById("single_notenames").checked ? 1 : 0,
-				PullMarker: PullMarker,
-				PushMarker: PushMarker,
+				tabstyle  : GetOptTabStyle(),
+				numformat : GetOptNumFormat(),
+				PullMarker: GetOptPullMarker(),
+				PushMarker: GetOptPushMarker(),
 			}];
 			break;
 		}
@@ -1270,7 +1369,6 @@ function GetAbcjsParamsFromControls() {
 			}
 			
 			//Tablature options
-			let StartFromZero = isShown("startzero") && document.getElementById("zero").checked;
 			let showall              = false;
 			let showall_ignorechords = false;
 			if (document.getElementById("tabmode").value == "1") {
@@ -1280,25 +1378,21 @@ function GetAbcjsParamsFromControls() {
 				showall              = true;
 				showall_ignorechords = true;
 			}
-			let Row1Marker = GetRow1Marker();
-			let Row2Marker = GetRow2Marker();
-			let Row3Marker = GetRow3Marker();
-			let PullMarker = GetPullMarker();
-			let PushMarker = GetPushMarker();
-			
+		
 			abcjsParams.tablature = [{
 				instrument          : 'diatonic',
 				label               : '',
 				tuning              : TuningArray,
-				tabstyle            : Number(document.getElementById("tabstyle"      ).value),
-				tabformat           :        document.getElementById("notenames"     ).checked ? 1 : 0,
-				changenoteheads     :        document.getElementById("changenotehead").checked,
-				startzero           : StartFromZero,
-				Row1Marker          : Row1Marker,
-				Row2Marker          : Row2Marker,
-				Row3Marker          : Row3Marker,
-				PullMarker          : PullMarker,
-				PushMarker          : PushMarker,
+				tabstyle            : GetOptTabStyle(),
+				numformat           : GetOptNumFormat(),
+				numalign            : GetOptNumAlign(),
+				numstart            : GetOptNumStart(),
+				changenoteheads     : GetOptChangeNoteHeads(),
+				Row1Marker          : GetOptRow1Marker(),
+				Row2Marker          : GetOptRow2Marker(),
+				Row3Marker          : GetOptRow3Marker(),
+				PullMarker          : GetOptPullMarker(),
+				PushMarker          : GetOptPushMarker(),
 				showall             : showall,
 				showall_ignorechords: showall_ignorechords
 			}];
@@ -1306,18 +1400,15 @@ function GetAbcjsParamsFromControls() {
 		}
 		case "H_1": {
 			//Tablature options
-			let PullMarker = GetPullMarker("harm_");
-			let PushMarker = GetPushMarker("harm_");
-			
 			abcjsParams.tablature = [{
 				instrument     : 'diatonic',
 				label          : '',
 				tuning         : Array(Tuning + "~"), //Add ~ to indicate harmonica
-				tabstyle       : Number(document.getElementById("harm_tabstyle"      ).value),
-				tabformat      :        document.getElementById("harm_notenames"     ).checked ? 1 : 0,
-				changenoteheads:        document.getElementById("harm_changenotehead").checked,
-				PullMarker     : PullMarker,
-				PushMarker     : PushMarker,
+				tabstyle       : GetOptTabStyle(),
+				numformat      : GetOptNumFormat(),
+				changenoteheads: GetOptChangeNoteHeads(),
+				PullMarker     : GetOptPullMarker(),
+				PushMarker     : GetOptPushMarker(),
 			}];
 			break;
 		}
@@ -1449,6 +1540,7 @@ function InitPage() {
 	
 	OriginalTitle = document.title;
 	aExampleLines = document.getElementById("abc_editable").textContent.split("\n");
+	CopyButtonNumbering();
 	AddInstruments();
 	AddReeds();
 	ExampleLoadIntern(3);
