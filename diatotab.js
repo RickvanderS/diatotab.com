@@ -1016,7 +1016,7 @@ function VariantOptionsUpdateLabels() {
 	//Label 0/1/2 reverse
 	if (isShown("inv1div")) {
 		let ButtonNumber = GetRow1FirstInvButtonNumber(Instrument, Variant, StartFromZero);
-		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let ButtonIndex = ButtonNumber - (StartFromZero ? 0 : 1);
 		let aNotes = ButtonArrayConvert([Tablature.push_row1[ButtonIndex], Tablature.pull_row1[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
@@ -1028,7 +1028,7 @@ function VariantOptionsUpdateLabels() {
 	//Label 0'/1' reverse
 	if (isShown("inv1adiv")) {
 		let ButtonNumber = GetRow2FirstInvButtonNumber(Instrument, Variant, StartFromZero);
-		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let ButtonIndex = ButtonNumber - (StartFromZero ? 0 : 1);
 		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonIndex], Tablature.pull_row2[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
@@ -1040,7 +1040,7 @@ function VariantOptionsUpdateLabels() {
 	//Label 0"/1" reverse
 	if (isShown("inv1bdiv")) {
 		let ButtonNumber = GetRow3FirstInvButtonNumber(Instrument, Variant, StartFromZero);
-		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let ButtonIndex = ButtonNumber - (StartFromZero ? 0 : 1);
 		let aNotes = ButtonArrayConvert([Tablature.push_row3[ButtonIndex], Tablature.pull_row3[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
@@ -1052,7 +1052,7 @@ function VariantOptionsUpdateLabels() {
 	//Label 5'/6' reverse
 	if (isShown("inv5adiv")) {
 		let ButtonNumber = GetRow2MiddleInvButtonNumber(Instrument, Variant, StartFromZero);
-		let ButtonIndex = ButtonNumber + (StartFromZero ? 0 : 1);
+		let ButtonIndex = ButtonNumber - (StartFromZero ? 0 : 1);
 		let aNotes = ButtonArrayConvert([Tablature.push_row2[ButtonIndex], Tablature.pull_row2[ButtonIndex]], convOptions);
 		let Push = ConvertAbcNoteToFriendlyName(aNotes[0], false);
 		let Pull = ConvertAbcNoteToFriendlyName(aNotes[1], false);
