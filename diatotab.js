@@ -1437,8 +1437,10 @@ var Editor = null;
 var g_AbcPrependLength = 0;
 
 function CreateEditor(NoUpdate, ClearSoundsCache) {
-	if (!NoUpdate)
+	if (!NoUpdate) {
 		AbcInputIntern();
+		return;
+	}
 	
 	//Stop playback
 	if (Editor) {
@@ -1619,9 +1621,7 @@ function Load() {
 					Control.innerText = Value;
 				
 				//Call special handlers
-				if (ID == "abc_editable")
-					AbcInputIntern();
-				else if (ID == "instrument")
+				if (ID == "instrument")
 					AddVariantsTunings();
 				else if (ID == "variant")
 					ShowHideVariantOptions();
