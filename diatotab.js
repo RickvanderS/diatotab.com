@@ -815,7 +815,7 @@ function ShowHideVariantOptions() {
 	//Give option to start numbering at 0 for 4th button starts
 	let BeginUnaligned = (Instrument == "M_3" && Variant == "31") || (Instrument == "M_35" && (Variant == "34gaillard" || Variant == "34milleret"));
 	let Start4         = Is4thButtonStart(Instrument, Variant);
-	let Row25          = Instrument == "M_25" || Instrument == "M_CLUB" || Instrument == "M_35";
+	let Row25          = Instrument == "M_25" || Instrument == "M_CLUB";
 	AllowMelodeonNumbering(BeginUnaligned, Start4, Row25);
 	
 	//Show/hide button push/pull reverse
