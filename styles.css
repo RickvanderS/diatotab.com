@@ -172,10 +172,10 @@ select.drop:lang(nl) {
   min-width: 200px;
 }
 select.drop:lang(de) {
-  min-width: 185px;
+  min-width: 210px;
 }
 select.drop:lang(fr) {
-  min-width: 160px;
+  min-width: 200px;
 }
 
 h4 {
