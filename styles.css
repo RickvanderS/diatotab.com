@@ -2,16 +2,9 @@
   box-sizing: border-box;
 }
 
-@font-face {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 300;
-  src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fCRc4AMP6lbBP.woff2); 
-}
-
 body {
   padding: 0px;
-  font-family: Roboto, Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   line-height: 22px;
   color: currentColor;
