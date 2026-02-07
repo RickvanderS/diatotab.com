@@ -682,7 +682,6 @@ function AddVariantsTunings() {
 	}
 	
 	ShowHideVariantOptions();
-	CreateEditor();
 }
 
 function ReplaceElement(id, ori, rep) {
@@ -2003,30 +2002,33 @@ function AbcKeyDown(event) {
 		
 		//If key is mapped to an instrument button
 		if (Row != 0) {
-			var Tune = GetValidTune();
+			var Tablature = GetValidTune().tablatures[0].instance.semantics;
 			
 			//Lookup the button row notes array
 			let aNotes;
 			switch (Row) {
 				case 1:
 					if (PushNotPull) 
-						aNotes = Tune.tablatures[0].instance.semantics.push_row1;
+						aNotes = Tablature.push_row1;
 					else
-						aNotes = Tune.tablatures[0].instance.semantics.pull_row1;
+						aNotes = Tablature.pull_row1;
 					break;
 				case 2:
 					if (PushNotPull) 
-						aNotes = Tune.tablatures[0].instance.semantics.push_row2;
+						aNotes = Tablature.push_row2;
 					else
-						aNotes = Tune.tablatures[0].instance.semantics.pull_row2;
+						aNotes = Tablature.pull_row2;
 					break;
 				case 3:
 					if (PushNotPull) 
-						aNotes = Tune.tablatures[0].instance.semantics.push_row3;
+						aNotes = Tablature.push_row3;
 					else
-						aNotes = Tune.tablatures[0].instance.semantics.pull_row3;
+						aNotes = Tablature.pull_row3;
 					break;
 			}
+			
+			//Convert button number to array index
+			Button--;
 			
 			//Does it exist on the instrument
 			if (Button < aNotes.length) {
@@ -3574,7 +3576,17 @@ function GenChord(ChordName, aButtonNotes, Options, BassOnly = false) {
 
 function ExampleLoad(Index) {
 	UpdateTitle = true;
-	return ExampleLoadIntern(Index);
+	
+	//Load example ABC
+	ExampleLoadIntern(Index);
+	
+	//Close the overlay
+	ExampleClose();
+	
+	//Refresh tablature
+	CreateEditor();
+	
+	return false;
 }
 
 function FindRowKeys(Instrument, Tuning) {
@@ -3712,11 +3724,11 @@ function ExampleLoadIntern(Index) {
 		case 1: //Instrument layout in button order
 			if (Instruments.value == "NONE") {
 				ExampleClose();
-				return false;
+				return;
 			}
 		
-			//Load a working example so we can copy the button arrays
-			ExampleLoadIntern(2);
+			//Get loaded tablature or temperary tablature to copy the button arrays
+			let Tablature = GetValidTune().tablatures[0].instance.semantics;
 		
 			//Set header
 			aLines.push('T: Layout ' + Instruments[Instruments.selectedIndex].text);
@@ -3730,12 +3742,12 @@ function ExampleLoadIntern(Index) {
 					Mini = true;
 				
 				//Get treble buttons from ABCjs
-				let aRawPush = Editor.tunes[0].tablatures[0].instance.semantics.push_row1;
-				let aRawPull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row1;
+				let aRawPush = Tablature.push_row1;
+				let aRawPull = Tablature.pull_row1;
 				
 				//Get bass buttons from ABCjs
-				let aRawChordRowPush = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
-				let aRawChordRowPull = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
+				let aRawChordRowPush = Tablature.BassRow1Push;
+				let aRawChordRowPull = Tablature.BassRow1Pull;
 				
 				//Find row keys and convert flats and sharps
 				let Row1Key = FindRowKeys(Instruments.value, Tunings.value)[0];
@@ -3784,20 +3796,20 @@ function ExampleLoadIntern(Index) {
 			}
 			else if (Instruments.value == "M_2" || Instruments.value == "M_2S") { //Dual row melodeons
 				//Get treble buttons from ABCjs
-				let aRawRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row2;
-				let aRawRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row2;
-				let aRawRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row1;
-				let aRawRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row1;
+				let aRawRow2Push = Tablature.push_row2;
+				let aRawRow2Pull = Tablature.pull_row2;
+				let aRawRow1Push = Tablature.push_row1;
+				let aRawRow1Pull = Tablature.pull_row1;
 				let aRawPush = aRawRow2Push.concat(aRawRow1Push);
 				let aRawPull = aRawRow2Pull.concat(aRawRow1Pull);
 				
 				//Get bass chords from ABCjs
-				let aRawChordRow1Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
-				let aRawChordRow1Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
-				let aRawChordRow2Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
-				let aRawChordRow2Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
-				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
-				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
+				let aRawChordRow1Push  = Tablature.BassRow1Push;
+				let aRawChordRow1Pull  = Tablature.BassRow1Pull;
+				let aRawChordRow2Push  = Tablature.BassRow2Push;
+				let aRawChordRow2Pull  = Tablature.BassRow2Pull;
+				let aRawChordCrossPush = Tablature.BassCrossPush;
+				let aRawChordCrossPull = Tablature.BassCrossPull;
 				
 				//Find row keys and convert flats and sharps
 				let aRowKeys = FindRowKeys(Instruments.value, Tunings.value);
@@ -3919,25 +3931,25 @@ function ExampleLoadIntern(Index) {
 			//Three row melodeons
 			else if (Instruments.value == "M_25" || Instruments.value == "M_CLUB" || Instruments.value == "M_3" || Instruments.value == "M_35") {
 				//Get treble buttons from ABCjs
-				let aRawRow3Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row3;
-				let aRawRow3Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row3;
-				let aRawRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row2;
-				let aRawRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row2;
-				let aRawRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row1;
-				let aRawRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row1;
+				let aRawRow3Push = Tablature.push_row3;
+				let aRawRow3Pull = Tablature.pull_row3;
+				let aRawRow2Push = Tablature.push_row2;
+				let aRawRow2Pull = Tablature.pull_row2;
+				let aRawRow1Push = Tablature.push_row1;
+				let aRawRow1Pull = Tablature.pull_row1;
 				let aRawPush = aRawRow3Push.concat(aRawRow2Push.concat(aRawRow1Push));
 				let aRawPull = aRawRow3Pull.concat(aRawRow2Pull.concat(aRawRow1Pull));
 				
 				//Get bass chords from ABCjs
-				let aRawChordRow1Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Push;
-				let aRawChordRow1Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow1Pull;
-				let aRawChordRow2Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Push;
-				let aRawChordRow2Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow2Pull;
-				let BassRow3ChordLess  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow3ChordLess;
-				let aRawChordRow3Push  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow3Push;
-				let aRawChordRow3Pull  = Editor.tunes[0].tablatures[0].instance.semantics.BassRow3Pull;
-				let aRawChordCrossPush = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPush;
-				let aRawChordCrossPull = Editor.tunes[0].tablatures[0].instance.semantics.BassCrossPull;
+				let aRawChordRow1Push  = Tablature.BassRow1Push;
+				let aRawChordRow1Pull  = Tablature.BassRow1Pull;
+				let aRawChordRow2Push  = Tablature.BassRow2Push;
+				let aRawChordRow2Pull  = Tablature.BassRow2Pull;
+				let BassRow3ChordLess  = Tablature.BassRow3ChordLess;
+				let aRawChordRow3Push  = Tablature.BassRow3Push;
+				let aRawChordRow3Pull  = Tablature.BassRow3Pull;
+				let aRawChordCrossPush = Tablature.BassCrossPush;
+				let aRawChordCrossPull = Tablature.BassCrossPull;
 				
 				//Find row keys and convert flats and sharps
 				let aRowKeys = FindRowKeys(Instruments.value, Tunings.value);
@@ -4110,14 +4122,14 @@ function ExampleLoadIntern(Index) {
 			//Harmonica
 			else if (Instruments.value.substr(0, 1) == "H") {
 				//Get holes from ABCjs
-				let aRawRow1Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row1;
-				let aRawRow1Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row1;
+				let aRawRow1Push = Tablature.push_row1;
+				let aRawRow1Pull = Tablature.pull_row1;
 				
 				//Get bends from ABCjs
-				let aRawRow2Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row2;
-				let aRawRow2Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row2;
-				let aRawRow3Push = Editor.tunes[0].tablatures[0].instance.semantics.push_row3;
-				let aRawRow3Pull = Editor.tunes[0].tablatures[0].instance.semantics.pull_row3;
+				let aRawRow2Push = Tablature.push_row2;
+				let aRawRow2Pull = Tablature.pull_row2;
+				let aRawRow3Push = Tablature.push_row3;
+				let aRawRow3Pull = Tablature.pull_row3;
 				let aRawBendsPush = aRawRow3Push.concat(aRawRow2Push);
 				let aRawBendsPull = aRawRow3Pull.concat(aRawRow2Pull);
 				
@@ -4206,7 +4218,7 @@ function ExampleLoadIntern(Index) {
 			}
 			
 			if (ExampleIndex < FindExampleIndex)
-				return false;
+				return;
 			break;
 	}
 	
@@ -4229,11 +4241,6 @@ function ExampleLoadIntern(Index) {
 		let newAbc = ABCJS.strTranspose(ABC.innerText, renderObj, TransposeSteps);
 		ABC.innerText = newAbc;
 	}
-	
-	//Refresh and close overlay
-	CreateEditor();
-	ExampleClose();
-	return false;
 }
 
 function TransposeAbc() {
