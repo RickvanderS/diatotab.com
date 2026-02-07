@@ -2,7 +2,6 @@ Bugs:
 - Paste problems, desync between syntax and editor
 - ABCjs error line numbers are off
 Improvements:
-- Only show unaligned numbering when applicable to the layout
 - Help button with overlay text to explain controls
 - Better syntax highlighting around |[
 - Better syntax highlighting for %% meta comment

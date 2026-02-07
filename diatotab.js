@@ -1,6 +1,6 @@
 /// Show/hide language choice dropdown
 function ClickLanguage() {
-  document.getElementById("myDropdown").classList.toggle("show");
+	document.getElementById("Language").classList.toggle("show");
 }
 
 // Close the dropdown menu if the user clicks outside of it
@@ -813,9 +813,10 @@ function ShowHideVariantOptions() {
 	let Variant    = document.getElementById("variant"   ).value;
 	
 	//Give option to start numbering at 0 for 4th button starts
-	let Start4 = Is4thButtonStart(Instrument, Variant);
-	let Row25  = Instrument == "M_25" || Instrument == "M_CLUB" || Instrument == "M_35";
-	AllowButtonNumbering(Start4, Row25);
+	let BeginUnaligned = (Instrument == "M_3" && Variant == "31") || (Instrument == "M_35" && (Variant == "34gaillard" || Variant == "34milleret"));
+	let Start4         = Is4thButtonStart(Instrument, Variant);
+	let Row25          = Instrument == "M_25" || Instrument == "M_CLUB" || Instrument == "M_35";
+	AllowMelodeonNumbering(BeginUnaligned, Start4, Row25);
 	
 	//Show/hide button push/pull reverse
 	let StartFromZero = GetOptNumStart() == 0;
@@ -848,77 +849,83 @@ function ReplaceBetweenNonBreakingSpaces(Input, Replace) {
 	return Output;
 }
 
-let aButtonNumbering = new Array();
+let aMelodeonNumbering = new Array();
 
-function CopyButtonNumbering() {
-	let ButtonNumbering = document.getElementById('buttonnumbering');
+function CopyMelodeonNumbering() {
+	let Numbering = document.getElementById('numbering');
 
-	for (let i = 0; i < ButtonNumbering.length; i++) {
+	for (let i = 0; i < Numbering.length; i++) {
 		let Pair = {
-			Value : ButtonNumbering[i].value,
-			Text  : ButtonNumbering[i].text ,
+			Value : Numbering[i].value,
+			Text  : Numbering[i].text ,
 		};
-		aButtonNumbering.push(Pair);
+		aMelodeonNumbering.push(Pair);
 	}
 }
 
-function AllowButtonNumbering(Start4, Row25) {
-	let ButtonNumbering = document.getElementById('buttonnumbering');
-	let SelectedValue = ButtonNumbering.value;
+function AllowMelodeonNumbering(BeginUnaligned, Start4, Row25) {
+	let Numbering = document.getElementById('numbering');
+	let SelectedValue = Numbering.value;
 	
 	//Clear all existing items
-	ButtonNumbering.options.length = 0;
+	Numbering.options.length = 0;
 	
 	let SelectionExists = false;
-	for (let i = 0; i < aButtonNumbering.length; i++) { 
+	for (let i = 0; i < aMelodeonNumbering.length; i++) { 
 		let Add = false;
-		if (aButtonNumbering[i].Value.substr(0, 1) == "1")
+		if (aMelodeonNumbering[i].Value.substr(0, 1) == "1")
 			Add = true;
-		if (aButtonNumbering[i].Value.substr(1, 1) == "1")
+		if (aMelodeonNumbering[i].Value.substr(1, 1) == "1")
 			Add = true;
-		if (aButtonNumbering[i].Value.substr(1, 1) == "0" && Start4)
+		if (aMelodeonNumbering[i].Value.substr(1, 1) == "0" && Start4)
 			Add = true;
-		if (aButtonNumbering[i].Value.substr(2, 1) == "2" && !Row25)
+		if (aMelodeonNumbering[i].Value.substr(2, 1) == "0" && !BeginUnaligned)
+			Add = false;
+		if (aMelodeonNumbering[i].Value.substr(2, 1) == "2" && !Row25)
 			Add = false;
 		
 		if (Add) {
 			var option = document.createElement("option");
-			option.value = aButtonNumbering[i].Value;
-			option.text  = aButtonNumbering[i].Text;
+			option.value = aMelodeonNumbering[i].Value;
+			option.text  = aMelodeonNumbering[i].Text;
 			if (option.value == SelectedValue)
 				SelectionExists = true;
-			ButtonNumbering.add(option); 
+			Numbering.add(option); 
 		}
 	}
 	
 	//Restore original selection if possible
 	if (SelectionExists)
-		ButtonNumbering.value = SelectedValue;
+		Numbering.value = SelectedValue;
 }
 
-function GetButtonNumbering() {
-	let ButtonNumbering;
+function GetElementIdPrefix() {
+	let ElementIdPrefix = "";
 	if (isShown("opt_single"))
-		ButtonNumbering = document.getElementById("single_notenames").checked ? "111" : "011";
+		ElementIdPrefix = "single_";
 	else if (isShown("opt_harm"))
-		ButtonNumbering = document.getElementById("harm_notenames"  ).checked ? "111" : "011";
-	else if (isShown("opt_mel"))
-		ButtonNumbering = document.getElementById("buttonnumbering").value;
-	return ButtonNumbering;
+		ElementIdPrefix = "harm_";
+	return ElementIdPrefix;
+}
+
+function GetOptNumbering() {
+	let ElementIdPrefix = GetElementIdPrefix();
+	let Numbering = document.getElementById(ElementIdPrefix + "numbering").value;
+	return Numbering;
 }
 
 function GetOptNumFormat() {
-	let NumFormat = parseInt(GetButtonNumbering().substr(0, 1));
+	let NumFormat = parseInt(GetOptNumbering().substr(0, 1));
 	return NumFormat;
 }
 
 function GetOptNumStart() {
-	let NumStart = parseInt(GetButtonNumbering().substr(1, 1));
+	let NumStart = parseInt(GetOptNumbering().substr(1, 1));
 	return NumStart;
 }
 
 function GetOptNumAlign() {
-	let NumAlign = parseInt(GetButtonNumbering().substr(2, 1));
+	let NumAlign = parseInt(GetOptNumbering().substr(2, 1));
 	return NumAlign;
 }
 
@@ -947,15 +954,6 @@ function GetOptRow2Marker() {
 
 function GetOptRow3Marker() {
 	return GetRowMarker(3);
-}
-
-function GetElementIdPrefix() {
-	let ElementIdPrefix = "";
-	if (isShown("opt_single"))
-		ElementIdPrefix = "single_";
-	else if (isShown("opt_harm"))
-		ElementIdPrefix = "harm_";
-	return ElementIdPrefix;
 }
 
 function GetOptTabStyle() {
@@ -1078,17 +1076,17 @@ function VariantOptionsUpdateLabels() {
 	//Disable checkboxes not applicable to the tablature style
 	{
 		let tabstyle = document.getElementById("single_tabstyle").value;
-		document.getElementById("single_notenames"     ).disabled = tabstyle == "0";
 		document.getElementById("single_pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
+		document.getElementById("single_numbering"     ).disabled = tabstyle == "0";
 		
 		tabstyle = document.getElementById("harm_tabstyle").value;
-		document.getElementById("harm_notenames"     ).disabled = tabstyle == "0";
 		document.getElementById("harm_pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
+		document.getElementById("harm_numbering"     ).disabled = tabstyle == "0";
 		
 		tabstyle = document.getElementById("tabstyle").value;
-		document.getElementById("pushpulllabels" ).disabled = tabstyle == "0" || tabstyle == "2";
-		document.getElementById("rowlabels"      ).disabled = tabstyle == "0" || tabstyle == "3";
-		document.getElementById("buttonnumbering").disabled = tabstyle == "0";
+		document.getElementById("pushpulllabels").disabled = tabstyle == "0" || tabstyle == "2";
+		document.getElementById("rowlabels"     ).disabled = tabstyle == "0" || tabstyle == "3";
+		document.getElementById("numbering"     ).disabled = tabstyle == "0";
 	}
 }
 
@@ -1532,7 +1530,7 @@ let UpdateTitle = false;
 let OriginalTitle = "";
 let aExampleLines = new Array();
 let StoreAllowed = false;
-let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "zero", "inv1", "inv1a", "inv1b", "inv5a", "inv5a_all", "tabmode", "tabstyle", "notenames", "rowlabels", "changenotehead", "single_tabstyle", "single_notenames", "harm_tabstyle", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
+let aStoreElements = new Array("abc_editable", "instrument", "variant", "tuning", "inv1", "inv1a", "inv1b", "inv5a", "inv5a_all", "tabstyle", "pushpulllabels", "numbering", "rowlabels", "tabmode", "changenotehead", "single_tabstyle", "single_pushpulllabels", "single_numbering", "harm_tabstyle", "harm_pushpulllabels", "harm_numbering", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 function InitPage() {
 	//Test for first time load
@@ -1540,7 +1538,7 @@ function InitPage() {
 	
 	OriginalTitle = document.title;
 	aExampleLines = document.getElementById("abc_editable").textContent.split("\n");
-	CopyButtonNumbering();
+	CopyMelodeonNumbering();
 	AddInstruments();
 	AddReeds();
 	ExampleLoadIntern(3);

@@ -23,7 +23,7 @@
 			</div>
 			<div class="dropdown">
 				<button data-trans="BUT_LANG" onclick="ClickLanguage()" class="dropbtn"><img class='lang' src="lang/en.png">English</button>
-				<div id="myDropdown" class="dropdown-content">
+				<div id="Language" class="dropdown-content">
 					<a href="lang/en.php"><img class="lang" src="lang/en.png">English</a>
 					<a href="lang/nl.php"><img class="lang" src="lang/nl.png">Nederlands</a>
 					<a href="lang/de.php"><img class="lang" src="lang/de.png">Deutsch</a>
@@ -173,8 +173,11 @@
 					<option value=" _" selected="selected">1 _2</option>
 					<option value=" &lt;"                 >1 &lt;2</option>
 				</select><br>
-				<input                         id="single_notenames" type="checkbox" onchange="CreateEditor()">
-				<label data-trans="OPT_NAMES" for="single_notenames">Show note names instead of button numbers</label><br>
+				<label data-trans="OPT_NUM" class="drop" for="single_numbering">Button numbering</label>
+				<select                     class="drop"  id="single_numbering" onchange="CreateEditor()">
+					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
+					<option data-trans="OPT_NUM_NOTE"  value="111">Note names</option>
+				</select><br>
 			</div>
 			<div id="opt_harm">
 				<label data-trans="OPT_TAB" class="drop" for="harm_tabstyle">Tablature style</label>
@@ -189,8 +192,11 @@
 					<option value=" _"                    >1 _2</option>
 					<option value=" &lt;"                 >1 &lt;2</option>
 				</select><br>
-				<input                         id="harm_notenames" type="checkbox" onchange="CreateEditor()">
-				<label data-trans="OPT_NAMES" for="harm_notenames">Show note names instead of hole numbers</label><br>
+				<label data-trans="OPT_HNUM" class="drop" for="harm_numbering">Hole numbering</label>
+				<select                     class="drop"  id="harm_numbering" onchange="CreateEditor()">
+					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
+					<option data-trans="OPT_NUM_NOTE"  value="111">Note names</option>
+				</select><br>
 				<input                           id="harm_changenotehead" type="checkbox" onchange="CreateEditor()" checked>
 				<label data-trans="OPT_HARHEAD" for="harm_changenotehead">Use alternative note heads for bends</label><br>
 			</div>
@@ -208,8 +214,8 @@
 					<option value=" _" selected="selected">1 _2</option>
 					<option value=" &lt;"                 >1 &lt;2</option>
 				</select><br>			
-				<label data-trans="OPT_NUM" class="drop" for="buttonnumbering">Button numbering</label>
-				<select                     class="drop"  id="buttonnumbering" onchange="CreateEditor()">
+				<label data-trans="OPT_NUM" class="drop" for="numbering">Button numbering</label>
+				<select                     class="drop"  id="numbering" onchange="CreateEditor()">
 					<option data-trans="OPT_NUM_AL_0"  value="001">0 1 2 etc.</option>
 					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
 					<option data-trans="OPT_NUM_UN_1"  value="010">1 2 3 rows unaligned</option>
@@ -226,14 +232,14 @@
 					<option value=" ²³"                         >1 2² 3³</option>
 					<option value="¹²³"                         >1¹ 2² 3³</option>
 				</select><br>
-				<input                        id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
-				<label data-trans="OPT_HEAD" for="changenotehead">Use alternative note heads for inner rows</label><br>
 				<label data-trans="OPT_ALG" class="drop" for="tabmode">Tablature algorithm</label>
 				<select                     class="drop"  id="tabmode" onchange="CreateEditor()">
 					<option data-trans="OPT_ALG0" value="0" selected="selected">Normal</option>
 					<option data-trans="OPT_ALG1" value="1"                    >Chord buttons</option>
 					<option data-trans="OPT_ALG2" value="2"                    >All buttons</option>
 				</select><br>
+				<input                        id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
+				<label data-trans="OPT_HEAD" for="changenotehead">Use alternative note heads for inner rows</label><br>
 			</div>
 		</div>
 		<div class="blockend"></div>
