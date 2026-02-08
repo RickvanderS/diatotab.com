@@ -2,7 +2,9 @@
 	//Translation lookup for Dutch
 	$aTranslations = [
 		"BUT_LANG"     => "<img class='lang' src='nl.png'>Nederlands",
-		"INTRO1"       => "Maak tablatuur en bladmuziek voor <a target='_blank' href='https://nl.wikipedia.org/wiki/Trekzak'>trekharmonica / trekzak / diatonische accordeon</a> en <a target='_blank' href='https://nl.wikipedia.org/wiki/Mondharmonica'>diatonische mondharmonica</a>. De melodieën kunnen worden ingevoerd in ABC-notatie, specificeer je instrument, toetsenbordindeling en de toonsoort waarin het is gestemd.",
+		"TITLE"        => "Diatotab, Trekharmonica / Trekzak / Diatonische Accordeon Tabulatuur Generator",
+		"META"         => "Maak tablatuur en bladmuziek voor trekharmonica / trekzak / diatonische accordeon en mondharmonica. Doe dit direct online in je webbrowser met ABC notatie.",
+		"INTRO1"       => "Maak tablatuur en bladmuziek voor <a target='_blank' href='https://nl.wikipedia.org/wiki/Trekzak'>trekharmonica / trekzak / diatonische accordeon</a> en <a target='_blank' href='https://nl.wikipedia.org/wiki/Mondharmonica'> mondharmonica</a>. De melodieën kunnen worden ingevoerd in ABC-notatie, specificeer je instrument, toetsenbordindeling en de toonsoort waarin het is gestemd.",
 		"INTRO2"       => "Veel ABC-melodieën zijn beschikbaar op <a target='_blank' href='https://folktunefinder.com'>folktunefinder.com</a> en <a target='_blank' href='https://thesession.org'>thesession.org</a>. Meer informatie over ABC-notatie is te vinden op <a target='_blank' href='https://abcnotation.com'>abcnotation.com</a>. Op deze site staan ook enkele eenvoudige melodie voorbeelden om mee te beginnen.",
 		"SKIP"         => "Sla uitleg over en ga naar de applicatie",
 		"FUNC_HEAD"    => "Extra functionaliteit",

@@ -2,7 +2,9 @@
 	//Translation lookup for French
 	$aTranslations = [
 		"BUT_LANG"     => "<img class='lang' src='fr.png'>Français",
-		"INTRO1"       => "Créez la tablature et les partitions pour <a target='_blank' href='https://fr.wikipedia.org/wiki/Accord%C3%A9on_diatonique'>accordéon diatonique</a> et <a target='_blank' href='https://en.wikipedia.org/wiki/Harmonica'>harmonica diatonique</a>. Les airs sont saisis en notation ABC, spécifiez votre instrument, la disposition du clavier et la tonalité à laquelle il est accordé.",
+		"TITLE"        => "Diatotab, Accordéon Diatonique Générateur de Tablatures",
+		"META"         => "Créez la tablature et les partitions pour accordéon diatonique et harmonica. Faites-le directement en ligne dans votre navigateur web en utilisant la notation ABC.",
+		"INTRO1"       => "Créez la tablature et les partitions pour <a target='_blank' href='https://fr.wikipedia.org/wiki/Accord%C3%A9on_diatonique'>accordéon diatonique</a> et <a target='_blank' href='https://en.wikipedia.org/wiki/Harmonica'>harmonica</a>. Les airs sont saisis en notation ABC, spécifiez votre instrument, la disposition du clavier et la tonalité à laquelle il est accordé.",
 		"INTRO2"       => "De nombreuses mélodies en notation ABC sont disponibles sur <a target='_blank' href='https://folktunefinder.com'>folktunefinder.com</a> et <a target='_blank' href='https://thesession.org'>thesession.org</a>. Plus d'informations sur la notation ABC sont disponibles sur <a target='_blank' href='https://abcnotation.com'>abcnotation.com</a>. Ce site propose également quelques exemples musicaux simples pour débuter.",
 		"SKIP"         => "Passez l'explication et faites défiler jusqu'à l'outil",
 		"FUNC_HEAD"    => "Fonctionnalité supplémentaire",
