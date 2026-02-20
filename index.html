@@ -7,11 +7,13 @@
 	<title>Diatotab, Diatonic Accordion / Melodeon Tablature Generator</title>
 	<link rel="icon" href="favicon.ico">
 	<link rel="stylesheet" href="styles.css?v=20260207-2">
-	<link rel="stylesheet" href="abcjs-audio.css">
-	<script src="diatotab.js?v=20260207-4"></script>
-	<script src="FileSaver.js"></script>
-	<script src="abcjs-basic-min.js?v=20260207-2"></script><!---->
-	<!--<script src="../abcjs-melodeon-tab/dist/abcjs-basic.js"></script>-->
+	<link rel="stylesheet" href="lib/abcjs-audio.css">
+	<script src="lib/abcjs-basic-dia.js?v=20260207-2">      </script>
+	<script src="lib/codemirror-editor-abcjs.js?v=20260216"></script>
+	<script src="lib/FileSaver.js">                         </script>
+	<script src="script/examples.js?v=20260207-4">          </script>
+	<script src="script/instruments.js?v=20260207-4">       </script>
+	<script src="script/diatotab.js?v=20260207-4">          </script>
 </head>
 <body>
 	<div class="container">
@@ -124,98 +126,98 @@
 		<div class="blockborder">
 			<label data-trans="HEAD_INST" for="instrument" class="listheader">Instrument</label>
 			<div class="listtrim">
-				<select class="list" id="instrument" size="5" onchange="AddVariantsTunings();CreateEditor();"></select>
+				<select class="list" id="instrument" size="5" onchange="AddVariantsTunings();OnInstrumentChange();"></select>
 			</div>
 		</div>
 		<div class="blockborder" id="variantdiv">
 			<label data-trans="HEAD_LAY" for="variant" class="listheader">Keyboard Layout</label>
 			<div class="listtrim">
-				<select class="list" id="variant" size="5" onchange="ShowHideVariantOptions();CreateEditor();"></select>
+				<select class="list" id="variant" size="5" onchange="ShowHideVariantOptions();OnInstrumentChange();"></select>
 			</div>
 		</div>
 		<div class="blockborder" id="tuningdiv">
 			<label data-trans="HEAD_TUNE" for="tuning" class="listheader">Tuning</label>
 			<div class="listtrim">
-				<select class="list" id="tuning" size="5" onchange="CreateEditor()"></select>
+				<select class="list" id="tuning" size="5" onchange="OnInstrumentChange()"></select>
 			</div>
 		</div>
 		<div id="invdiv" class="block">
 			<div id="inv1div">
-				<input type="checkbox"       id="inv1" onchange="CreateEditor()">
+				<input type="checkbox"       id="inv1" onchange="OnInstrumentChange()">
 				<label data-trans="OPT_INV" for="inv1" id="inv1_lab">Button&nbsp;&nbsp;reverse</label>
 			</div>
 			<div id="inv1adiv">
-				<input type="checkbox"       id="inv1a" onchange="CreateEditor()">
+				<input type="checkbox"       id="inv1a" onchange="OnInstrumentChange()">
 				<label data-trans="OPT_INV" for="inv1a" id="inv1a_lab">Button&nbsp;&nbsp;reverse</label>
 			</div>
 			<div id="inv1bdiv">
-				<input type="checkbox"       id="inv1b" onchange="CreateEditor()">
+				<input type="checkbox"       id="inv1b" onchange="OnInstrumentChange()">
 				<label data-trans="OPT_INV" for="inv1b" id="inv1b_lab">Button&nbsp;&nbsp;reverse</label>
 			</div>
 			<div id="inv5adiv">
-				<input type="checkbox" id="inv5a" onchange="CreateEditor()">
+				<input type="checkbox" id="inv5a" onchange="OnInstrumentChange()">
 				<label data-trans="OPT_INV" for="inv5a" id="inv5a_lab">Button&nbsp;&nbsp;reverse</label>
-				<input type="checkbox"          id="inv5a_all" onchange="CreateEditor()">
+				<input type="checkbox"          id="inv5a_all" onchange="OnInstrumentChange()">
 				<label data-trans="OPT_INVROW" for="inv5a_all" id="inv5a_all_lab">Entire row&nbsp;&nbsp;</label>
 			</div>
 		</div>
 		<div id="optdiv" class="block">
 			<div id="opt_single">
 				<label data-trans="OPT_TAB" class="drop" for="single_tabstyle">Tablature style</label>
-				<select                     class="drop"  id="single_tabstyle" onchange="CreateEditor()">
+				<select                     class="drop"  id="single_tabstyle" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_TAB1" value="1">One line</option>
 					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push &amp; pull)</option>
 					<option data-trans="OPT_TAB1" value="0">No tablature, notes only</option>
 				</select><br>
 				<label data-trans="OPT_PPLAB" class="drop" for="single_pushpulllabels">Push/pull symbols</label>
-				<select                       class="drop"  id="single_pushpulllabels" onchange="CreateEditor()">
+				<select                       class="drop"  id="single_pushpulllabels" onchange="OnInstrumentChange()">
 					<option value=" -"                    >1 -2</option>
 					<option value=" _" selected="selected">1 _2</option>
 					<option value=" &lt;"                 >1 &lt;2</option>
 				</select><br>
 				<label data-trans="OPT_NUM" class="drop" for="single_numbering">Button numbering</label>
-				<select                     class="drop"  id="single_numbering" onchange="CreateEditor()">
+				<select                     class="drop"  id="single_numbering" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
 					<option data-trans="OPT_NUM_NOTE"  value="111">Note names</option>
 				</select><br>
 			</div>
 			<div id="opt_harm">
 				<label data-trans="OPT_TAB" class="drop" for="harm_tabstyle">Tablature style</label>
-				<select                     class="drop"  id="harm_tabstyle" onchange="CreateEditor()">
+				<select                     class="drop"  id="harm_tabstyle" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_TAB1"     value="1" selected="selected">One line</option>
 					<option data-trans="OPT_HARMTAB2" value="2">Two lines (blow &amp; draw)</option>
 					<option data-trans="OPT_TAB0"     value="0">No tablature, notes only</option>
 				</select><br>
 				<label data-trans="OPT_BDLAB" class="drop" for="harm_pushpulllabels">Blow/draw symbols</label>
-				<select                       class="drop"  id="harm_pushpulllabels" onchange="CreateEditor()">
+				<select                       class="drop"  id="harm_pushpulllabels" onchange="OnInstrumentChange()">
 					<option value=" -" selected="selected">1 -2</option>
 					<option value=" _"                    >1 _2</option>
 					<option value=" &lt;"                 >1 &lt;2</option>
 				</select><br>
 				<label data-trans="OPT_HNUM" class="drop" for="harm_numbering">Hole numbering</label>
-				<select                     class="drop"  id="harm_numbering" onchange="CreateEditor()">
+				<select                     class="drop"  id="harm_numbering" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
 					<option data-trans="OPT_NUM_NOTE"  value="111">Note names</option>
 				</select><br>
-				<input                           id="harm_changenotehead" type="checkbox" onchange="CreateEditor()" checked>
+				<input                           id="harm_changenotehead" type="checkbox" onchange="OnInstrumentChange()" checked>
 				<label data-trans="OPT_HARHEAD" for="harm_changenotehead">Use alternative note heads for bends</label><br>
 			</div>
 			<div id="opt_mel">
 				<label data-trans="OPT_TAB" class="drop" for="tabstyle">Tablature style</label>
-				<select                     class="drop"  id="tabstyle" onchange="CreateEditor()">
+				<select                     class="drop"  id="tabstyle" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_TAB1" value="1"                    >One line</option>
 					<option data-trans="OPT_TAB2" value="2" selected="selected">Two lines (push &amp; pull)</option>
 					<option data-trans="OPT_TAB3" value="3"                    >Line per instrument row</option>
 					<option data-trans="OPT_TAB0" value="0"                    >No tablature, notes only</option>
 				</select><br>
 				<label data-trans="OPT_PPLAB" class="drop" for="pushpulllabels">Push/pull symbols</label>
-				<select                       class="drop"  id="pushpulllabels" onchange="CreateEditor()">
+				<select                       class="drop"  id="pushpulllabels" onchange="OnInstrumentChange()">
 					<option value=" -"                    >1 -2</option>
 					<option value=" _" selected="selected">1 _2</option>
 					<option value=" &lt;"                 >1 &lt;2</option>
 				</select><br>			
 				<label data-trans="OPT_NUM" class="drop" for="numbering">Button numbering</label>
-				<select                     class="drop"  id="numbering" onchange="CreateEditor()">
+				<select                     class="drop"  id="numbering" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_NUM_AL_0"  value="001">0 1 2 etc.</option>
 					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
 					<option data-trans="OPT_NUM_UN_1"  value="010">1 2 3 rows unaligned</option>
@@ -224,7 +226,7 @@
 					<option data-trans="OPT_NUM_NOTE"  value="111">Note names</option>
 				</select><br>
 				<label data-trans="OPT_ROWLAB" class="drop" for="rowlabels" id="rowlabels_lab">Row symbols</label>
-				<select                        class="drop"  id="rowlabels" onchange="CreateEditor()">
+				<select                        class="drop"  id="rowlabels" onchange="OnInstrumentChange()">
 					<option value=" '&quot;" selected="selected">1 2' 3&quot;</option>
 					<option value=" *&quot;"                    >1 2* 3&quot;</option>
 					<option value=" '^"                         >1 2' 3^</option>
@@ -233,12 +235,12 @@
 					<option value="¹²³"                         >1¹ 2² 3³</option>
 				</select><br>
 				<label data-trans="OPT_ALG" class="drop" for="tabmode">Tablature algorithm</label>
-				<select                     class="drop"  id="tabmode" onchange="CreateEditor()">
+				<select                     class="drop"  id="tabmode" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_ALG0" value="0" selected="selected">Normal</option>
 					<option data-trans="OPT_ALG1" value="1"                    >Chord buttons</option>
 					<option data-trans="OPT_ALG2" value="2"                    >All buttons</option>
 				</select><br>
-				<input                        id="changenotehead" type="checkbox" onchange="CreateEditor()" checked>
+				<input                        id="changenotehead" type="checkbox" onchange="OnInstrumentChange()" checked>
 				<label data-trans="OPT_HEAD" for="changenotehead">Use alternative note heads for inner rows</label><br>
 			</div>
 		</div>
@@ -261,86 +263,94 @@
 				</div>
 				<div class="blockright">
 					<label data-trans="INP_TRANS" for="transpose">Transpose</label>
-					<input type="number"           id="transpose" value="0" min="-24" max="24" size="4" onchange="CreateEditor()">
-					<button data-trans="BUT_TRANS" onclick="TransposeAbc()">Transpose ABC</button>
+					<input type="number"           id="transpose" value="0" min="-24" max="24" size="4" onchange="OnInstrumentChange()">
+					<button data-trans="BUT_TRANS" onclick="AbcTranspose()">Transpose ABC</button>
 					<button data-trans="BUT_PRINT" onclick="Print()">Print</button>
 				</div>
 				<div class="blockend"></div>
 			</div>
 			<div id="abcscroll" class="abcscroll">
+				<div class="abcwrap">
+					<div id="abceditor"></div>
+				</div>
+				<textarea id="abc" style="display:none;height:100%" spellcheck="false">
+T: Andro
+C: Trad. (Bretagne)
+R: Andro
+Q: 1/4=160
+M: 4/4
+L: 1/4
+K: C
+|:"Am"e e/2f/2 e3/2 d/2|c B AA|"G&gt;"ddBG |"F&lt;"A/2B/2 c/2d/2 "Em"e2|
+"Am"e e/2f/2 e3/2 d/2  |cB AA |"G&gt;"ddBG |"F&lt;"A/2B/2 c/2B/2 "Am"A2:|
+|:"C"eg"Am"A2|"C"eg"G&gt;"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2d/2 "Em>"e2|
+"C"eg"Am"A2|"C"eg"G&gt;"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2B/2 "Am"A2:|
+
+T: Kerfank 1870/Den Andro
+S: Gonnagles Balfolksessieboekje 1
+C: Trad. (Bretagne)
+R: Andro
+Q: 1/4=160
+M: 4/4
+L: 1/4
+K: C
+|:"Am"Aeed/e/|"F&lt;"fed/c/ B/c/|"G&gt;"dB"C"ed/c/|B/c/ A/B/"Em"cB|
+|"Am"Aeed/e/|"F&lt;"fed/c/ B/c/|"G&gt;"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|
+|:"Am"AA"G&lt;"Bc/B/|"F&lt;"AA"Em"BB/c/|"G&gt;"dB"C"ed/c/|"F"B/c/ A/B/"Em"cB|
+|"Am"AA"G&lt;"Bc/B/|"F&lt;"AA"Em"BB/c/|"G&gt;"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|
+
+T: Mon Père Avait un Gars Lonla
+S: Gonnagles Balfolksessieboekje 1
+C: Trad.
+R: Hanter dro
+Q: 1/4=160
+M: 6/4
+L: 1/4
+K: C
+|:"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/Ad"G"cB|"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/"G"AG"Am"A2:|
+|:"Am"AB/c/dBc/d/e|"G"cB/A/dcB2|"F"AB/c/dBc/d/e|"G"cB/A/"Em"Bc"Am"A2:|
+
+T: What Shall We Do With the Drunken Sailor?
+C: Trad. (England)
+M: 4/4
+L: 1/8
+Q: 1/4=160
+K: C
+"Am"E2EE E2EE|"Am"E2A,2C2E2|"G"D2DD D2DD|"G"D2G,2B,2D2|
+w: What shall we do with the drunk-en sail-or, what shall we do with the drunk-en sail-or
+"Am"E2EE E2EE|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|
+w: What shall we do with the drunk-en sail-or, earl-y in the morn-ing?
+"Am"E4 E3E|"Am"E2A,2C2E2|"G"D4 D3D|"G"D2G,2B,2D2|
+w: Way-hay, and up she ris-es, way-hay, and up she ris-es
+"Am"E4 E3E|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|
+w: Way-hay, and up she ris-es, earl-y in the morn-ing.
+				</textarea>
+			</div>
+
+<!--			<div id="abcscroll" class="abcscroll">
 				<div class="highLite">
 					<div class="highLite_colors"   id="abc_colors"></div>
 					<div class="highLite_editable" id="abc_editable" contenteditable="true" spellcheck="false" onkeydown="AbcKeyDown(event)" onpaste="AbcPaste(event)" oninput="AbcInput()" onmousemove="AbcSelect()">
-T: Andro<br>
-C: Trad. (Bretagne)<br>
-R: Andro<br>
-Q: 1/4=160<br>
-M: 4/4<br>
-L: 1/4<br>
-K: C<br>
-|:"Am"e e/2f/2 e3/2 d/2|c B AA|"G&gt;"ddBG |"F&lt;"A/2B/2 c/2d/2 "Em"e2|<br>
-"Am"e e/2f/2 e3/2 d/2  |cB AA |"G&gt;"ddBG |"F&lt;"A/2B/2 c/2B/2 "Am"A2:|<br>
-|:"C"eg"Am"A2|"C"eg"G&gt;"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2d/2 "Em>"e2|<br>
-"C"eg"Am"A2|"C"eg"G&gt;"B2|ddB/2A/2G|"F&lt;"A/2B/2 c/2B/2 "Am"A2:|<br>
-<br>
-T: Kerfank 1870/Den Andro<br>
-S: Gonnagles Balfolksessieboekje 1<br>
-C: Trad. (Bretagne)<br>
-R: Andro<br>
-Q: 1/4=160<br>
-M: 4/4<br>
-L: 1/4<br>
-K: C<br>
-|:"Am"Aeed/e/|"F&lt;"fed/c/ B/c/|"G&gt;"dB"C"ed/c/|B/c/ A/B/"Em"cB|<br>
-|"Am"Aeed/e/|"F&lt;"fed/c/ B/c/|"G&gt;"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
-|:"Am"AA"G&lt;"Bc/B/|"F&lt;"AA"Em"BB/c/|"G&gt;"dB"C"ed/c/|"F"B/c/ A/B/"Em"cB|<br>
-|"Am"AA"G&lt;"Bc/B/|"F&lt;"AA"Em"BB/c/|"G&gt;"dB"C"ed/c/|"Em"B/A/ B/c/"Am"A2:|<br>
-<br>
-T: Mon Père Avait un Gars Lonla<br>
-S: Gonnagles Balfolksessieboekje 1<br>
-C: Trad.<br>
-R: Hanter dro<br>
-Q: 1/4=160<br>
-M: 6/4<br>
-L: 1/4<br>
-K: C<br>
-|:"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/Ad"G"cB|"Am"AB/c/BA"Dm"G/F/E|"F"AB/c/"G"AG"Am"A2:|<br>
-|:"Am"AB/c/dBc/d/e|"G"cB/A/dcB2|"F"AB/c/dBc/d/e|"G"cB/A/"Em"Bc"Am"A2:|<br>
-<br>
-T: What Shall We Do With the Drunken Sailor?<br>
-C: Trad. (England)<br>
-M: 4/4<br>
-L: 1/8<br>
-Q: 1/4=160<br>
-K: C<br>
-"Am"E2EE E2EE|"Am"E2A,2C2E2|"G"D2DD D2DD|"G"D2G,2B,2D2|<br>
-w: What shall we do with the drunk-en sail-or, what shall we do with the drunk-en sail-or<br>
-"Am"E2EE E2EE|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|<br>
-w: What shall we do with the drunk-en sail-or, earl-y in the morn-ing?<br>
-"Am"E4 E3E|"Am"E2A,2C2E2|"G"D4 D3D|"G"D2G,2B,2D2|<br>
-w: Way-hay, and up she ris-es, way-hay, and up she ris-es<br>
-"Am"E4 E3E|"Am"E2F2G2A2|"Em"G2E2 "G"D2B,2|"Am"A,4A,2 z2|<br>
-w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
-<br>
+
 					</div>
 				</div>
 				<textarea id="abc" style="display:none;height:100%" spellcheck="false">
 				</textarea>
-			</div>
+			</div>-->
 			<div id="abcfooter" class="blockend">
 				<div id="warnings"></div>
 				<h2 data-trans="HEAD_PLAY">Playback</h2>
 				<div class="block">
 					
 					<table>
-						<tr><td><label data-trans="PLAY_VOICE" for="reeds">Voices </label></td><td><select id="reeds" style="width:100%;" onchange="CreateEditor()"></select>                                      </td></tr>
-						<tr><td><label data-trans="PLAY_TREM"  for="cents">Tremolo</label></td><td><input  id="cents" type="range" min="0" max="30"  value="5" class="slider" onchange="CreateEditor(false, true)"></td></tr>
+						<tr><td><label data-trans="PLAY_VOICE" for="reeds">Voices </label></td><td><select id="reeds" style="width:100%;" onchange="OnPlaybackChange()"></select>                                      </td></tr>
+						<tr><td><label data-trans="PLAY_TREM"  for="cents">Tremolo</label></td><td><input  id="cents" type="range" min="0" max="30"  value="5" class="slider" onchange="OnPlaybackChange(false, true)"></td></tr>
 					</table>
 				</div>
 				<div class="block">
 					<table>
-						<tr><td><label data-trans="PLAY_BASS" for="bassvol">Bass volume</label></td><td><input id="bassvol" type="range" min="0" max="150" value="100" class="slider" onchange="CreateEditor()">           </td></tr>
-						<tr><td><label data-trans="PLAY_FADE" for="fade"   >Fade in/out</label></td><td><input id="fade"    type="range" min="1" max="250" value="50"  class="slider" onchange="CreateEditor(false, true)"></td></tr>
+						<tr><td><label data-trans="PLAY_BASS" for="bassvol">Bass volume</label></td><td><input id="bassvol" type="range" min="0" max="150" value="100" class="slider" onchange="OnPlaybackChange()">           </td></tr>
+						<tr><td><label data-trans="PLAY_FADE" for="fade"   >Fade in/out</label></td><td><input id="fade"    type="range" min="1" max="250" value="50"  class="slider" onchange="OnPlaybackChange(false, true)"></td></tr>
 					</table>
 				</div>
 				<div class="blockright">
@@ -362,7 +372,7 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 			The application runs in the web browser, no data is send to the server.
 		</p>
 		<p data-trans="FOOT_CREATE" class='footer'>
-			Developed by Rick van der Sluijs, based on <a target='_blank' href='https://www.abcjs.net'>abcjs</a>. <a href='#' id='link' onmouseover='setLink()' onmousedown='setLink()' onclick='setLink()' onfocusout='clearLink()'>Email</a> me for questions or bug reports. Github source code repositories: <a target='_blank' href='https://github.com/RickvanderS/abcjs-melodeon-tab'>abcjs fork</a>, <a target='_blank' href='https://github.com/RickvanderS/diatotab.com'>website</a>.
+			Developed by Rick van der Sluijs, based on <a target='_blank' href='https://www.abcjs.net'>abcjs</a>. <a href='#' id='link' onmouseover='Link(true)' onmousedown='Link(true)' onclick='Link(true)' onmouseout='Link(false)' onfocusout='Link(false)'>Email</a> me for questions or bug reports. Github source code repositories: <a target='_blank' href='https://github.com/RickvanderS/abcjs-melodeon-tab'>abcjs fork</a>, <a target='_blank' href='https://github.com/RickvanderS/diatotab.com'>website</a>.
 		</p>
 	</div>
 	
@@ -385,7 +395,7 @@ w: Way-hay, and up she ris-es, earl-y in the morn-ing.<br>
 	
 	<script>
 		window.onload = function() {
-			InitPage();
+			PageInit();
 		}
 	</script>
 </body>

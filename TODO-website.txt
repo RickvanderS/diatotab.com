@@ -1,10 +1,7 @@
 Bugs:
-- Paste problems, desync between syntax and editor
-- ABCjs error line numbers are off
 Improvements:
 - Help button with overlay text to explain controls
-- Better syntax highlighting around |[
-- Better syntax highlighting for %% meta comment
-- Add line numbers to the editor
 New features:
 - Open custom layout file (using ABC notation, Rodec Markup, Roland FR-18, ...)
+- Graphical keyboard layout
+- Option to disable thirds in chords (both for tab generation and playback)
