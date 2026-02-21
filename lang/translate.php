@@ -2,8 +2,10 @@
 	function TranslatePage($LanguageCode, $aTranslations) {
 		//Read the English HTML file
 		$HtmlText = file_get_contents("../index.html");
-		if ($HtmlText === false)
-			echo "Unable to read index.html \n";
+		if ($HtmlText === false) {
+			echo "Unable to read index.html";
+			return;
+		}
 		
 		//Change the html language code
 		$HtmlText = str_replace(' lang="en"', ' lang="' . $LanguageCode . '"', $HtmlText);
@@ -13,7 +15,10 @@
 		$HtmlText = str_replace(' href="styles' , ' href="../styles' , $HtmlText);
 		$HtmlText = str_replace(' href="abcjs'  , ' href="../abcjs'  , $HtmlText);
 		$HtmlText = str_replace(' href="lang/'  , ' href="'          , $HtmlText);
-		$HtmlText = str_replace(' src="'        , ' src="../'        , $HtmlText);
+		$HtmlText = str_replace(' href="lib/'   , ' href="../lib/'   , $HtmlText);
+		$HtmlText = str_replace(' src="lib/'    , ' src="../lib/'    , $HtmlText);
+		$HtmlText = str_replace(' src="script/' , ' src="../script/' , $HtmlText);
+		$HtmlText = str_replace(' src="img/'    , ' src="../img/'    , $HtmlText);
 		
 		//Parse the html
 		$HtmlDom = new DOMDocument();

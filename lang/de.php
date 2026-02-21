@@ -1,7 +1,7 @@
 <?php
 	//Translation lookup for German
 	$aTranslations = [
-		"BUT_LANG"     => "<img class='lang' src='de.png'>Deutsch",
+		"BUT_LANG"     => "<img class='lang' src='../img/de.png'>Deutsch",
 		"TITLE"        => "Diatotab, Diatonisches Akkordeon / Ziehharmonika Tabulatur Generator",
 		"META"         => "Erstelle Tabulatur und Notenblätter für diatonisches Akkordeon / Ziehharmonika und Mundharmonika. Führen Sie dies direkt online in Ihrem Webbrowser mit ABC Notation.",
 		"INTRO1"       => "Erstelle Tabulatur und Notenblätter für <a target='_blank' href='https://de.wikipedia.org/wiki/Diatonisches_Akkordeon'>diatonisches Akkordeon / Ziehharmonika</a> und <a target='_blank' href='https://de.wikipedia.org/wiki/Mundharmonika'>Mundharmonika</a>. Die Melodien werden in ABC Notation eingegeben, gib dein Instrument, die Tastaturbelegung und die Stimmung an.",

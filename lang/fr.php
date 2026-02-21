@@ -1,7 +1,7 @@
 <?php
 	//Translation lookup for French
 	$aTranslations = [
-		"BUT_LANG"     => "<img class='lang' src='fr.png'>Français",
+		"BUT_LANG"     => "<img class='lang' src='../img/fr.png'>Français",
 		"TITLE"        => "Diatotab, Accordéon Diatonique Générateur de Tablatures",
 		"META"         => "Créez la tablature et les partitions pour accordéon diatonique et harmonica. Faites-le directement en ligne dans votre navigateur web en utilisant la notation ABC.",
 		"INTRO1"       => "Créez la tablature et les partitions pour <a target='_blank' href='https://fr.wikipedia.org/wiki/Accord%C3%A9on_diatonique'>accordéon diatonique</a> et <a target='_blank' href='https://en.wikipedia.org/wiki/Harmonica'>harmonica</a>. Les airs sont saisis en notation ABC, spécifiez votre instrument, la disposition du clavier et la tonalité à laquelle il est accordé.",

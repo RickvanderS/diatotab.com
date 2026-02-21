@@ -21,6 +21,11 @@ h3 {
   font-size    : 16px;
 }
 
+
+#abceditor {
+  font-size: 13px;
+}
+
 p {
   margin-top   : 5px;
   margin-bottom: 10px;
@@ -207,6 +212,10 @@ textarea {
   
   a:visited {
     color: brown;
+  }
+  
+  img.invert {
+    filter: invert(100%);
   }
 }
 
