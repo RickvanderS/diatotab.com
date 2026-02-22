@@ -63,6 +63,9 @@ function PageInit() {
 	//All changes made will be stored from now on
 	SettingsStore(true, true);
 	
+	//Start rendering ABC from here
+	RenderAbc(true);
+	
 	LinkInit();
 }
 
@@ -183,7 +186,7 @@ function OnInstrumentChange() {
 
 /// Called when one of the playback options is changed
 function OnPlaybackChange() {
-	RenderAbc(true);
+	RenderAbc(true, true);
 	SettingsStore();
 }
 
@@ -494,7 +497,15 @@ let g_AbcPrependLength = 0;
 let g_AbcPrependLines = 0;
 
 /// Render music score from the ABC input
-function RenderAbc(ClearSoundsCache) {
+function RenderAbc(Enabled, ClearSoundsCache) {
+	//Only render ABC after rendering has been enabled
+	if (typeof Enabled != 'undefined')
+		RenderAbc.Enabled = Enabled;
+	if (typeof RenderAbc.Enabled == 'undefined')
+		RenderAbc.Enabled = false;
+	if (!RenderAbc.Enabled)
+		return;
+	
 	//Do things with the old editor
 	let isLooping = false;
 	if (g_AbcJs) {
