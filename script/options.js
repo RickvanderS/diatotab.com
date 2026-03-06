@@ -468,6 +468,14 @@ function AddVariantsTunings() {
 			
 			{
 				var Variant = document.createElement("option");
+				Variant.text       = "23+10 button, 18 bass, Leray";
+				Variant.value      = "33leray";
+				Variant.dataSource = "http://lediato.free.fr/conseil3rangs.htm";
+				Variants.add(Variant);
+			}
+			
+			{
+				var Variant = document.createElement("option");
 				Variant.text       = "21+9 button, 12 bass, van der Sluijs";
 				Variant.value      = "30rick";
 				Variant.dataSource = "";
