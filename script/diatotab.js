@@ -93,7 +93,7 @@ function UpdatePageTitle(Enabled) {
 }
 
 /// All element names with user settings that will be saved
-const g_aSettingsElements = new Array("abc_editable", "instrument", "variant", "tuning", "inv1", "inv1a", "inv1b", "inv5a", "inv5a_all", "tabstyle", "pushpulllabels", "numbering", "rowlabels", "tabmode", "changenotehead", "single_tabstyle", "single_pushpulllabels", "single_numbering", "harm_tabstyle", "harm_pushpulllabels", "harm_numbering", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
+const g_aSettingsElements = new Array("abc_editable", "instrument", "variant", "tuning", "inv1", "inv1a", "inv1b", "inv5a", "inv5a_all", "tabstyle", "pushpulllabels", "numbering", "rowlabels", "tabmode", "changenotehead", "single_tabstyle", "single_pushpulllabels", "single_numbering", "single_changenotehead", "harm_tabstyle", "harm_pushpulllabels", "harm_numbering", "harm_notenames", "harm_changenotehead", "reeds", "cents", "bassvol", "fade", "repeat");
 
 /// Load settings from local storage
 function SettingsLoad() {
@@ -103,6 +103,10 @@ function SettingsLoad() {
 		
 		//Get value from storage
 		let Value = window.localStorage.getItem(ID);
+		
+		//For backward compatibility when this was a checkbox
+		if (ID.includes("changenotehead") && Value == "")
+			Value = 3;
 		
 		//If value set, otherwise keep default
 		if (Value !== null) {

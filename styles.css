@@ -165,7 +165,7 @@ label.drop:lang(fr) {
 
 select.drop {
   padding: 0px 0px 0px 5px;
-  min-width: 170px;
+  min-width: 185px;
 }
 select.drop:lang(nl) {
   min-width: 200px;

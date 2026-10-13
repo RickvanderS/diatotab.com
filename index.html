@@ -6,14 +6,14 @@
 	<meta name="description" content="Create tablature and sheet music for diatonic accordion / melodeon and harmonica. Do this directly online in your webbrowser using ABC notation.">
 	<title>Diatotab, Diatonic Accordion / Melodeon Tablature Generator</title>
 	<link rel="icon" href="favicon.ico">
-	<link rel="stylesheet" href="styles.css?v=__________2026-07-07">
+	<link rel="stylesheet" href="styles.css?v=__________2026-10-13">
 	<link rel="stylesheet" href="lib/abcjs-audio.css?v=_2026-03-06">
 	<script defer src="lib/abcjs-basic-dia.js?v=________2026-10-13"></script>
 	<script defer src="lib/codemirror-editor-abcjs.js?v=2026-04-08"></script>
 	<script defer src="lib/FileSaver.js?v=______________2026-03-06"></script>
 	<script defer src="script/examples.js?v=____________2026-03-06"></script>
 	<script defer src="script/options.js?v=_____________2026-10-13"></script>
-	<script defer src="script/diatotab.js?v=____________2026-03-06"></script>
+	<script defer src="script/diatotab.js?v=____________2026-10-13"></script>
 </head>
 <body>
 	<div class="container">
@@ -204,10 +204,10 @@
 				</select><br>
 				<label data-trans="OPT_HEAD" class="drop" for="harm_changenotehead">Note annotations</label>
 				<select                      class="drop"  id="harm_changenotehead" onchange="OnInstrumentChange()">
-					<option data-trans="OPT_HEAD0" value="0"                    >Disabled</option>
-					<option data-trans="OPT_HEAD1" value="1"                    >Change bend note heads</option>
-					<option data-trans="OPT_HEAD2" value="2"                    >Draw note heads encircled</option>
-					<option data-trans="OPT_HEAD3" value="3" selected="selected">Both options</option>
+					<option data-trans="OPT_HEAD0"     value="0"                    >Disabled</option>
+					<option data-trans="OPT_HARMHEAD1" value="1"                    >Change bend note heads</option>
+					<option data-trans="OPT_HARMHEAD2" value="2"                    >Draw note heads encircled</option>
+					<option data-trans="OPT_HEAD3"     value="3" selected="selected">Both options</option>
 				</select><br>
 			</div>
 			<div id="opt_mel">
