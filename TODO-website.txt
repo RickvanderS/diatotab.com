@@ -5,3 +5,4 @@ New features:
 - Open custom layout file (using ABC notation, Rodec Markup, Roland FR-18, ...)
 - Graphical keyboard layout
 - Option to disable thirds in chords (both for tab generation and playback)
+- Load ABC template
