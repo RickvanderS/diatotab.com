@@ -8,11 +8,11 @@
 	<link rel="icon" href="favicon.ico">
 	<link rel="stylesheet" href="styles.css?v=__________2026-07-07">
 	<link rel="stylesheet" href="lib/abcjs-audio.css?v=_2026-03-06">
-	<script defer src="lib/abcjs-basic-dia.js?v=________2026-07-09"></script>
+	<script defer src="lib/abcjs-basic-dia.js?v=________2026-10-13"></script>
 	<script defer src="lib/codemirror-editor-abcjs.js?v=2026-04-08"></script>
 	<script defer src="lib/FileSaver.js?v=______________2026-03-06"></script>
 	<script defer src="script/examples.js?v=____________2026-03-06"></script>
-	<script defer src="script/options.js?v=_____________2026-03-06"></script>
+	<script defer src="script/options.js?v=_____________2026-10-13"></script>
 	<script defer src="script/diatotab.js?v=____________2026-03-06"></script>
 </head>
 <body>
@@ -178,6 +178,11 @@
 					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
 					<option data-trans="OPT_NUM_NOTE"  value="111">Note names</option>
 				</select><br>
+				<label data-trans="OPT_HEAD" class="drop" for="single_changenotehead">Note annotations</label>
+				<select                      class="drop"  id="single_changenotehead" onchange="OnInstrumentChange()">
+					<option data-trans="OPT_HEAD0" value="0"                    >Disabled</option>
+					<option data-trans="OPT_HEAD2" value="2" selected="selected">Pull note heads encircled</option>
+				</select><br>
 			</div>
 			<div id="opt_harm">
 				<label data-trans="OPT_TAB" class="drop" for="harm_tabstyle">Tablature style</label>
@@ -197,8 +202,13 @@
 					<option data-trans="OPT_NUM_AL_1"  value="011">1 2 3 etc.</option>
 					<option data-trans="OPT_NUM_NOTE"  value="111">Note names</option>
 				</select><br>
-				<input                           id="harm_changenotehead" type="checkbox" onchange="OnInstrumentChange()" checked>
-				<label data-trans="OPT_HARHEAD" for="harm_changenotehead">Use alternative note heads for bends</label><br>
+				<label data-trans="OPT_HEAD" class="drop" for="harm_changenotehead">Note annotations</label>
+				<select                      class="drop"  id="harm_changenotehead" onchange="OnInstrumentChange()">
+					<option data-trans="OPT_HEAD0" value="0"                    >Disabled</option>
+					<option data-trans="OPT_HEAD1" value="1"                    >Change bend note heads</option>
+					<option data-trans="OPT_HEAD2" value="2"                    >Draw note heads encircled</option>
+					<option data-trans="OPT_HEAD3" value="3" selected="selected">Both options</option>
+				</select><br>
 			</div>
 			<div id="opt_mel">
 				<label data-trans="OPT_TAB" class="drop" for="tabstyle">Tablature style</label>
@@ -213,7 +223,7 @@
 					<option value=" -"                    >1 -2</option>
 					<option value=" _" selected="selected">1 _2</option>
 					<option value=" &lt;"                 >1 &lt;2</option>
-				</select><br>			
+				</select><br>
 				<label data-trans="OPT_NUM" class="drop" for="numbering">Button numbering</label>
 				<select                     class="drop"  id="numbering" onchange="OnInstrumentChange()">
 					<option data-trans="OPT_NUM_AL_0"  value="001">0 1 2 etc.</option>
@@ -238,8 +248,13 @@
 					<option data-trans="OPT_ALG1" value="1"                    >Chord buttons</option>
 					<option data-trans="OPT_ALG2" value="2"                    >All buttons</option>
 				</select><br>
-				<input                        id="changenotehead" type="checkbox" onchange="OnInstrumentChange()" checked>
-				<label data-trans="OPT_HEAD" for="changenotehead">Use alternative note heads for inner rows</label><br>
+				<label data-trans="OPT_HEAD" class="drop" for="changenotehead">Note annotations</label>
+				<select                      class="drop"  id="changenotehead" onchange="OnInstrumentChange()">
+					<option data-trans="OPT_HEAD0" value="0"                    >Disabled</option>
+					<option data-trans="OPT_HEAD1" value="1"                    >Note heads per row</option>
+					<option data-trans="OPT_HEAD2" value="2"                    >Pull note heads encircled</option>
+					<option data-trans="OPT_HEAD3" value="3" selected="selected">Both options</option>
+				</select><br>
 			</div>
 		</div>
 		<div class="blockend"></div>

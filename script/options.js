@@ -946,7 +946,7 @@ function GetOptTabStyle() {
 
 function GetOptChangeNoteHeads() {
 	let ElementIdPrefix = GetElementIdPrefix();
-	let ChangeNoteHeads = document.getElementById(ElementIdPrefix + "changenotehead").checked;
+	let ChangeNoteHeads = parseInt(document.getElementById(ElementIdPrefix + "changenotehead").value);
 	return ChangeNoteHeads;
 }
 
@@ -1171,13 +1171,14 @@ function GetAbcjsParamsFromControls() {
 				Tuning = "7" + Tuning;
 			
 			abcjsParams.tablature = [{
-				instrument: 'diatonic',
-				label     : '',
-				tuning    : [Tuning],
-				tabstyle  : GetOptTabStyle(),
-				numformat : GetOptNumFormat(),
-				PullMarker: GetOptPullMarker(),
-				PushMarker: GetOptPushMarker(),
+				instrument     : 'diatonic',
+				label          : '',
+				tuning         : [Tuning],
+				tabstyle       : GetOptTabStyle(),
+				numformat      : GetOptNumFormat(),
+				changenoteheads: GetOptChangeNoteHeads(),
+				PullMarker     : GetOptPullMarker(),
+				PushMarker     : GetOptPushMarker(),
 			}];
 			break;
 		}
